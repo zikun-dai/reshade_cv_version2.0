@@ -121,6 +121,12 @@
     <ClCompile Include="..\gcv_games\Borderlands3.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
+    <ClCompile Include="..\gcv_games\Borderlands4.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\GodofWar5.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
     <ClCompile Include="..\gcv_games\FinalFantasy7.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
@@ -155,9 +161,6 @@
       <Filter>gcv_games</Filter>
     </ClCompile>
     <ClCompile Include="..\gcv_games\RoR2.cpp">
-      <Filter>gcv_games</Filter>
-    </ClCompile>
-    <ClCompile Include="..\gcv_games\DarkSoulsIII.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
     <ClCompile Include="..\gcv_games\Sekiro.cpp">

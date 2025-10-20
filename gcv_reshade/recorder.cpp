@@ -6,8 +6,117 @@
 #include <mutex>
 #include <sstream>
 #include "H5Cpp.h"
+#include <filesystem>     
+#include <Windows.h>  
+#include <dxgi1_6.h>    
+#pragma comment(lib, "dxgi.lib")
 
 using Json = nlohmann::json_abi_v3_12_0::json;
+
+// ===== Meta helpers =====
+namespace {
+  static std::string utf16_to_utf8(const std::wstring &ws) {
+    if (ws.empty()) return {};
+    int size = WideCharToMultiByte(CP_UTF8, 0, ws.c_str(), (int)ws.size(), nullptr, 0, nullptr, nullptr);
+    std::string out(size, 0);
+    WideCharToMultiByte(CP_UTF8, 0, ws.c_str(), (int)ws.size(), out.data(), size, nullptr, nullptr);
+    return out;
+  }
+
+  static std::string read_registry_string(HKEY root, const wchar_t *subkey, const wchar_t *name) {
+    HKEY hKey = nullptr;
+    std::string result;
+    if (RegOpenKeyExW(root, subkey, 0, KEY_READ | KEY_WOW64_64KEY, &hKey) == ERROR_SUCCESS) {
+      DWORD type = 0, size = 0;
+      if (RegQueryValueExW(hKey, name, nullptr, &type, nullptr, &size) == ERROR_SUCCESS &&
+          (type == REG_SZ || type == REG_EXPAND_SZ)) {
+        std::wstring buf(size / sizeof(wchar_t), L'\0');
+        if (RegQueryValueExW(hKey, name, nullptr, &type, reinterpret_cast<LPBYTE>(buf.data()), &size) == ERROR_SUCCESS) {
+          if (!buf.empty() && buf.back() == L'\0') buf.pop_back();
+          result = utf16_to_utf8(buf);
+        }
+      }
+      RegCloseKey(hKey);
+    }
+    return result;
+  }
+
+  static std::string get_machine_sn() {
+    auto guid = read_registry_string(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Cryptography", L"MachineGuid");
+    if (!guid.empty()) return guid;
+    DWORD vol_serial = 0;
+    GetVolumeInformationW(L"C:\\", nullptr, 0, &vol_serial, nullptr, nullptr, nullptr, 0);
+    char buf[64];
+    _snprintf_s(buf, _TRUNCATE, "VOL-%08lX", vol_serial);
+    return buf;
+  }
+
+  static std::string get_cpu_name() {
+    return read_registry_string(HKEY_LOCAL_MACHINE,
+      L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", L"ProcessorNameString");
+  }
+
+  static uint64_t get_total_ram_mb() {
+    MEMORYSTATUSEX st{ sizeof(st) };
+    if (GlobalMemoryStatusEx(&st)) return st.ullTotalPhys / (1024ull * 1024ull);
+    return 0;
+  }
+
+  static std::string get_os_version_string() {
+    std::string name = read_registry_string(HKEY_LOCAL_MACHINE,
+      L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"ProductName");
+    std::string build = read_registry_string(HKEY_LOCAL_MACHINE,
+      L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", L"CurrentBuildNumber");
+    if (!name.empty() && !build.empty()) return name + " (build " + build + ")";
+    if (!name.empty()) return name;
+    return "Windows";
+  }
+
+  static std::string get_gpu_name_dxgi() {
+    std::string gpu;
+    IDXGIFactory1 *factory = nullptr;
+    if (SUCCEEDED(CreateDXGIFactory1(__uuidof(IDXGIFactory1), (void**)&factory)) && factory) {
+      IDXGIAdapter1 *adapter = nullptr;
+      if (SUCCEEDED(factory->EnumAdapters1(0, &adapter)) && adapter) {
+        DXGI_ADAPTER_DESC1 desc{};
+        if (SUCCEEDED(adapter->GetDesc1(&desc))) {
+          gpu = utf16_to_utf8(desc.Description);
+        }
+        adapter->Release();
+      }
+      factory->Release();
+    }
+    return gpu;
+  }
+
+  static std::string get_game_name_from_module() {
+    wchar_t path[MAX_PATH]{0};
+    GetModuleFileNameW(nullptr, path, MAX_PATH);
+    std::wstring ws(path);
+    size_t pos = ws.find_last_of(L"\\/");
+    std::wstring fname = (pos == std::wstring::npos) ? ws : ws.substr(pos + 1);
+    return utf16_to_utf8(fname);
+  }
+
+  static uint64_t get_dir_size_bytes(const std::string &dir_utf8) {
+    namespace fs = std::filesystem;
+    uint64_t total = 0;
+    std::error_code ec;
+    fs::path root = fs::u8path(dir_utf8);
+    if (!fs::exists(root, ec)) return 0;
+    for (auto it = fs::recursive_directory_iterator(root, fs::directory_options::skip_permission_denied, ec);
+         it != fs::recursive_directory_iterator(); ++it) {
+      if (ec) continue;
+      if (it->is_regular_file(ec)) {
+        total += (uint64_t)fs::file_size(it->path(), ec);
+      }
+    }
+    return total;
+  }
+} // namespace
+// ===== Meta helpers end =====
+
+
 const int SHIFT_BIT   = 0;
 const int CTRL_BIT    = 1;
 const int ALT_BIT     = 2;
@@ -423,4 +532,65 @@ void Recorder::log_camera_json(uint64_t idx, long long t_us,
     reshade::log_message(reshade::log_level::error,
       "[CV Capture] exception writing camera json");
   }
+}
+
+void Recorder::init_session_meta(const std::string& game_name, int recording_mode, const Json& game_settings) {
+    meta_initialized_ = true;
+    meta_t0_ = std::chrono::steady_clock::now();
+    meta_mode_ = recording_mode;
+    meta_fps_ = cfg_.fps;
+    meta_game_settings_ = game_settings;
+    meta_game_name_ = game_name.empty() ? get_game_name_from_module() : game_name;
+
+    // 采集机器规格
+    meta_machine_sn_ = get_machine_sn();
+    meta_cpu_ = get_cpu_name();
+    meta_ram_mb_ = get_total_ram_mb();
+    meta_os_ = get_os_version_string();
+    meta_gpu_ = get_gpu_name_dxgi();
+}
+
+void Recorder::finalize_and_write_meta_json() {
+    if (!meta_initialized_) {
+        reshade::log_message(reshade::log_level::warning, "[CV Capture] meta not initialized, skip writing meta.json");
+        return;
+    }
+
+    const auto t1 = std::chrono::steady_clock::now();
+    const double duration_sec = std::chrono::duration<double>(t1 - meta_t0_).count();
+    const std::string out_dir_norm = join_path_slash(cfg_.out_dir);
+    const uint64_t size_bytes = get_dir_size_bytes(out_dir_norm);
+    const double bitrate_bps = (duration_sec > 0.0) ? (double(size_bytes) * 8.0 / duration_sec) : 0.0;
+
+    Json j;
+    j["machine_sn"] = meta_machine_sn_;
+    Json spec;
+    spec["cpu"]    = meta_cpu_;
+    spec["ram_mb"] = meta_ram_mb_;
+    spec["os"]     = meta_os_;
+    spec["gpu"]    = meta_gpu_;
+    j["spec"] = spec;
+
+    j["game_name"] = meta_game_name_;
+    if (!meta_game_settings_.is_null()) j["game_settings"] = meta_game_settings_;
+
+    Json rec;
+    rec["mode"]          = (meta_mode_ == 1 ? "F9" : (meta_mode_ == 2 ? "F7" : ""));
+    rec["fps"]           = meta_fps_;
+    rec["duration_sec"]  = duration_sec;
+    rec["size_bytes"]    = size_bytes;
+    rec["bitrate_bps"]   = bitrate_bps;
+    rec["dir"]           = out_dir_norm;
+    j["recording"] = rec;
+
+    try {
+        std::ofstream ofs(out_dir_norm + "meta.json", std::ios::binary);
+        if (ofs) {
+            ofs << j.dump(2);
+        } else {
+            reshade::log_message(reshade::log_level::error, "[CV Capture] open meta.json failed");
+        }
+    } catch (...) {
+        reshade::log_message(reshade::log_level::error, "[CV Capture] write meta.json exception");
+    }
 }

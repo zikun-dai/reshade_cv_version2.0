@@ -214,6 +214,9 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
                 g_rec = std::make_unique<Recorder>(cfg);
                 g_rec->start();
 
+				Json game_settings = Json::object();
+                g_rec->init_session_meta(/*game_name*/"", /*recording_mode*/ g_recording_mode, game_settings);
+
                 g_rec_idx = 0;
                 g_last_cap_us = 0;
                 g_copy_fail_in_row = 0;
@@ -225,7 +228,11 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
         // stop record
         if (ctrl_down && (runtime->is_key_pressed(VK_F10) || runtime->is_key_pressed(VK_F8)) && g_recording_mode != 0) {
             g_recording_mode = 0;
-            if (g_rec) { g_rec->stop(); g_rec.reset(); }
+            if (g_rec) {
+                g_rec->stop();
+                g_rec->finalize_and_write_meta_json();
+                g_rec.reset();
+            }
             if (g_actions_csv) { fclose(g_actions_csv); g_actions_csv = nullptr; }
             reshade::log_message(reshade::log_level::info, "REC stop");
         }

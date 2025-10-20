@@ -111,13 +111,14 @@
     <ClCompile Include="..\gcv_games\Control.cpp" />
     <ClCompile Include="..\gcv_games\Crysis.cpp" />
     <ClCompile Include="..\gcv_games\Cyberpunk2077.cpp" />
-    <ClCompile Include="..\gcv_games\DarkSoulsIII.cpp" />
     <ClCompile Include="..\gcv_games\DishonoredDOTO.cpp" />
     <ClCompile Include="..\gcv_games\AssassinsCreedOdyssey.cpp" />
     <ClCompile Include="..\gcv_games\AssassinsCreedOrigin.cpp" />
     <ClCompile Include="..\gcv_games\AssassinsCreedShadows.cpp" />
     <ClCompile Include="..\gcv_games\AssassinsCreedValhalla.cpp" />
     <ClCompile Include="..\gcv_games\Borderlands3.cpp" />
+    <ClCompile Include="..\gcv_games\Borderlands4.cpp" />
+    <ClCompile Include="..\gcv_games\GodofWar5.cpp" />
     <ClCompile Include="..\gcv_games\Stray.cpp" />
     <ClCompile Include="..\gcv_games\SandFall.cpp" />
     <ClCompile Include="..\gcv_games\FinalFantasy7.cpp" />
