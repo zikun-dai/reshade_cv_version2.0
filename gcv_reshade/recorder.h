@@ -85,8 +85,8 @@ private:
     void ensure_color_started(int w, int h);
     void ensure_depth_started(int w, int h);
 
-    void save_depth_group_to_h5();  // ✅ 声明函数
-    void h5_write_thread();         // ✅ 声明线程函数
+    // void save_depth_group_to_h5();  // ✅ 声明函数
+    // void h5_write_thread();         // ✅ 声明线程函数
 
 private:
     RecorderConfig cfg_;
@@ -120,11 +120,11 @@ private:
     static const int group_size_ = 30;         // 每组 30 帧
 
     // 异步写入队列
-    std::queue<DepthGroup> h5_queue_;
-    std::mutex h5_mutex_;
-    std::condition_variable h5_cv_;
-    std::atomic<bool> h5_thread_run_{true};
-    std::thread h5_thread_;
+    // std::queue<DepthGroup> h5_queue_;
+    // std::mutex h5_mutex_;
+    // std::condition_variable h5_cv_;
+    // std::atomic<bool> h5_thread_run_{true};
+    // std::thread h5_thread_;
 
     std::string meta_game_name_;
     int meta_mode_ = 0;

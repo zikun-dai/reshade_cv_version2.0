@@ -142,6 +142,12 @@
     <ClCompile Include="..\gcv_games\BlackMythWukong.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
+    <ClCompile Include="..\gcv_games\DevilMayCry5.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\ROTTR.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
     <ClCompile Include="ffmpeg_pipe_win.cpp">
       <Filter>gcv_reshade</Filter>
     </ClCompile>
