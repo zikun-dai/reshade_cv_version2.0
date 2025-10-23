@@ -28,25 +28,26 @@
 #include <ShlObj.h>
 #include <algorithm>
 #include <nlohmann/json.hpp>
-#include <cmath> // 确保包含了 cmath 用于 sin 和 cos
+#include <cmath> 
 #include <cnpy.h>
 using Json = nlohmann::json_abi_v3_12_0::json;
 
 
 static double g_camera_data_buffer[17] = {
-	1.20040525131452021e-12,// 第二个魔数签名
+	1.20040525131452021e-12,// second magic number for identification:
     // 1.38097189588312856e-12, 
     0.0, 0.0, 0.0, 0.0, 0.0, 980.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 };
 static double g_camera_buffer_counter = 0.0;
 
-// 为 ReShade 5.8.0 API 创建重载函数
+// create overloaded functions for ReShade API 
+// 
 reshade::api::effect_uniform_variable find_uniform(reshade::api::effect_runtime* runtime, const char* name)
 {
     if (!runtime) return { 0 };
     reshade::api::effect_uniform_variable var = runtime->find_uniform_variable("IgcsSourceTester.fx", name);
     if (var == 0) {
-        var = runtime->find_uniform_variable("IgcsDof.fx", name); // 回退查找
+        var = runtime->find_uniform_variable("IgcsDof.fx", name); 
     }
     return var;
 }
@@ -82,7 +83,11 @@ bool read_uniform_value(reshade::api::effect_runtime* runtime, const char* name,
 }
 
 
+
 // 这部分缓冲区生成的相机需要后处理
+
+
+// IGCS camera data update function
 
 void UpdateCameraBufferFromReshade(reshade::api::effect_runtime* runtime)
 {
@@ -91,44 +96,46 @@ void UpdateCameraBufferFromReshade(reshade::api::effect_runtime* runtime)
     bool available = false;
     if (!read_uniform_value(runtime, "IGCS_cameraDataAvailable", available) || !available)
     {
-        // 如果相机数据不可用，清零缓冲区
+        // if data not available, clear the buffer except magic number and counter
         for (int i = 2; i <= 14; ++i) g_camera_data_buffer[i] = 0.0;
         g_camera_data_buffer[15] = g_camera_data_buffer[1];
         g_camera_data_buffer[16] = g_camera_data_buffer[1];
         return;
     }
 
-    // 1. 从 IGCS 读取原始相机数据
+    // 1. read camera parameters from ReShade uniforms
     float fov = 0.0f;
-    float camera_ue_pos[3] = {0.0f};  // UE坐标系下的位置 (+X前, +Y右, +Z上)
+
+    float camera_pos[3] = {0.0f};  
     float roll = 0.0f, pitch = 0.0f, yaw = 0.0f; // 弧度
 	float camera_marix[16] = { 0.0f };
 
+
     read_uniform_value(runtime, "IGCS_cameraFoV", fov);
-    read_uniform_value(runtime, "IGCS_cameraWorldPosition", camera_ue_pos, 3);
+    read_uniform_value(runtime, "IGCS_cameraWorldPosition", camera_pos, 3);
     read_uniform_value(runtime, "IGCS_cameraRotationRoll", roll);
     read_uniform_value(runtime, "IGCS_cameraRotationPitch", pitch);
     read_uniform_value(runtime, "IGCS_cameraRotationYaw", yaw);
 	read_uniform_value(runtime, "IGCS_cameraViewMatrix4x4", camera_marix, 16);
 
-    // 2. 获取特定于游戏的接口实例
+    // 2. get game interface
     auto* game_interface = shdata.get_game_interface();
 
-    // 3. 调用游戏特定的后处理函数
+    // 3. process camera data via game-specific logic
     if (game_interface)
     {
 		if (game_interface->gamename_simpler() == "DarkSoulsIII" || game_interface->gamename_simpler() == "Sekiro")
-			game_interface->process_camera_buffer_from_igcs(g_camera_data_buffer, camera_ue_pos, camera_marix, fov);
+			game_interface->process_camera_buffer_from_igcs(g_camera_data_buffer, camera_pos, camera_marix, fov);
 		else
-			game_interface->process_camera_buffer_from_igcs(g_camera_data_buffer, camera_ue_pos, roll, pitch, yaw, fov);
+			game_interface->process_camera_buffer_from_igcs(g_camera_data_buffer, camera_pos, roll, pitch, yaw, fov);
     }
     else
     {
-        // 如果没有找到游戏接口，清空数据以避免发送脏数据
+        // if no game interface, clear the buffer except magic number and counter
         for (int i = 2; i <= 14; ++i) g_camera_data_buffer[i] = 0.0;
     }
 
-    // 4. 更新计数器和哈希值 (这部分是通用的)
+    // 4. update counter and hash values
     g_camera_buffer_counter += 1.0;
     if (g_camera_buffer_counter > 9999.5) g_camera_buffer_counter = 1.0;
     g_camera_data_buffer[1] = g_camera_buffer_counter;
@@ -220,6 +227,9 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
                 g_rec = std::make_unique<Recorder>(cfg);
                 g_rec->start();
 
+				Json game_settings = Json::object();
+                g_rec->init_session_meta(/*game_name*/"", /*recording_mode*/ g_recording_mode, game_settings);
+
                 g_rec_idx = 0;
                 g_last_cap_us = 0;
                 g_copy_fail_in_row = 0;
@@ -231,7 +241,11 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
         // stop record
         if (ctrl_down && (runtime->is_key_pressed(VK_F10) || runtime->is_key_pressed(VK_F8)) && g_recording_mode != 0) {
             g_recording_mode = 0;
-            if (g_rec) { g_rec->stop(); g_rec.reset(); }
+            if (g_rec) {
+                g_rec->stop();
+                g_rec->finalize_and_write_meta_json();
+                g_rec.reset();
+            }
             if (g_actions_csv) { fclose(g_actions_csv); g_actions_csv = nullptr; }
             reshade::log_message(reshade::log_level::info, "REC stop");
         }
@@ -249,10 +263,7 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
             if (now_us >= next_due_us) {
 				bool delta_depth_ok = true;
 				bool delta_control_ok = true;
-			   
-
-				// 彩色帧
-				
+						
 				reshade::api::device* const dev = runtime->get_device();
 				reshade::api::command_queue* const q = runtime->get_command_queue();
 				const reshade::api::resource color_res = dev->get_resource_from_view(rtv);
@@ -288,21 +299,17 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
 					}	
 
 
-					const int64_t now_us_depth_1 = std::chrono::duration_cast<std::chrono::microseconds>(hiresclock::now() - shdata.init_time).count();
-					
+					const int64_t now_us_depth_1 = std::chrono::duration_cast<std::chrono::microseconds>(hiresclock::now() - shdata.init_time).count();	
 					// Logic 1: save depth data
 					if (g_recording_mode == 1) { 
 						generic_depth_data &genericdepdata = runtime->get_private_data<generic_depth_data>();
 						reshade::api::resource depth_res = genericdepdata.selected_depth_stencil;
 						reshade::api::command_queue* const q2 = runtime->get_command_queue();
-
 						if (depth_res.handle != 0) {
-							
 							char basebuf[512];
 							_snprintf_s(basebuf, _TRUNCATE, "%s/frame_%06llu_",
 										g_rec_dir.c_str(), (unsigned long long)g_rec_idx);
 							const std::string basefilen = std::string(basebuf);
-
 							uint32_t writers = ImageWriter_numpy;                // 生成 depth.npy
 							// ImageWriter_STB_png
 							const bool ok_depth =
@@ -316,10 +323,8 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
 								reshade::log_message(reshade::log_level::warning,
 									"record: failed to save per-frame depth (.npy/.fpzip)");
 							}
-							
 						}
 					}
-					
 					const int64_t now_us_depth_2 = std::chrono::duration_cast<std::chrono::microseconds>(hiresclock::now() - shdata.init_time).count();
 					const int64_t delta_us_depth = now_us_depth_2 - now_us_depth_1;
 					reshade::log_message(reshade::log_level::info,
@@ -353,7 +358,7 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
 
 					if (GetAsyncKeyState(VK_SHIFT)   & 0x8000) keymask_modifiers |= (1u << SHIFT_BIT);
 					if (GetAsyncKeyState(VK_CONTROL) & 0x8000) keymask_modifiers |= (1u << CTRL_BIT);
-					if (GetAsyncKeyState(VK_MENU)    & 0x8000) keymask_modifiers |= (1u << ALT_BIT);     // VK_MENU = Alt
+					if (GetAsyncKeyState(VK_MENU)    & 0x8000) keymask_modifiers |= (1u << ALT_BIT);     
 					if (GetAsyncKeyState(VK_SPACE)   & 0x8000) keymask_modifiers |= (1u << SPACE_BIT);
 					if (GetAsyncKeyState(VK_RETURN)  & 0x8000) keymask_modifiers |= (1u << ENTER_BIT);
 					if (GetAsyncKeyState(VK_ESCAPE)  & 0x8000) keymask_modifiers |= (1u << ESCAPE_BIT);
@@ -368,21 +373,18 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
 						color_ok = true;
 							
 					} 
-
 					if(delta_depth_ok && delta_control_ok){
 						g_rec->log_camera_json(/*idx=*/g_rec_idx,
 										/*time_us=*/now_us,
 										/*cam_json=*/camj,
 										/*img_w=*/w, /*img_h=*/h);
 					}
-
 					if (g_recording_mode == 2) { // Logic 2: save control signals
 						g_rec->log_action(g_rec_idx, now_us, keymask_letters, keymask_modifiers);
 					}
 					++g_rec_idx;
 					
 				}
-
 				next_due_us += period_us;
 				g_last_cap_us = now_us;
 			}

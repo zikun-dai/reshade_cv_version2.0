@@ -8,13 +8,15 @@
 #include <memory>
 #include <string>
 #include <mutex>
-#include <queue>              // ✅ 必须加！
-#include <condition_variable> // ✅ 异步队列需要
+#include <queue>              
+#include <condition_variable> 
 #include "ffmpeg_pipe_win.h"
 #include <fstream>
-#include <nlohmann/json_fwd.hpp>
-
-using Json = nlohmann::json;
+// #include <nlohmann/json_fwd.hpp>
+#include <nlohmann/json.hpp>
+#include <chrono>
+// using Json = nlohmann::json;
+using Json = nlohmann::json_abi_v3_12_0::json;
 
 // 前向声明
 struct DepthFrame;
@@ -71,6 +73,8 @@ public:
                 uint32_t letters_mask,      // A-Z
                 uint32_t modifiers_mask);   // Ctrl/Shift/etc.
     void log_camera_json(uint64_t idx, long long t_us, const Json& cam_json, int img_w, int img_h);
+    void init_session_meta(const std::string& game_name, int recording_mode, const Json& game_settings);
+    void finalize_and_write_meta_json();
 
 private:
     bool q_push(std::vector<RawFrame>& Q, std::atomic<uint32_t>& P, std::atomic<uint32_t>& C, RawFrame&& f, size_t cap);
@@ -81,8 +85,8 @@ private:
     void ensure_color_started(int w, int h);
     void ensure_depth_started(int w, int h);
 
-    void save_depth_group_to_h5();  // ✅ 声明函数
-    void h5_write_thread();         // ✅ 声明线程函数
+    // void save_depth_group_to_h5();  // ✅ 声明函数
+    // void h5_write_thread();         // ✅ 声明线程函数
 
 private:
     RecorderConfig cfg_;
@@ -116,9 +120,21 @@ private:
     static const int group_size_ = 30;         // 每组 30 帧
 
     // 异步写入队列
-    std::queue<DepthGroup> h5_queue_;
-    std::mutex h5_mutex_;
-    std::condition_variable h5_cv_;
-    std::atomic<bool> h5_thread_run_{true};
-    std::thread h5_thread_;
+    // std::queue<DepthGroup> h5_queue_;
+    // std::mutex h5_mutex_;
+    // std::condition_variable h5_cv_;
+    // std::atomic<bool> h5_thread_run_{true};
+    // std::thread h5_thread_;
+
+    std::string meta_game_name_;
+    int meta_mode_ = 0;
+    Json meta_game_settings_;
+    int meta_fps_ = 0;
+    std::string meta_machine_sn_;
+    std::string meta_cpu_;
+    uint64_t meta_ram_mb_ = 0;
+    std::string meta_os_;
+    std::string meta_gpu_;
+    std::chrono::steady_clock::time_point meta_t0_{};
+    bool meta_initialized_ = false;
 };

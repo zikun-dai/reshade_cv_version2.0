@@ -189,7 +189,7 @@ def load_cloud_via_meta(depthfile:str,
     pts_cam, uu, vv = backproject_points_from_z_depth(depth, fx, fy, cx, cy, stride=1)
     # 深度裁剪（与正确脚本一致）
     depth_flat = depth[vv, uu]
-    depth_mask_keep = (depth_flat >= 0.2) & (depth_flat <= max_distance)
+    depth_mask_keep = (depth_flat >= 0.2) & (depth_flat <= 20)
     pts_cam = pts_cam[depth_mask_keep]
     uu_keep = uu[depth_mask_keep]
     vv_keep = vv[depth_mask_keep]
