@@ -81,6 +81,7 @@ bool read_uniform_value(reshade::api::effect_runtime* runtime, const char* name,
     return false;
 }
 
+
 // 这部分缓冲区生成的相机需要后处理
 
 void UpdateCameraBufferFromReshade(reshade::api::effect_runtime* runtime)
@@ -101,12 +102,14 @@ void UpdateCameraBufferFromReshade(reshade::api::effect_runtime* runtime)
     float fov = 0.0f;
     float camera_ue_pos[3] = {0.0f};  // UE坐标系下的位置 (+X前, +Y右, +Z上)
     float roll = 0.0f, pitch = 0.0f, yaw = 0.0f; // 弧度
+	float camera_marix[16] = { 0.0f };
 
     read_uniform_value(runtime, "IGCS_cameraFoV", fov);
     read_uniform_value(runtime, "IGCS_cameraWorldPosition", camera_ue_pos, 3);
     read_uniform_value(runtime, "IGCS_cameraRotationRoll", roll);
     read_uniform_value(runtime, "IGCS_cameraRotationPitch", pitch);
     read_uniform_value(runtime, "IGCS_cameraRotationYaw", yaw);
+	read_uniform_value(runtime, "IGCS_cameraViewMatrix4x4", camera_marix, 16);
 
     // 2. 获取特定于游戏的接口实例
     auto* game_interface = shdata.get_game_interface();
@@ -114,7 +117,10 @@ void UpdateCameraBufferFromReshade(reshade::api::effect_runtime* runtime)
     // 3. 调用游戏特定的后处理函数
     if (game_interface)
     {
-        game_interface->process_camera_buffer_from_igcs(g_camera_data_buffer, camera_ue_pos, roll, pitch, yaw, fov);
+		if (game_interface->gamename_simpler() == "DarkSoulsIII" || game_interface->gamename_simpler() == "Sekiro")
+			game_interface->process_camera_buffer_from_igcs(g_camera_data_buffer, camera_ue_pos, camera_marix, fov);
+		else
+			game_interface->process_camera_buffer_from_igcs(g_camera_data_buffer, camera_ue_pos, roll, pitch, yaw, fov);
     }
     else
     {

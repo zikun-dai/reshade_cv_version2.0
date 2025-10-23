@@ -1,7 +1,10 @@
 // Copyright (C) 2022 Jason Bunk
+#include <Eigen/Dense>
+
 #include "Sekiro.h"
 #include "gcv_utils/depth_utils.h"
 #include "gcv_utils/scripted_cam_buf_templates.h"
+#include "segmentation/reshade_hooks.hpp"
 
 
 std::string GameSekiro::gamename_verbose() const { return "Sekiro"; } // hopefully continues to work with future patches via the mod lua
@@ -58,18 +61,16 @@ void GameSekiro::process_camera_buffer_from_igcs(
 {
     
     // --- 将 main.cpp 中的原始逻辑移动到这里作为默认实现 ---
-    float new_pitch = -pitch;
-    float new_yaw = -yaw;
     const float cr = cos(roll), sr = sin(roll);
-    const float cp = cos(new_pitch), sp = sin(new_pitch);
-    const float cy = cos(new_yaw), sy = sin(new_yaw);
+    const float cp = cos(pitch), sp = sin(pitch);
+    const float cy = cos(yaw), sy = sin(yaw);
 
     float c2w_col_right[3] = { cy * cp, -sy * cp, sp };
     float c2w_col_up[3] = { cy * sp * sr + sy * cr, -sy * sp * sr + cy * cr, -cp * sr };
     float c2w_col_forward[3] = { -cy * sp * cr + sy * sr, sy * sp * cr + cy * sr, cp * cr };
-    
-    float camera_target_pos[3] = { camera_ue_pos[1], -camera_ue_pos[2], camera_ue_pos[0] };
-    const float pose_scale = 1.3333f; 
+
+    /*float camera_target_pos[3] = { camera_ue_pos[1], -camera_ue_pos[2], camera_ue_pos[0] };*/
+    const float pose_scale = 1.0f;
 
     float R_ue_matrix[3][3] = {
         { c2w_col_right[0], c2w_col_up[0], c2w_col_forward[0] },
@@ -88,27 +89,62 @@ void GameSekiro::process_camera_buffer_from_igcs(
     for (int i = 0; i < 3; ++i) for (int j = 0; j < 3; ++j) for (int k = 0; k < 3; ++k)
         R_cv_final[i][j] += M_UE_to_CV[i][k] * temp_matrix[k][j];
 
-    float t_cv_final[3] = {
+    /*float t_cv_final[3] = {
         camera_target_pos[2] * pose_scale,
         camera_target_pos[1] * pose_scale,
         camera_target_pos[0] * pose_scale
-    };
+    };*/
 
-    camera_data_buffer[2] = R_cv_final[0][0]; 
-    camera_data_buffer[3] = R_cv_final[0][1]; 
-    camera_data_buffer[4] = -R_cv_final[0][2]; 
-    camera_data_buffer[5] = t_cv_final[0];
+    camera_data_buffer[2] = R_cv_final[0][0];
+    camera_data_buffer[3] = R_cv_final[0][1];
+    camera_data_buffer[4] = R_cv_final[0][2];
+    camera_data_buffer[5] = camera_ue_pos[0];
 
-    camera_data_buffer[6] = R_cv_final[1][0]; 
-    camera_data_buffer[7] = R_cv_final[1][1]; 
-    camera_data_buffer[8] = -R_cv_final[1][2]; 
-    camera_data_buffer[9] = t_cv_final[2];
+    camera_data_buffer[6] = R_cv_final[1][0];
+    camera_data_buffer[7] = R_cv_final[1][1];
+    camera_data_buffer[8] = R_cv_final[1][2];
+    camera_data_buffer[9] = camera_ue_pos[1];
 
-    camera_data_buffer[10] = -R_cv_final[2][0]; 
-    camera_data_buffer[11] = -R_cv_final[2][1]; 
-    camera_data_buffer[12] = R_cv_final[2][2]; 
-    camera_data_buffer[13] = t_cv_final[1];
+    camera_data_buffer[10] = R_cv_final[2][0];
+    camera_data_buffer[11] = R_cv_final[2][1];
+    camera_data_buffer[12] = R_cv_final[2][2];
+    camera_data_buffer[13] = camera_ue_pos[2];
 
     camera_data_buffer[14] = fov;
+}
+
+void GameSekiro::process_camera_buffer_from_igcs(
+    double* camera_data_buffer,
+    const float* camera_ue_pos,
+    const float* camera_marix,
+    float fov)
+{
+    Eigen::Matrix3d F;
+    F << 1, 0,  0,
+         0, 1,  0,
+         0, 0, -1;
+    Eigen::Matrix3d c2w;
+    c2w << camera_marix[0], camera_marix[4], camera_marix[ 8],
+           camera_marix[1], camera_marix[5], camera_marix[ 9],
+           camera_marix[2], camera_marix[6], camera_marix[10];
+    Eigen::Matrix3d R = F * c2w * F;
     
+    float scale = 1.25;
+
+    camera_data_buffer[2] = R(0,0);
+    camera_data_buffer[3] = R(0,1);
+    camera_data_buffer[4] = R(0,2);
+    camera_data_buffer[5] = camera_ue_pos[0]*scale;
+
+    camera_data_buffer[6] = R(1,0);
+    camera_data_buffer[7] = R(1,1);
+    camera_data_buffer[8] = R(1,2);
+    camera_data_buffer[9] = camera_ue_pos[1]*scale;
+
+    camera_data_buffer[10] = R(2,0);
+    camera_data_buffer[11] = R(2,1);
+    camera_data_buffer[12] = R(2,2);
+    camera_data_buffer[13] = -camera_ue_pos[2]*scale;
+
+    camera_data_buffer[14] = fov;
 }

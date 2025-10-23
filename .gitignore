@@ -7,3 +7,6 @@ build
 *.ply
 *.pcd
 python_test
+IGCSConnector/IgcsConnector/
+IGCSConnector/x64/
+python_threedee/6/

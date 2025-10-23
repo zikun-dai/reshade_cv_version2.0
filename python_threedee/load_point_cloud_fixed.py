@@ -37,7 +37,7 @@ def backproject_points_from_z_depth(depth, fx, fy, cx, cy, stride=1):
     x = (uu - cx) * z / fx
     y = (vv - cy) * z / fy
     
-    pts_cam = np.stack([x, -y, -z], axis=-1).reshape(-1, 3)
+    pts_cam = np.stack([x, y, -z], axis=-1).reshape(-1, 3)
     return pts_cam, uu.reshape(-1), vv.reshape(-1)
 
 # -------------------------- 从extrinsic_cam2world解析UE→OpenCV转换 --------------------------
