@@ -140,6 +140,7 @@
     <ClCompile Include="..\gcv_games\HorizonZeroDawn.cpp" />
     <ClCompile Include="..\gcv_games\RDR2.cpp" />
     <ClCompile Include="..\gcv_games\ResidentEvils.cpp" />
+    <ClCompile Include="..\gcv_games\BatmanAK.cpp" />
     <ClCompile Include="..\gcv_games\RoR2.cpp" />
     <ClCompile Include="..\gcv_games\Sekiro.cpp" />
     <ClCompile Include="..\gcv_games\Shipbreaker.cpp" />

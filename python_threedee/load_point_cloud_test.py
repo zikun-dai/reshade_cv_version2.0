@@ -5,7 +5,7 @@ import json
 import math
 import numpy as np
 from PIL import Image
-# from save_point_cloud_to_file import save_cloud_to_file
+from save_point_cloud_to_file import save_cloud_to_file
 from misc_utils import files_glob
 from functools import partial
 from tqdm.contrib.concurrent import process_map
@@ -357,7 +357,7 @@ if __name__ == '__main__':
     print(f"✅ 加载{len(valid_clouds)}帧有效点云，合并中...")
     merged_cloud = merge_clouds_world_points(valid_clouds)
     if args.save_to_file:
-        # save_cloud_to_file(merged_cloud, args.save_to_file)
+        save_cloud_to_file(merged_cloud, args.save_to_file)
         print(f"💾 点云已保存至: {args.save_to_file}")
     
     # add_camera_global_axis(merged_cloud, valid_clouds)
