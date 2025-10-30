@@ -59,17 +59,30 @@ public class CamInfoBufferSigned : BaseUnityPlugin
             //将四元数转换为旋转矩阵
             Matrix4x4 R = Matrix4x4.Rotate(rotation);
 
-            if (UnityEngine.Input.GetKeyDown(KeyCode.F11))
-            {
-                // 转换为欧拉角（度数制）
-                Vector3 euler = rotation.eulerAngles;
-                Logger.LogInfo($"[F11 Triggered] Euler Angles (Pitch, Yaw, Roll): {euler}");
-            }
+
+            //转换右手坐标系
+            //第三行取反
+            Vector4 row2 = R.GetRow(2);
+            row2 = -row2;
+            R.SetRow(2, row2);
+            //第三列取反
+            Vector4 col2 = R.GetColumn(2);
+            col2 = -col2;
+            R.SetColumn(2, col2);
+            C.z = -C.z;
+
+            //if (UnityEngine.Input.GetKeyDown(KeyCode.F11))
+            //{
+            //    // 转换为欧拉角（度数制）
+            //    Vector3 euler = rotation.eulerAngles;
+            //    Logger.LogInfo($"[F11 Triggered] Euler Angles (Pitch, Yaw, Roll): {euler}");
+            //}
 
             //更新计数器
             counter = counter + 1.0;
             if (counter < 1.0) counter = 1.0;
             buf[1] = counter;
+
 
             //存储列主序矩阵
             ColumnMajorCam2World(R, C, buf, 2);
@@ -100,8 +113,8 @@ public class CamInfoBufferSigned : BaseUnityPlugin
 
     private static void ColumnMajorCam2World(Matrix4x4 R, Vector3 C, double[] dst, int off)
     {
-        dst[off + 0] = R.m00; dst[off + 1] = -R.m01; dst[off + 2] = -R.m02; dst[off + 3] = C.x;
-        dst[off + 4] = R.m10; dst[off + 5] = -R.m11; dst[off + 6] = -R.m12; dst[off + 7] = C.y;
-        dst[off + 8] = R.m20; dst[off + 9] = -R.m21; dst[off + 10] = -R.m22; dst[off + 11] = C.z;
+        dst[off + 0] = R.m00; dst[off + 1] = R.m01; dst[off + 2] = R.m02; dst[off + 3] = C.x*1.66;
+        dst[off + 4] = R.m10; dst[off + 5] = R.m11; dst[off + 6] = R.m12; dst[off + 7] = C.y*1.66;
+        dst[off + 8] = R.m20; dst[off + 9] = R.m21; dst[off +10] = R.m22; dst[off +11] = C.z* 1.66;
     }
 }

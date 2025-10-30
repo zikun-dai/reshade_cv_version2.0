@@ -82,7 +82,13 @@ bool read_uniform_value(reshade::api::effect_runtime* runtime, const char* name,
     return false;
 }
 
+
+
+// 这部分缓冲区生成的相机需要后处理
+
+
 // IGCS camera data update function
+
 void UpdateCameraBufferFromReshade(reshade::api::effect_runtime* runtime)
 {
     auto& shdata = runtime->get_device()->get_private_data<image_writer_thread_pool>();
@@ -99,14 +105,18 @@ void UpdateCameraBufferFromReshade(reshade::api::effect_runtime* runtime)
 
     // 1. read camera parameters from ReShade uniforms
     float fov = 0.0f;
+
     float camera_pos[3] = {0.0f};  
-    float roll = 0.0f, pitch = 0.0f, yaw = 0.0f; 
+    float roll = 0.0f, pitch = 0.0f, yaw = 0.0f; // 弧度
+	float camera_marix[16] = { 0.0f };
+
 
     read_uniform_value(runtime, "IGCS_cameraFoV", fov);
     read_uniform_value(runtime, "IGCS_cameraWorldPosition", camera_pos, 3);
     read_uniform_value(runtime, "IGCS_cameraRotationRoll", roll);
     read_uniform_value(runtime, "IGCS_cameraRotationPitch", pitch);
     read_uniform_value(runtime, "IGCS_cameraRotationYaw", yaw);
+	read_uniform_value(runtime, "IGCS_cameraViewMatrix4x4", camera_marix, 16);
 
     // 2. get game interface
     auto* game_interface = shdata.get_game_interface();
@@ -114,7 +124,10 @@ void UpdateCameraBufferFromReshade(reshade::api::effect_runtime* runtime)
     // 3. process camera data via game-specific logic
     if (game_interface)
     {
-        game_interface->process_camera_buffer_from_igcs(g_camera_data_buffer, camera_pos, roll, pitch, yaw, fov);
+		if (game_interface->gamename_simpler() == "DarkSoulsIII" || game_interface->gamename_simpler() == "Sekiro")
+			game_interface->process_camera_buffer_from_igcs(g_camera_data_buffer, camera_pos, camera_marix, fov);
+		else
+			game_interface->process_camera_buffer_from_igcs(g_camera_data_buffer, camera_pos, roll, pitch, yaw, fov);
     }
     else
     {

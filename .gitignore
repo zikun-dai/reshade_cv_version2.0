@@ -8,3 +8,6 @@ build
 *.pcd
 python_threedee\analyze_depth.py
 python_test
+IGCSConnector/IgcsConnector/
+IGCSConnector/x64/
+python_threedee/6/
