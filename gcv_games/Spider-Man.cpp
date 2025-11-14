@@ -1,30 +1,30 @@
 // Copyright (C) 2022 Jason Bunk
-#include "DarkSoulsIII.h"
+#include "Spider-Man.h"
 #include "gcv_utils/depth_utils.h"
 #include "segmentation/segmentation_app_data.hpp"
 #include "gcv_utils/scripted_cam_buf_templates.h"
 
 
-std::string GameDarkSoulsIII::gamename_verbose() const { return "DarkSoulsIII"; } // hopefully continues to work with future patches via the mod lua
+std::string GameSpiderMan::gamename_verbose() const { return "Spider-Man"; } // hopefully continues to work with future patches via the mod lua
 
-std::string GameDarkSoulsIII::camera_dll_name() const { return ""; } // no dll name, it's available in the exe memory space
-uint64_t GameDarkSoulsIII::camera_dll_mem_start() const { return 0; }
-GameCamDLLMatrixType GameDarkSoulsIII::camera_dll_matrix_format() const { return GameCamDLLMatrix_allmemscanrequiredtofindscriptedcambuf; }
+std::string GameSpiderMan::camera_dll_name() const { return ""; } // no dll name, it's available in the exe memory space
+uint64_t GameSpiderMan::camera_dll_mem_start() const { return 0; }
+GameCamDLLMatrixType GameSpiderMan::camera_dll_matrix_format() const { return GameCamDLLMatrix_allmemscanrequiredtofindscriptedcambuf; }
 
-scriptedcam_checkbuf_funptr GameDarkSoulsIII::get_scriptedcambuf_checkfun() const {
+scriptedcam_checkbuf_funptr GameSpiderMan::get_scriptedcambuf_checkfun() const {
 	return template_check_scriptedcambuf_hash<double, 13, 1>;
 }
-uint64_t GameDarkSoulsIII::get_scriptedcambuf_sizebytes() const {
+uint64_t GameSpiderMan::get_scriptedcambuf_sizebytes() const {
 	return template_scriptedcambuf_sizebytes<double, 13, 1>();
 }
-bool GameDarkSoulsIII::copy_scriptedcambuf_to_matrix(uint8_t* buf, uint64_t buflen, CamMatrixData& rcam, std::string& errstr) const {
+bool GameSpiderMan::copy_scriptedcambuf_to_matrix(uint8_t* buf, uint64_t buflen, CamMatrixData& rcam, std::string& errstr) const {
 	return template_copy_scriptedcambuf_extrinsic_cam2world_and_fov<double, 13, 1>(buf, buflen, rcam, true, errstr);
 }
 
-bool GameDarkSoulsIII::can_interpret_depth_buffer() const {
+bool GameSpiderMan::can_interpret_depth_buffer() const {
 	return true;
 }
-float GameDarkSoulsIII::convert_to_physical_distance_depth_u64(uint64_t depthval) const {
+float GameSpiderMan::convert_to_physical_distance_depth_u64(uint64_t depthval) const {
 	 //double normalizeddepth = static_cast<double>(depthval) / 4294967295.0;//0.24795735~0.24803655 0.248007
 	 //// This game has a logarithmic depth buffer with unknown constant(s).
 	 //// These numbers were found by a curve fit, so are approximate,
@@ -41,7 +41,7 @@ float GameDarkSoulsIII::convert_to_physical_distance_depth_u64(uint64_t depthval
     return numerator_constant / (depth - denominator_constant);
 }
 
-uint64_t GameDarkSoulsIII::get_scriptedcambuf_triggerbytes() const
+uint64_t GameSpiderMan::get_scriptedcambuf_triggerbytes() const
 {
     // 将 double 类型的注入专用魔数转换为 8 字节的整数
     const double magic_double = 1.20040525131452021e-12;
@@ -51,7 +51,7 @@ uint64_t GameDarkSoulsIII::get_scriptedcambuf_triggerbytes() const
     return magic_int;
 }
 
-void GameDarkSoulsIII::process_camera_buffer_from_igcs(
+void GameSpiderMan::process_camera_buffer_from_igcs(
     double* camera_data_buffer,
     const float* camera_ue_pos,
     float roll, float pitch, float yaw,
@@ -112,38 +112,75 @@ void GameDarkSoulsIII::process_camera_buffer_from_igcs(
     
 }
 
-void GameDarkSoulsIII::process_camera_buffer_from_igcs(
+void GameSpiderMan::process_camera_buffer_from_igcs(
     double* camera_data_buffer,
     const float* camera_ue_pos,
     const float* camera_marix,
     float fov)
 {
-    Eigen::Matrix3d F;
-    F << 1, 0, 0,
-        0, 1, 0,
-        0, 0, -1;
-    Eigen::Matrix3d c2w;
-    c2w << camera_marix[0], camera_marix[4], camera_marix[8],
+    Eigen::Matrix3d R;
+    R << camera_marix[0], camera_marix[4], camera_marix[8],
         camera_marix[1], camera_marix[5], camera_marix[9],
         camera_marix[2], camera_marix[6], camera_marix[10];
-    Eigen::Matrix3d R = F * c2w * F;
 
-    float scale = 1.25;
+    float scale = 1.0;
 
-    camera_data_buffer[2] = R(0, 0);
+    camera_data_buffer[2] = -R(0, 0);
     camera_data_buffer[3] = R(0, 1);
-    camera_data_buffer[4] = R(0, 2);
+    camera_data_buffer[4] = -R(0, 2);
     camera_data_buffer[5] = camera_ue_pos[0] * scale;
 
-    camera_data_buffer[6] = R(1, 0);
+    camera_data_buffer[6] = -R(1, 0);
     camera_data_buffer[7] = R(1, 1);
-    camera_data_buffer[8] = R(1, 2);
+    camera_data_buffer[8] = -R(1, 2);
     camera_data_buffer[9] = camera_ue_pos[1] * scale;
 
-    camera_data_buffer[10] = R(2, 0);
+    camera_data_buffer[10] = -R(2, 0);
     camera_data_buffer[11] = R(2, 1);
-    camera_data_buffer[12] = R(2, 2);
-    camera_data_buffer[13] = -camera_ue_pos[2] * scale;
+    camera_data_buffer[12] = -R(2, 2);
+    camera_data_buffer[13] = camera_ue_pos[2] * scale;
 
     camera_data_buffer[14] = fov;
 }
+
+
+//void GameMilesMorales::process_camera_buffer_from_igcs(
+//    double* camera_data_buffer,
+//    const float* camera_ue_pos,
+//    const float* camera_marix,
+//    float fov)
+//{
+//    // Eigen::Matrix3d F;
+//    // F << 1, 0,  0,
+//    //      0, 1,  0,
+//    //      0, 0, -1;
+//    // Eigen::Matrix3d c2w;
+//    // c2w << camera_marix[0], camera_marix[4], camera_marix[ 8],
+//    //        camera_marix[1], camera_marix[5], camera_marix[ 9],
+//    //        camera_marix[2], camera_marix[6], camera_marix[10];
+//    // Eigen::Matrix3d R = F * c2w * F;
+//
+//    Eigen::Matrix3d R;
+//    R << camera_marix[0], camera_marix[1], camera_marix[2],
+//        camera_marix[4], camera_marix[5], camera_marix[6],
+//        camera_marix[8], camera_marix[9], camera_marix[10];
+//
+//    float scale = 1.0;
+//
+//    camera_data_buffer[2] = -R(0, 0);
+//    camera_data_buffer[3] = R(0, 1);
+//    camera_data_buffer[4] = -R(0, 2);
+//    camera_data_buffer[5] = camera_ue_pos[0] * scale;
+//
+//    camera_data_buffer[6] = -R(1, 0);
+//    camera_data_buffer[7] = R(1, 1);
+//    camera_data_buffer[8] = -R(1, 2);
+//    camera_data_buffer[9] = camera_ue_pos[1] * scale;
+//
+//    camera_data_buffer[10] = -R(2, 0);
+//    camera_data_buffer[11] = R(2, 1);
+//    camera_data_buffer[12] = -R(2, 2);
+//    camera_data_buffer[13] = camera_ue_pos[2] * scale;
+//
+//    camera_data_buffer[14] = fov;
+//}

@@ -10,3 +10,10 @@ python_test
 IGCSConnector/IgcsConnector/
 IGCSConnector/x64/
 python_threedee/6/
+IgcsConnector-100/
+IgcsConnector-200/
+IgcsConnector-210/
+IgcsConnector-211/
+IgcsConnector-220/
+gcv_games/DragonAge.cpp
+gcv_games/DragonAge.h

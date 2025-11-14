@@ -11,6 +11,9 @@ file_path = r"C:\Program Files (x86)\Steam\steamapps\common\Sekiro\cv_saved\acti
 try:
     # 加载 .npy 文件
     data = np.load(file_path)
+
+
+
     # data_uint32 = data.astype(np.uint32)
 
     # # 将 uint32 的位模式重新解释为 float32

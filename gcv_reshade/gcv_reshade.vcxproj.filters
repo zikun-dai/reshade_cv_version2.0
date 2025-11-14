@@ -170,12 +170,24 @@
       <Filter>gcv_games</Filter>
     </ClCompile>
     <ClCompile Include="..\gcv_games\Sekiro.cpp">
-	    <Filter>gcv_games</Filter>
-	</ClCompile>
+      <Filter>gcv_games</Filter>
+    </ClCompile>
     <ClCompile Include="..\gcv_games\Shipbreaker.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
     <ClCompile Include="..\gcv_games\Sekiro.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\DarkSoulsIII.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\Spider-Man.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\DragonAge.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\GodOfWar.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
   </ItemGroup>
@@ -391,8 +403,8 @@
       <Filter>gcv_games</Filter>
     </ClInclude>
     <ClInclude Include="..\gcv_games\Borderlands3.h">
-	    <Filter>gcv_games</Filter>
-	</ClInclude>
+      <Filter>gcv_games</Filter>
+    </ClInclude>
     <ClInclude Include="..\gcv_games\Shipbreaker.h">
       <Filter>gcv_games</Filter>
     </ClInclude>
@@ -406,6 +418,33 @@
       <Filter>gcv_games</Filter>
     </ClInclude>
     <ClInclude Include="..\gcv_games\Stray.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\ROTTR.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\Spider-Man.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\DragonAge.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\GodOfWar.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\GodofWar5.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\Borderlands4.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\DevilMayCry5.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\FinalFantasy7.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\SandFall.h">
       <Filter>gcv_games</Filter>
     </ClInclude>
   </ItemGroup>

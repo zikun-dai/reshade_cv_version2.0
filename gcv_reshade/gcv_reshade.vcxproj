@@ -52,14 +52,18 @@
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <VcpkgUseStatic>true</VcpkgUseStatic>
-    <VcpkgTriplet>x64-windows-static</VcpkgTriplet> <!-- 关键：指定静态库triplet -->
-    <VcpkgInstalledDir>$(SolutionDir)vcpkg\installed\</VcpkgInstalledDir> <!-- Vcpkg安装目录的相对路径 -->
+    <VcpkgTriplet>x64-windows-static</VcpkgTriplet>
+    <!-- 关键：指定静态库triplet -->
+    <VcpkgInstalledDir>$(SolutionDir)vcpkg\installed\</VcpkgInstalledDir>
+    <!-- Vcpkg安装目录的相对路径 -->
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <VcpkgUseStatic>true</VcpkgUseStatic>
     <VcpkgConfiguration>Release</VcpkgConfiguration>
-    <VcpkgTriplet>x64-windows-static</VcpkgTriplet> <!-- 关键：指定静态库triplet -->
-    <VcpkgInstalledDir>$(SolutionDir)vcpkg\installed\</VcpkgInstalledDir> <!-- Vcpkg安装目录的相对路径 -->
+    <VcpkgTriplet>x64-windows-static</VcpkgTriplet>
+    <!-- 关键：指定静态库triplet -->
+    <VcpkgInstalledDir>$(SolutionDir)vcpkg\installed\</VcpkgInstalledDir>
+    <!-- Vcpkg安装目录的相对路径 -->
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -67,8 +71,7 @@
       <SDLCheck>true</SDLCheck>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>RENDERDOC_FOR_SHADERS;RENDERDOC_EXPORTS;RENDERDOC_PLATFORM_WIN32;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_DEPRECATE;NOMINMAX;_DEBUG;%(PreprocessorDefinitions);
-      XXH_STATIC_LINKING_ONLY;H5_BUILT_AS_STATIC_LIB;%(PreprocessorDefinitions) <!-- 新增：强制xxhash静态链接 -->
-      </PreprocessorDefinitions>
+      XXH_STATIC_LINKING_ONLY;H5_BUILT_AS_STATIC_LIB;%(PreprocessorDefinitions) <!-- 新增：强制xxhash静态链接 --></PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -89,8 +92,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PreprocessorDefinitions>RENDERDOC_FOR_SHADERS;RENDERDOC_EXPORTS;RENDERDOC_PLATFORM_WIN32;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_DEPRECATE;NOMINMAX;ImTextureID=ImU64;NDEBUG;%(PreprocessorDefinitions);
-      XXH_STATIC_LINKING_ONLY;H5_BUILT_AS_STATIC_LIB;%(PreprocessorDefinitions) <!-- 新增：强制xxhash静态链接 -->
-      </PreprocessorDefinitions>
+      XXH_STATIC_LINKING_ONLY;H5_BUILT_AS_STATIC_LIB;%(PreprocessorDefinitions) <!-- 新增：强制xxhash静态链接 --></PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -119,6 +121,7 @@
     <ClCompile Include="..\gcv_games\Control.cpp" />
     <ClCompile Include="..\gcv_games\Crysis.cpp" />
     <ClCompile Include="..\gcv_games\Cyberpunk2077.cpp" />
+    <ClCompile Include="..\gcv_games\DarkSoulsIII.cpp" />
     <ClCompile Include="..\gcv_games\DishonoredDOTO.cpp" />
     <ClCompile Include="..\gcv_games\AssassinsCreedOdyssey.cpp" />
     <ClCompile Include="..\gcv_games\AssassinsCreedOrigin.cpp" />
@@ -126,7 +129,10 @@
     <ClCompile Include="..\gcv_games\AssassinsCreedValhalla.cpp" />
     <ClCompile Include="..\gcv_games\Borderlands3.cpp" />
     <ClCompile Include="..\gcv_games\Borderlands4.cpp" />
+    <ClCompile Include="..\gcv_games\DragonAge.cpp" />
+    <ClCompile Include="..\gcv_games\GodOfWar.cpp" />
     <ClCompile Include="..\gcv_games\GodofWar5.cpp" />
+    <ClCompile Include="..\gcv_games\Spider-Man.cpp" />
     <ClCompile Include="..\gcv_games\Stray.cpp" />
     <ClCompile Include="..\gcv_games\SandFall.cpp" />
     <ClCompile Include="..\gcv_games\FinalFantasy7.cpp" />
@@ -192,22 +198,31 @@
     <ClInclude Include="..\gcv_games\AssassinsCreedValhalla.h" />
     <ClInclude Include="..\gcv_games\BlackMythWukong.h" />
     <ClInclude Include="..\gcv_games\Borderlands3.h" />
+    <ClInclude Include="..\gcv_games\Borderlands4.h" />
     <ClInclude Include="..\gcv_games\Control.h" />
     <ClInclude Include="..\gcv_games\Crysis.h" />
     <ClInclude Include="..\gcv_games\Cyberpunk2077.h" />
     <ClInclude Include="..\gcv_games\DarkSoulsIII.h" />
+    <ClInclude Include="..\gcv_games\DevilMayCry5.h" />
     <ClInclude Include="..\gcv_games\DishonoredDOTO.h" />
+    <ClInclude Include="..\gcv_games\DragonAge.h" />
+    <ClInclude Include="..\gcv_games\FinalFantasy7.h" />
     <ClInclude Include="..\gcv_games\game_interface_factory.h" />
     <ClInclude Include="..\gcv_games\game_interface.h" />
     <ClInclude Include="..\gcv_games\game_interface_factory_registration.h" />
     <ClInclude Include="..\gcv_games\game_with_camera_data_in_one_dll.h" />
+    <ClInclude Include="..\gcv_games\GodOfWar.h" />
+    <ClInclude Include="..\gcv_games\GodofWar5.h" />
     <ClInclude Include="..\gcv_games\GTAV.h" />
     <ClInclude Include="..\gcv_games\HogwartsLegacy.h" />
     <ClInclude Include="..\gcv_games\HorizonZeroDawn.h" />
     <ClInclude Include="..\gcv_games\RDR2.h" />
     <ClInclude Include="..\gcv_games\ResidentEvils.h" />
     <ClInclude Include="..\gcv_games\RoR2.h" />
+    <ClInclude Include="..\gcv_games\ROTTR.h" />
+    <ClInclude Include="..\gcv_games\SandFall.h" />
     <ClInclude Include="..\gcv_games\Sekiro.h" />
+    <ClInclude Include="..\gcv_games\Spider-Man.h" />
     <ClInclude Include="..\gcv_games\Stray.h" />
     <ClInclude Include="..\gcv_games\Shipbreaker.h" />
     <ClInclude Include="..\gcv_games\Witcher3.h" />

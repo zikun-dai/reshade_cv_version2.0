@@ -109,7 +109,7 @@ void UpdateCameraBufferFromReshade(reshade::api::effect_runtime* runtime)
     float camera_pos[3] = {0.0f};  
     float roll = 0.0f, pitch = 0.0f, yaw = 0.0f; // 弧度
 	float camera_marix[16] = { 0.0f };
-
+	float camera_right[3] = { 0.0f };
 
     read_uniform_value(runtime, "IGCS_cameraFoV", fov);
     read_uniform_value(runtime, "IGCS_cameraWorldPosition", camera_pos, 3);
@@ -124,13 +124,19 @@ void UpdateCameraBufferFromReshade(reshade::api::effect_runtime* runtime)
     // 3. process camera data via game-specific logic
     if (game_interface)
     {
-		if (game_interface->gamename_simpler() == "DarkSoulsIII" || game_interface->gamename_simpler() == "Sekiro")
+		if (game_interface->gamename_simpler() == "DarkSoulsIII" || game_interface->gamename_simpler() == "Sekiro" || game_interface->gamename_simpler() == "Rottr" || game_interface->gamename_simpler() == "Spider-Man"
+			|| game_interface->gamename_simpler() == "DragonAge" )
+		{
 			game_interface->process_camera_buffer_from_igcs(g_camera_data_buffer, camera_pos, camera_marix, fov);
+		}
 		else
+		{
 			game_interface->process_camera_buffer_from_igcs(g_camera_data_buffer, camera_pos, roll, pitch, yaw, fov);
+		}
     }
     else
     {
+		reshade::log_message(reshade::log_level::error, "no_find game");
         // if no game interface, clear the buffer except magic number and counter
         for (int i = 2; i <= 14; ++i) g_camera_data_buffer[i] = 0.0;
     }
@@ -215,7 +221,7 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
             } else if (runtime->is_key_pressed(VK_F7)) {
                 // Logic 2: 16fps, rgb video, controls, camera
                 g_recording_mode = 2;
-                g_video_fps = 16;
+                g_video_fps = 24;
                 start_rec = true;
             }
 

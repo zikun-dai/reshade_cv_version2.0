@@ -171,3 +171,39 @@ void GameROTTR::process_camera_buffer_from_igcs(
     // FOV（与 Python 一致，使用 fovx_deg）
     camera_data_buffer[14] = fov;
 }
+
+void GameROTTR::process_camera_buffer_from_igcs(
+    double* camera_data_buffer,
+    const float* camera_ue_pos,
+    const float* camera_marix,
+    float fov)
+{
+    Eigen::Matrix3d F;
+    F << 1, 0, 0,
+        0, 1, 0,
+        0, 0, -1;
+    Eigen::Matrix3d c2w;
+    c2w << camera_marix[0], camera_marix[4], camera_marix[8],
+        camera_marix[1], camera_marix[5], camera_marix[9],
+        camera_marix[2], camera_marix[6], camera_marix[10];
+    Eigen::Matrix3d R = F * c2w * F;
+
+    float scale = 1.25;
+
+    camera_data_buffer[2] = R(0, 0);
+    camera_data_buffer[3] = R(0, 1);
+    camera_data_buffer[4] = R(0, 2);
+    camera_data_buffer[5] = camera_ue_pos[0] * scale;
+
+    camera_data_buffer[6] = R(1, 0);
+    camera_data_buffer[7] = R(1, 1);
+    camera_data_buffer[8] = R(1, 2);
+    camera_data_buffer[9] = camera_ue_pos[1] * scale;
+
+    camera_data_buffer[10] = R(2, 0);
+    camera_data_buffer[11] = R(2, 1);
+    camera_data_buffer[12] = R(2, 2);
+    camera_data_buffer[13] = -camera_ue_pos[2] * scale;
+
+    camera_data_buffer[14] = fov;
+}

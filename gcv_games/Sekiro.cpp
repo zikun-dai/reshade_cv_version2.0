@@ -35,7 +35,6 @@ float GameSekiro::convert_to_physical_distance_depth_u64(uint64_t depthval) cons
 	uint32_t depth_as_u32 = static_cast<uint32_t>(depthval);
     float depth;
     std::memcpy(&depth, &depth_as_u32, sizeof(float));
-
     const float n = 0.1f;
     const float f = 10000.0f;
     const float numerator_constant = (-f * n) / (n - f);
