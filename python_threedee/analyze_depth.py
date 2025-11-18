@@ -7,7 +7,6 @@ np.set_printoptions(threshold=np.inf)
 
 # 你的 .npy 文件路径
 file_path = r"C:\Program Files (x86)\Steam\steamapps\common\Sekiro\cv_saved\actions_2025-10-20_163924698\frame_000000_depth.npy"
-
 try:
     # 加载 .npy 文件
     data = np.load(file_path)
