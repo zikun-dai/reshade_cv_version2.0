@@ -190,6 +190,24 @@
     <ClCompile Include="..\gcv_games\GodOfWar.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
+    <ClCompile Include="..\gcv_games\DeathStrandingDirectorsCut.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\EuroTruckSimulator2.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\MicrosoftFlightSimulator2020.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\MicrosoftFlightSimulator2024.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\msfs_simconnect_manager.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\SilentHill2.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdparty\concurrentqueue.h">
@@ -445,6 +463,24 @@
       <Filter>gcv_games</Filter>
     </ClInclude>
     <ClInclude Include="..\gcv_games\SandFall.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\DeathStrandingDirectorsCut.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\EuroTruckSimulator2.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\MicrosoftFlightSimulator2020.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\MicrosoftFlightSimulator2024.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\msfs_simconnect_manager.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\SilentHill2.h">
       <Filter>gcv_games</Filter>
     </ClInclude>
   </ItemGroup>

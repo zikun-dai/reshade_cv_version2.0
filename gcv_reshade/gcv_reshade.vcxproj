@@ -75,14 +75,14 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\reshade-5.8.0\include;$(SolutionDir)..\reshade-5.8.0\deps\imgui;$(SolutionDir)..\vcpkg\installed\x64-windows-static\include;$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\reshade-5.8.0\include;$(SolutionDir)..\reshade-5.8.0\deps\imgui;$(SolutionDir)..\vcpkg\installed\x64-windows-static\include;$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\include;$(SolutionDir)SimConnect SDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)build\x64\$(Configuration);$(SolutionDir)..\vcpkg\installed\x64-windows-static\lib;$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>dxilconv.lib;segmentation_shadering.lib;xxhash.lib;libhdf5.lib;libhdf5_cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)build\x64\$(Configuration);$(SolutionDir)..\vcpkg\installed\x64-windows-static\lib;$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\lib;$(SolutionDir)SimConnect SDK\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxilconv.lib;segmentation_shadering.lib;xxhash.lib;libhdf5.lib;libhdf5_cpp.lib;SimConnect.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -96,7 +96,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\reshade-5.8.0\include;$(SolutionDir)..\reshade-5.8.0\deps\imgui;$(SolutionDir)..\vcpkg\installed\x64-windows-static\include;$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\reshade-5.8.0\include;$(SolutionDir)..\reshade-5.8.0\deps\imgui;$(SolutionDir)..\vcpkg\installed\x64-windows-static\include;$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\include;$(SolutionDir)SimConnect SDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -104,8 +104,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <AdditionalDependencies>dxilconv.lib;segmentation_shadering.lib;xxhash.lib;libhdf5.lib;libhdf5_cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)build\x64\$(Configuration);$(SolutionDir)..\vcpkg\installed\x64-windows-static\lib;$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxilconv.lib;segmentation_shadering.lib;xxhash.lib;libhdf5.lib;libhdf5_cpp.lib;SimConnect.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)build\x64\$(Configuration);$(SolutionDir)..\vcpkg\installed\x64-windows-static\lib;$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\lib;$(SolutionDir)SimConnect SDK\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent />
   </ItemDefinitionGroup>
@@ -122,6 +122,7 @@
     <ClCompile Include="..\gcv_games\Crysis.cpp" />
     <ClCompile Include="..\gcv_games\Cyberpunk2077.cpp" />
     <ClCompile Include="..\gcv_games\DarkSoulsIII.cpp" />
+    <ClCompile Include="..\gcv_games\DeathStrandingDirectorsCut.cpp" />
     <ClCompile Include="..\gcv_games\DishonoredDOTO.cpp" />
     <ClCompile Include="..\gcv_games\AssassinsCreedOdyssey.cpp" />
     <ClCompile Include="..\gcv_games\AssassinsCreedOrigin.cpp" />
@@ -130,8 +131,13 @@
     <ClCompile Include="..\gcv_games\Borderlands3.cpp" />
     <ClCompile Include="..\gcv_games\Borderlands4.cpp" />
     <ClCompile Include="..\gcv_games\DragonAge.cpp" />
+    <ClCompile Include="..\gcv_games\EuroTruckSimulator2.cpp" />
     <ClCompile Include="..\gcv_games\GodOfWar.cpp" />
     <ClCompile Include="..\gcv_games\GodofWar5.cpp" />
+    <ClCompile Include="..\gcv_games\MicrosoftFlightSimulator2020.cpp" />
+    <ClCompile Include="..\gcv_games\MicrosoftFlightSimulator2024.cpp" />
+    <ClCompile Include="..\gcv_games\msfs_simconnect_manager.cpp" />
+    <ClCompile Include="..\gcv_games\SilentHill2.cpp" />
     <ClCompile Include="..\gcv_games\Spider-Man.cpp" />
     <ClCompile Include="..\gcv_games\Stray.cpp" />
     <ClCompile Include="..\gcv_games\SandFall.cpp" />
@@ -203,9 +209,11 @@
     <ClInclude Include="..\gcv_games\Crysis.h" />
     <ClInclude Include="..\gcv_games\Cyberpunk2077.h" />
     <ClInclude Include="..\gcv_games\DarkSoulsIII.h" />
+    <ClInclude Include="..\gcv_games\DeathStrandingDirectorsCut.h" />
     <ClInclude Include="..\gcv_games\DevilMayCry5.h" />
     <ClInclude Include="..\gcv_games\DishonoredDOTO.h" />
     <ClInclude Include="..\gcv_games\DragonAge.h" />
+    <ClInclude Include="..\gcv_games\EuroTruckSimulator2.h" />
     <ClInclude Include="..\gcv_games\FinalFantasy7.h" />
     <ClInclude Include="..\gcv_games\game_interface_factory.h" />
     <ClInclude Include="..\gcv_games\game_interface.h" />
@@ -216,12 +224,16 @@
     <ClInclude Include="..\gcv_games\GTAV.h" />
     <ClInclude Include="..\gcv_games\HogwartsLegacy.h" />
     <ClInclude Include="..\gcv_games\HorizonZeroDawn.h" />
+    <ClInclude Include="..\gcv_games\MicrosoftFlightSimulator2020.h" />
+    <ClInclude Include="..\gcv_games\MicrosoftFlightSimulator2024.h" />
+    <ClInclude Include="..\gcv_games\msfs_simconnect_manager.h" />
     <ClInclude Include="..\gcv_games\RDR2.h" />
     <ClInclude Include="..\gcv_games\ResidentEvils.h" />
     <ClInclude Include="..\gcv_games\RoR2.h" />
     <ClInclude Include="..\gcv_games\ROTTR.h" />
     <ClInclude Include="..\gcv_games\SandFall.h" />
     <ClInclude Include="..\gcv_games\Sekiro.h" />
+    <ClInclude Include="..\gcv_games\SilentHill2.h" />
     <ClInclude Include="..\gcv_games\Spider-Man.h" />
     <ClInclude Include="..\gcv_games\Stray.h" />
     <ClInclude Include="..\gcv_games\Shipbreaker.h" />
