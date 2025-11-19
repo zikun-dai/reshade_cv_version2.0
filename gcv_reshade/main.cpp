@@ -30,6 +30,9 @@
 #include <nlohmann/json.hpp>
 #include <cmath> 
 #include <cnpy.h>
+
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
 using Json = nlohmann::json_abi_v3_12_0::json;
 
 
@@ -125,7 +128,7 @@ void UpdateCameraBufferFromReshade(reshade::api::effect_runtime* runtime)
     if (game_interface)
     {
 		if (game_interface->gamename_simpler() == "DarkSoulsIII" || game_interface->gamename_simpler() == "Sekiro" || game_interface->gamename_simpler() == "Rottr" || game_interface->gamename_simpler() == "Spider-Man"
-			|| game_interface->gamename_simpler() == "DragonAge" )
+			|| game_interface->gamename_simpler() == "DragonAge" || game_interface->gamename_simpler()== "EldenRing" || game_interface->gamename_simpler() == "MilesMorales")
 		{
 			game_interface->process_camera_buffer_from_igcs(g_camera_data_buffer, camera_pos, camera_marix, fov);
 		}
@@ -218,11 +221,13 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
                 g_recording_mode = 1;
                 g_video_fps = 1;
                 start_rec = true;
+				PlaySound(TEXT("SystemStart"), NULL, SND_ALIAS | SND_ASYNC);
             } else if (runtime->is_key_pressed(VK_F7)) {
                 // Logic 2: 16fps, rgb video, controls, camera
                 g_recording_mode = 2;
                 g_video_fps = 24;
                 start_rec = true;
+				PlaySound(TEXT("SystemStart"), NULL, SND_ALIAS | SND_ASYNC);
             }
 
             if (start_rec) {
@@ -254,6 +259,7 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
             }
             if (g_actions_csv) { fclose(g_actions_csv); g_actions_csv = nullptr; }
             reshade::log_message(reshade::log_level::info, "REC stop");
+			PlaySound(TEXT("SystemStart"), NULL, SND_ALIAS | SND_ASYNC);
         }
 
         // recording
@@ -400,6 +406,7 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
 
     if (segmentation_app_update_on_finish_effects(runtime, runtime->is_key_pressed(VK_F11)))
 	{
+		PlaySound(TEXT("SystemStart"), NULL, SND_ALIAS | SND_ASYNC);
 		generic_depth_data &genericdepdata = runtime->get_private_data<generic_depth_data>();
 		reshade::api::command_queue *cmdqueue = runtime->get_command_queue();
 		const int64_t microseconds_elapsed = std::chrono::duration_cast<std::chrono::microseconds>(hiresclock::now() - shdata.init_time).count();
