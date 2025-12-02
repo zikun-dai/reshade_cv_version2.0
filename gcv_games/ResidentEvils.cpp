@@ -19,7 +19,15 @@ uint64_t GameResidentEvils::get_scriptedcambuf_sizebytes() const {
 	return template_scriptedcambuf_sizebytes<double, 13, 2>();
 }
 bool GameResidentEvils::copy_scriptedcambuf_to_matrix(uint8_t* buf, uint64_t buflen, CamMatrixData& rcam, std::string& errstr) const {
-	return template_copy_scriptedcambuf_extrinsic_cam2world_and_fov<double, 13, 2>(buf, buflen, rcam, false, errstr);
+	bool ret = template_copy_scriptedcambuf_extrinsic_cam2world_and_fov<double, 13, 2>(buf, buflen, rcam, false, errstr);
+
+	if (!ret)
+		return false;
+	CamMatrix& M = rcam.extrinsic_cam2world;
+	M.col(1).swap(M.col(2));// swap 2nd and 3rd columns
+	M.col(2) = -M.col(2);// negate 3rd column (after swap)
+	
+	return true;
 }
 
 bool GameResidentEvils::can_interpret_depth_buffer() const {
