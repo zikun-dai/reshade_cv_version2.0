@@ -123,6 +123,7 @@
     <ClCompile Include="..\gcv_games\AssassinsCreedShadows.cpp" />
     <ClCompile Include="..\gcv_games\AssassinsCreedValhalla.cpp" />
     <ClCompile Include="..\gcv_games\Borderlands3.cpp" />
+    <ClCompile Include="..\gcv_games\Palworld.cpp" />
     <ClCompile Include="..\gcv_games\SilentHill2.cpp" />
     <ClCompile Include="..\gcv_games\Stray.cpp" />
     <ClCompile Include="..\gcv_games\HogwartsLegacy.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="..\gcv_games\GTAV.h" />
     <ClInclude Include="..\gcv_games\HogwartsLegacy.h" />
     <ClInclude Include="..\gcv_games\HorizonZeroDawn.h" />
+    <ClInclude Include="..\gcv_games\Palworld.h" />
     <ClInclude Include="..\gcv_games\RDR2.h" />
     <ClInclude Include="..\gcv_games\ResidentEvils.h" />
     <ClInclude Include="..\gcv_games\RoR2.h" />
