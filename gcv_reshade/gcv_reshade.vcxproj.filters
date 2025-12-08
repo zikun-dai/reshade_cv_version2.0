@@ -59,6 +59,8 @@
     <ClCompile Include="..\gcv_games\DevilMayCry5.cpp" />
     <ClCompile Include="..\gcv_games\SilentHill2.cpp" />
     <ClCompile Include="..\gcv_games\Palworld.cpp" />
+    <ClCompile Include="..\gcv_games\ImmortalsFenyxRising.cpp" />
+    <ClCompile Include="..\gcv_games\AtomicHeart.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdparty\cnpy.h" />
@@ -142,6 +144,8 @@
     <ClInclude Include="..\gcv_games\DevilMayCry5.h" />
     <ClInclude Include="..\gcv_games\SilentHill2.h" />
     <ClInclude Include="..\gcv_games\Palworld.h" />
+    <ClInclude Include="..\gcv_games\ImmortalsFenyxRising.h" />
+    <ClInclude Include="..\gcv_games\AtomicHeart.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\3rdparty\fpzip\fpe.inl" />

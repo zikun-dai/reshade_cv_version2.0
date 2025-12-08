@@ -110,6 +110,7 @@
     <ClCompile Include="..\3rdparty\fpzip\read.cpp" />
     <ClCompile Include="..\3rdparty\fpzip\version.cpp" />
     <ClCompile Include="..\3rdparty\fpzip\write.cpp" />
+    <ClCompile Include="..\gcv_games\AtomicHeart.cpp" />
     <ClCompile Include="..\gcv_games\Control.cpp" />
     <ClCompile Include="..\gcv_games\Crysis.cpp" />
     <ClCompile Include="..\gcv_games\Cyberpunk2077.cpp" />
@@ -123,6 +124,7 @@
     <ClCompile Include="..\gcv_games\AssassinsCreedShadows.cpp" />
     <ClCompile Include="..\gcv_games\AssassinsCreedValhalla.cpp" />
     <ClCompile Include="..\gcv_games\Borderlands3.cpp" />
+    <ClCompile Include="..\gcv_games\ImmortalsFenyxRising.cpp" />
     <ClCompile Include="..\gcv_games\Palworld.cpp" />
     <ClCompile Include="..\gcv_games\SilentHill2.cpp" />
     <ClCompile Include="..\gcv_games\Stray.cpp" />
@@ -184,6 +186,7 @@
     <ClInclude Include="..\gcv_games\AssassinsCreedOrigin.h" />
     <ClInclude Include="..\gcv_games\AssassinsCreedShadows.h" />
     <ClInclude Include="..\gcv_games\AssassinsCreedValhalla.h" />
+    <ClInclude Include="..\gcv_games\AtomicHeart.h" />
     <ClInclude Include="..\gcv_games\BlackMythWukong.h" />
     <ClInclude Include="..\gcv_games\Borderlands3.h" />
     <ClInclude Include="..\gcv_games\Control.h" />
@@ -201,6 +204,7 @@
     <ClInclude Include="..\gcv_games\GTAV.h" />
     <ClInclude Include="..\gcv_games\HogwartsLegacy.h" />
     <ClInclude Include="..\gcv_games\HorizonZeroDawn.h" />
+    <ClInclude Include="..\gcv_games\ImmortalsFenyxRising.h" />
     <ClInclude Include="..\gcv_games\Palworld.h" />
     <ClInclude Include="..\gcv_games\RDR2.h" />
     <ClInclude Include="..\gcv_games\ResidentEvils.h" />
