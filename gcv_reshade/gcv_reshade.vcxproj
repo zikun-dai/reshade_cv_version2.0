@@ -127,6 +127,7 @@
     <ClCompile Include="..\gcv_games\ImmortalsFenyxRising.cpp" />
     <ClCompile Include="..\gcv_games\Palworld.cpp" />
     <ClCompile Include="..\gcv_games\SilentHill2.cpp" />
+    <ClCompile Include="..\gcv_games\SilentHillF.cpp" />
     <ClCompile Include="..\gcv_games\Stray.cpp" />
     <ClCompile Include="..\gcv_games\HogwartsLegacy.cpp" />
     <ClCompile Include="..\gcv_games\BlackMythWukong.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="..\gcv_games\RoR2.h" />
     <ClInclude Include="..\gcv_games\Sekiro.h" />
     <ClInclude Include="..\gcv_games\SilentHill2.h" />
+    <ClInclude Include="..\gcv_games\SilentHillF.h" />
     <ClInclude Include="..\gcv_games\Stray.h" />
     <ClInclude Include="..\gcv_games\Shipbreaker.h" />
     <ClInclude Include="..\gcv_games\Witcher3.h" />
