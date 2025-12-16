@@ -2,13 +2,13 @@
 // Copyright (C) 2022 Jason Bunk
 #include "game_with_camera_data_in_one_dll.h"
 
-class GameBatmanAK : public GameWithCameraDataInOneDLL {
+class GameAtomicHeart : public GameWithCameraDataInOneDLL {
 protected:
 	virtual std::string camera_dll_name() const override;
 	virtual uint64_t camera_dll_mem_start() const override;
 	virtual GameCamDLLMatrixType camera_dll_matrix_format() const override;
 public:
-	virtual std::string gamename_simpler() const override { return "BatmanAK"; }
+	virtual std::string gamename_simpler() const override { return "AtomicHeart"; }
 	virtual std::string gamename_verbose() const override;
 
 	virtual scriptedcam_checkbuf_funptr get_scriptedcambuf_checkfun() const override;
@@ -21,4 +21,4 @@ public:
 	virtual void process_camera_buffer_from_igcs(double* camera_data_buffer, const float* camera_ue_pos, float roll, float pitch, float yaw, float fov) override;
 };
 
-REGISTER_GAME_INTERFACE(GameBatmanAK, 0, "batmanak.exe");
+REGISTER_GAME_INTERFACE(GameAtomicHeart, 0, "atomicheart-win64-shipping.exe");

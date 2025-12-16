@@ -74,7 +74,7 @@ public:
                 uint32_t modifiers_mask);   // Ctrl/Shift/etc.
     void log_camera_json(uint64_t idx, long long t_us, const Json& cam_json, int img_w, int img_h);
     void init_session_meta(const std::string& game_name, int recording_mode, const Json& game_settings);
-    void finalize_and_write_meta_json();
+    void finalize_and_write_meta_json(std::vector<uint64_t> &vecDroppedcamJson_);
 
 private:
     bool q_push(std::vector<RawFrame>& Q, std::atomic<uint32_t>& P, std::atomic<uint32_t>& C, RawFrame&& f, size_t cap);
@@ -98,6 +98,9 @@ private:
     const size_t cap_c_ = 8, cap_d_ = 8;
     std::atomic<uint32_t> prod_c_{0}, cons_c_{0};
     std::atomic<uint32_t> prod_d_{0}, cons_d_{0};
+
+    std::atomic<uint64_t> color_frame_seq_{ 0 };    //color帧计数器
+    std::vector<uint64_t> vecDroppedColor_;
 
     // 线程与管道
     std::atomic<bool> th_run_c_{false}, th_run_d_{false};

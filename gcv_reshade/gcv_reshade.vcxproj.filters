@@ -82,9 +82,6 @@
     <ClCompile Include="..\gcv_utils\depth_utils.cpp">
       <Filter>gcv_utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\gcv_games\ResidentEvils.cpp">
-      <Filter>gcv_games</Filter>
-    </ClCompile>
     <ClCompile Include="..\gcv_utils\camera_data_struct.cpp">
       <Filter>gcv_utils</Filter>
     </ClCompile>
@@ -211,6 +208,33 @@
     <ClCompile Include="..\gcv_games\SilentHill2.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
+    <ClCompile Include="..\gcv_games\EldenRing.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\MilesMorales.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\ResidentEvils3.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\AtomicHeart.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\Hi-Fi-RUSH.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\HorizonForbiddenWest.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\ImmortalsFenyxRising.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\Palworld.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\ResidentEvils2.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdparty\concurrentqueue.h">
@@ -326,9 +350,6 @@
     </ClInclude>
     <ClInclude Include="..\gcv_utils\depth_utils.h">
       <Filter>gcv_utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gcv_games\ResidentEvils.h">
-      <Filter>gcv_games</Filter>
     </ClInclude>
     <ClInclude Include="..\gcv_utils\scripted_cam_buf_templates.h">
       <Filter>gcv_utils</Filter>
@@ -484,6 +505,36 @@
       <Filter>gcv_games</Filter>
     </ClInclude>
     <ClInclude Include="..\gcv_games\SilentHill2.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\BatmanAK.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\EldenRing.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\MilesMorales.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\ResidentEvils3.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\AtomicHeart.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\Hi-Fi-RUSH.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\HorizonForbiddenWest.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\ImmortalsFenyxRising.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\Palworld.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\ResidentEvils2.h">
       <Filter>gcv_games</Filter>
     </ClInclude>
   </ItemGroup>

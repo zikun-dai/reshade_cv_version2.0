@@ -236,6 +236,7 @@ bool Recorder::q_push(std::vector<RawFrame>& Q, std::atomic<uint32_t>& P, std::a
   enqueued_.fetch_add(1, std::memory_order_relaxed);
   return true;
 }
+
 bool Recorder::q_pop(std::vector<RawFrame>& Q, std::atomic<uint32_t>& P, std::atomic<uint32_t>& C, RawFrame& out, size_t cap){
   uint32_t c = C.load(std::memory_order_relaxed);
   uint32_t p = P.load(std::memory_order_acquire);
@@ -277,7 +278,14 @@ void Recorder::push_color(const uint8_t* bgra,int w,int h){
   RawFrame f; f.w=w; f.h=h; f.stride=(size_t)w*4; f.size=f.stride*(size_t)h;
   f.data.reset(new uint8_t[f.size]);
   std::memcpy(f.data.get(), bgra, f.size);
-  (void)q_push(ring_c_, prod_c_, cons_c_, std::move(f), cap_c_);
+  /*(void)q_push(ring_c_, prod_c_, cons_c_, std::move(f), cap_c_);*/
+  bool ok = q_push(ring_c_, prod_c_, cons_c_, std::move(f), cap_c_);
+  uint64_t seq = color_frame_seq_.fetch_add(1, std::memory_order_relaxed);
+  if (!ok)
+  {
+      vecDroppedColor_.push_back(seq);
+      reshade::log_message(reshade::log_level::warning, ("color queue full, dropped frame #" + std::to_string(seq)).c_str());
+  }
 
   last_bgra_.assign(bgra, bgra + (size_t)w*h*4);
   lw_=w; lh_=h;
@@ -466,7 +474,7 @@ void Recorder::log_action(uint64_t idx, int64_t t_us,
 
 void Recorder::color_loop(){
   RawFrame f;
-  while (th_run_c_.load(std::memory_order_acquire)){
+  while (th_run_c_.load(std::memory_order_acquire) || prod_c_.load(std::memory_order_acquire) != cons_c_.load(std::memory_order_acquire)){
     if (!q_pop(ring_c_, prod_c_, cons_c_, f, cap_c_)) { Sleep(1); continue; }
     if (f.data && f.size && pipe_c_.alive() && pipe_c_.hWrite()){
       if (!pipe_c_.write(f.data.get(), f.size)) {
@@ -482,7 +490,7 @@ void Recorder::color_loop(){
 
 void Recorder::depth_loop(){
   RawFrame f;
-  while (th_run_d_.load(std::memory_order_acquire)){
+  while (th_run_d_.load(std::memory_order_acquire)|| prod_d_.load(std::memory_order_acquire) != cons_d_.load(std::memory_order_acquire)){
     if (!q_pop(ring_d_, prod_d_, cons_d_, f, cap_d_)) { Sleep(1); continue; }
     if (f.data && f.size && pipe_d_.alive() && pipe_d_.hWrite()){
       if (!pipe_d_.write(f.data.get(), f.size)) {
@@ -514,19 +522,23 @@ void Recorder::log_camera_json(uint64_t idx, long long t_us,
     }
 
     // 每帧写一份 camera.json
-    const std::string out_dir_norm = join_path_slash(cfg_.out_dir);
-    char namebuf[128];
-    _snprintf_s(namebuf, _TRUNCATE, "frame_%06llu_camera.json",
-                (unsigned long long)idx);
-    const std::string per_frame_path = out_dir_norm + namebuf;
+    if (meta_mode_ == 1)
+    {
+        const std::string out_dir_norm = join_path_slash(cfg_.out_dir);
+        char namebuf[128];
+        _snprintf_s(namebuf, _TRUNCATE, "frame_%06llu_camera.json",
+            (unsigned long long)idx);
+        const std::string per_frame_path = out_dir_norm + namebuf;
 
-    std::ofstream jf(per_frame_path, std::ios::out | std::ios::trunc);
-    if (jf.is_open() && jf.good()) {
-      jf << j.dump() << std::endl;
-      jf.close();
-    } else {
-      reshade::log_message(reshade::log_level::warning,
-        "[CV Capture] failed to write per-frame camera.json");
+        std::ofstream jf(per_frame_path, std::ios::out | std::ios::trunc);
+        if (jf.is_open() && jf.good()) {
+            jf << j.dump() << std::endl;
+            jf.close();
+        }
+        else {
+            reshade::log_message(reshade::log_level::warning,
+                "[CV Capture] failed to write per-frame camera.json");
+        }
     }
   } catch (...) {
     reshade::log_message(reshade::log_level::error,
@@ -550,7 +562,7 @@ void Recorder::init_session_meta(const std::string& game_name, int recording_mod
     meta_gpu_ = get_gpu_name_dxgi();
 }
 
-void Recorder::finalize_and_write_meta_json() {
+void Recorder::finalize_and_write_meta_json(std::vector<uint64_t>& vecDroppedcamJson_) {
     if (!meta_initialized_) {
         reshade::log_message(reshade::log_level::warning, "[CV Capture] meta not initialized, skip writing meta.json");
         return;
@@ -582,6 +594,32 @@ void Recorder::finalize_and_write_meta_json() {
     rec["bitrate_bps"]   = bitrate_bps;
     rec["dir"]           = out_dir_norm;
     j["recording"] = rec;
+
+    Json droppedcolor;
+    if (!vecDroppedColor_.empty())
+    {
+        std::string vecColor = std::to_string(vecDroppedColor_[0]);
+        for (int i = 1; i < vecDroppedColor_.size(); i++)
+        {
+            vecColor += ", ";
+            vecColor += std::to_string(vecDroppedColor_[i]);
+        }
+        droppedcolor["color_size"] = vecDroppedColor_.size();
+        droppedcolor["color_idx"] = vecColor;
+        j["droppedcolor"] = droppedcolor;
+    }
+
+    Json droppedcamJson;
+    if (!vecDroppedcamJson_.empty()) {
+        std::string vecJson = std::to_string(vecDroppedcamJson_[0]);
+        for (int i = 1; i < vecDroppedcamJson_.size(); i++) {
+            vecJson += ", ";
+            vecJson += std::to_string(vecDroppedcamJson_[i]);
+        }
+        droppedcamJson["camJson_size"] = vecDroppedcamJson_.size();
+        droppedcamJson["camJson_idx"] = vecJson;
+        j["droppedcamJson"] = droppedcamJson;
+    }
 
     try {
         std::ofstream ofs(out_dir_norm + "meta.json", std::ios::binary);

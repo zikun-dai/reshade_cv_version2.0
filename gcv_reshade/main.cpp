@@ -34,7 +34,7 @@
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
 using Json = nlohmann::json_abi_v3_12_0::json;
-
+std::vector<uint64_t> vecDroppedcamJson;//记录因延迟而缺少的camJson
 
 static double g_camera_data_buffer[17] = {
 	1.20040525131452021e-12,// second magic number for identification:
@@ -211,6 +211,7 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
 	UpdateCameraBufferFromReshade(runtime);
     { // record
         const int64_t now_us = std::chrono::duration_cast<std::chrono::microseconds>(hiresclock::now() - shdata.init_time).count();
+		/*const int64_t now_us_total_1 = std::chrono::duration_cast<std::chrono::microseconds>(hiresclock::now() - shdata.init_time).count();*/
         const bool ctrl_down = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
 
         // start record
@@ -231,6 +232,9 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
             }
 
             if (start_rec) {
+                // 录制开始前清空上一次录制累积的丢帧记录，避免跨会话残留
+                vecDroppedcamJson.clear();
+
                 const std::string dirname = std::string("actions_") + get_datestr_yyyy_mm_dd() + "_" + std::to_string(now_us) + "/";
                 g_rec_dir = shdata.output_filepath_creates_outdir_if_needed(dirname);
 
@@ -254,7 +258,7 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
             g_recording_mode = 0;
             if (g_rec) {
                 g_rec->stop();
-                g_rec->finalize_and_write_meta_json();
+                g_rec->finalize_and_write_meta_json(vecDroppedcamJson);
                 g_rec.reset();
             }
             if (g_actions_csv) { fclose(g_actions_csv); g_actions_csv = nullptr; }
@@ -271,7 +275,6 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
                 g_last_cap_us = now_us;
                 next_due_us   = now_us;
             }
-
             if (now_us >= next_due_us) {
 				bool delta_depth_ok = true;
 				bool delta_control_ok = true;
@@ -302,12 +305,12 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
 
 					const int64_t now_us_control_2 = std::chrono::duration_cast<std::chrono::microseconds>(hiresclock::now() - shdata.init_time).count();
 					const int64_t delta_us_control = now_us_control_2 - now_us_control_1;
-					reshade::log_message(reshade::log_level::info,
-							("Frame delta: Δt=%lld us", std::to_string(delta_us_control).c_str()));
+					/*reshade::log_message(reshade::log_level::info,
+							("Frame delta: Δt=%lld us", std::to_string(delta_us_control).c_str()));*/
 					if (std::abs(delta_us_control) > 1000) {
 						delta_control_ok = false;
 						reshade::log_message(reshade::log_level::info,
-						("Frame skipped: Δt=%lld us", std::to_string(delta_us_control).c_str()));
+							("Frame control skipped: Δt="+ to_string(delta_us_control)+" us").c_str());
 					}	
 
 
@@ -335,16 +338,22 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
 								reshade::log_message(reshade::log_level::warning,
 									"record: failed to save per-frame depth (.npy/.fpzip)");
 							}
+						}else{
+							// 添加诊断日志：depth buffer未找到
+							if (g_rec_idx == 0 || (g_rec_idx % 30 == 0)) { // 每30帧或第一帧输出一次，避免日志过多
+								reshade::log_message(reshade::log_level::warning,
+									"record: depth buffer not found (selected_depth_stencil=0, override_depth_stencil=0). Cannot save depth.npy files.");
+							}
 						}
 					}
 					const int64_t now_us_depth_2 = std::chrono::duration_cast<std::chrono::microseconds>(hiresclock::now() - shdata.init_time).count();
 					const int64_t delta_us_depth = now_us_depth_2 - now_us_depth_1;
-					reshade::log_message(reshade::log_level::info,
-							("Frame delta: Δt=%lld us", std::to_string(delta_us_depth).c_str()));
-					if (std::abs(delta_us_depth) > 9000) {
+					/*reshade::log_message(reshade::log_level::info,
+							("Frame delta: Δt=%lld us", std::to_string(delta_us_depth).c_str()));*/
+					if (std::abs(delta_us_depth) > 20000) {
 						delta_depth_ok = false;
 						reshade::log_message(reshade::log_level::info,
-						("Frame skipped: Δt=%lld us", std::to_string(delta_us_depth).c_str()));
+							("Frame depth skipped: Δt=" + to_string(delta_us_depth) + " us").c_str());
 					}	
 
 					// keyboard status
@@ -376,8 +385,13 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
 					if (GetAsyncKeyState(VK_ESCAPE)  & 0x8000) keymask_modifiers |= (1u << ESCAPE_BIT);
 					if (GetAsyncKeyState(VK_TAB)     & 0x8000) keymask_modifiers |= (1u << TAB_BIT);
 
-
+					/*const int64_t grab_bgra_total_1 = std::chrono::duration_cast<std::chrono::microseconds>(hiresclock::now() - shdata.init_time).count();*/
 					if (grab_bgra_frame(q, color_res, bgra, w, h)) {
+						/*const int64_t grab_bgra_total_2 = std::chrono::duration_cast<std::chrono::microseconds>(hiresclock::now() - shdata.init_time).count();
+						const int64_t delta_us_grab_bgra = grab_bgra_total_2 - grab_bgra_total_1;
+						reshade::log_message(reshade::log_level::info,
+								("grab bgra delta: Δt=" + std::to_string(delta_us_grab_bgra) + " us").c_str());*/
+						/*reshade::log_message(reshade::log_level::info, ("[RGB " + std::to_string(g_rec_idx) + "] time_us=" + std::to_string(now_us) + " w=" + std::to_string(w) + " h=" + std::to_string(h)).c_str());*/
 						g_copy_fail_in_row = 0;
 						// hud::draw_keys_bgra(bgra.data(), w, h, keymask);
 						// 不画了
@@ -386,10 +400,14 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
 							
 					} 
 					if(delta_depth_ok && delta_control_ok){
+						/*reshade::log_message(reshade::log_level::info, ("[JSON " + std::to_string(g_rec_idx) + "] time_us=" + std::to_string(now_us) + " w=" + std::to_string(w) + " h=" + std::to_string(h)).c_str()); */
 						g_rec->log_camera_json(/*idx=*/g_rec_idx,
 										/*time_us=*/now_us,
 										/*cam_json=*/camj,
 										/*img_w=*/w, /*img_h=*/h);
+					}
+					if (!delta_depth_ok || !delta_control_ok) {
+						vecDroppedcamJson.emplace_back(g_rec_idx);
 					}
 					if (g_recording_mode == 2) { // Logic 2: save control signals
 						g_rec->log_action(g_rec_idx, now_us, keymask_letters, keymask_modifiers);
@@ -399,6 +417,10 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime *runtime,
 				}
 				next_due_us += period_us;
 				g_last_cap_us = now_us;
+				/*const int64_t now_us_total_2 = std::chrono::duration_cast<std::chrono::microseconds>(hiresclock::now() - shdata.init_time).count();
+				const int64_t delta_us_total = now_us_total_2 - now_us_total_1;
+				reshade::log_message(reshade::log_level::info,
+					("toal delta: Δt=" + std::to_string(delta_us_total) + " us").c_str());*/
 			}
 			return;
 		}
