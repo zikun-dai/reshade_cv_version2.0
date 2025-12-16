@@ -62,6 +62,9 @@
     <ClCompile Include="..\gcv_games\ImmortalsFenyxRising.cpp" />
     <ClCompile Include="..\gcv_games\AtomicHeart.cpp" />
     <ClCompile Include="..\gcv_games\SilentHillF.cpp" />
+    <ClCompile Include="..\gcv_games\ReadyOrNot.cpp" />
+    <ClCompile Include="..\gcv_games\Ghostrunner.cpp" />
+    <ClCompile Include="..\gcv_games\Ghostrunner2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdparty\cnpy.h" />
@@ -148,6 +151,9 @@
     <ClInclude Include="..\gcv_games\ImmortalsFenyxRising.h" />
     <ClInclude Include="..\gcv_games\AtomicHeart.h" />
     <ClInclude Include="..\gcv_games\SilentHillF.h" />
+    <ClInclude Include="..\gcv_games\ReadyOrNot.h" />
+    <ClInclude Include="..\gcv_games\Ghostrunner.h" />
+    <ClInclude Include="..\gcv_games\Ghostrunner2.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\3rdparty\fpzip\fpe.inl" />
