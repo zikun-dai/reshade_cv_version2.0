@@ -1,8 +1,0 @@
-.vs
-.vscode
-build
-*.vcxproj.user
-*.pyc
-*.7z
-*.ply
-*.pcd
