@@ -4,7 +4,7 @@ import glob, os
 import json
 
 # ====== User configuration ======
-DATA_DIR = r"C:\_Relax\GOG Galaxy\Games\Crysis\Bin64\cv_saved\actions_2025-12-19_480428794"
+DATA_DIR = r"C:\_Relax\Steam\steamapps\common\Crysis Remastered\Bin64\cv_saved\f11_mode"
 # ================================
 
 # hyperparameter

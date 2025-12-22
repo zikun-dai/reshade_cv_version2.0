@@ -3,7 +3,11 @@ import re
 from pathlib import Path
 from typing import Iterable, List, Sequence, Tuple
 
+import matplotlib.pyplot as plt
+
 DEFAULT_LOG_PATH = r"C:\_Relax\Steam\steamapps\common\Crysis Remastered\Bin64\ReShade.log"
+PLOT_TRANSLATIONS = True
+PLOT_SAVE_DIR: "Path | None" = None
 TRANSLATION_PATTERN = re.compile(
     r"translation(?:\s*\(frame\s*(\d+)\))?\s*:\s*([-+eE0-9\.]+)\s+([-+eE0-9\.]+)\s+([-+eE0-9\.]+)",
     re.IGNORECASE,
@@ -34,6 +38,38 @@ def detect_jumps(
         if max_delta >= threshold:
             jumps.append((idx, delta, max_delta))
     return jumps
+
+
+def plot_translations(
+    translations: Sequence[Tuple[int, Tuple[float, float, float]]],
+    save_dir: "Path | None",
+    show: bool,
+) -> None:
+    frames = [frame for frame, _ in translations]
+    axes_values = list(zip(*(coords for _, coords in translations)))
+    axis_labels = ("x", "y", "z")
+
+    if save_dir is not None:
+        save_dir.mkdir(parents=True, exist_ok=True)
+
+    for axis_idx, axis_label in enumerate(axis_labels):
+        fig, ax = plt.subplots(figsize=(10, 3))
+        ax.plot(frames, axes_values[axis_idx], label=f"{axis_label}-axis translation")
+        ax.set_title(f"Translation – {axis_label.upper()} axis")
+        ax.set_xlabel("Frame")
+        ax.set_ylabel("Translation")
+        ax.grid(True, alpha=0.3)
+        ax.legend()
+
+        if save_dir is not None:
+            output_path = save_dir / f"translation_{axis_label}.png"
+            fig.savefig(output_path, dpi=150, bbox_inches="tight")
+            print(f"Saved {axis_label}-axis plot to {output_path}")
+
+    if show:
+        plt.show()
+    else:
+        plt.close("all")
 
 
 def print_context(
@@ -96,6 +132,9 @@ def main() -> None:
         return
 
     print(f"Found {len(translations)} translation entries in {log_path}.")
+
+    if PLOT_TRANSLATIONS or PLOT_SAVE_DIR is not None:
+        plot_translations(translations, PLOT_SAVE_DIR, PLOT_TRANSLATIONS)
 
     jumps = detect_jumps(translations, args.threshold)
     if not jumps:

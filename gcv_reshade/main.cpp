@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <atomic>
+#include <cmath>  // 确保包含了 cmath 用于 sin 和 cos
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
@@ -29,33 +30,11 @@
 #include "segmentation/reshade_hooks.hpp"
 #include "segmentation/segmentation_app_data.hpp"
 #include "tex_buffer_utils.h"
-
-#include "hud_renderer.h"
-#include "grabbers.h"
-#include "recorder.h"
-
-#include <fstream>
-#include <Windows.h>
-#include <cstdio>
-#include <vector>
-#include <memory>
-#include <string>
-#include <sstream>
-#include <cstdint>
-#include <thread>
-#include <atomic>
-#include <cstring>
-#include <process.h>
-#include <ShlObj.h>
-#include <algorithm>
-#include <nlohmann/json.hpp>
-#include <cmath> // 确保包含了 cmath 用于 sin 和 cos
-#include <cnpy.h>
 using Json = nlohmann::json_abi_v3_12_0::json;
 
 static double g_camera_data_buffer[17] = {
     1.20040525131452021e-12,  // 第二个魔数签名
-    // 1.38097189588312856e-12, 
+    // 1.38097189588312856e-12,
     0.0, 0.0, 0.0, 0.0, 0.0, 980.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 static double g_camera_buffer_counter = 0.0;
 
@@ -195,7 +174,7 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime* runtime,
     float shadercamposbuf[4];
     reshade::api::device* const device = runtime->get_device();
     auto& segmapp = device->get_private_data<segmentation_app_data>();
-	UpdateCameraBufferFromReshade(runtime);
+    UpdateCameraBufferFromReshade(runtime);
     {  // record
         const int64_t now_us = std::chrono::duration_cast<std::chrono::microseconds>(hiresclock::now() - shdata.init_time).count();
         const bool ctrl_down = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
@@ -290,7 +269,7 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime* runtime,
                     const int64_t delta_us_control = now_us_control_2 - now_us_control_1;
                     reshade::log_message(reshade::log_level::info,
                                          ("Frame delta: Δt=%lld us", std::to_string(delta_us_control).c_str()));
-                    if (std::abs(delta_us_control) > 5000) {
+                    if (std::abs(delta_us_control) > 1000) {
                         delta_control_ok = false;
                         reshade::log_message(reshade::log_level::info,
                                              ("Frame skipped: Δt=%lld us", std::to_string(delta_us_control).c_str()));
@@ -330,7 +309,7 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime* runtime,
                     const int64_t delta_us_depth = now_us_depth_2 - now_us_depth_1;
                     reshade::log_message(reshade::log_level::info,
                                          ("Frame delta: Δt=%lld us", std::to_string(delta_us_depth).c_str()));
-                    if (std::abs(delta_us_depth) > 50000) {
+                    if (std::abs(delta_us_depth) > 18000) {
                         delta_depth_ok = false;
                         reshade::log_message(reshade::log_level::info,
                                              ("Frame skipped: Δt=%lld us", std::to_string(delta_us_depth).c_str()));
