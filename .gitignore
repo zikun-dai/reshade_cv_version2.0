@@ -1,6 +1,15 @@
-.vs
-.vscode
-build
+.vs/
+.vscode/
+
+# ignore all under build
+/build/**
+
+# allow only the needed path
+!/build/
+!/build/x64/
+!/build/x64/Debug/
+!/build/x64/Debug/cv_captures.addon
+
 *.vcxproj.user
 *.pyc
 *.7z
