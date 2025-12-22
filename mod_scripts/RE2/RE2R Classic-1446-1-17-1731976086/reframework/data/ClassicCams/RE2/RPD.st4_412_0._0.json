@@ -1,0 +1,172 @@
+{
+    "CornerTowardSpadeKeyDoor": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-35.250957489014, 5.199999332428, 6.2700529098511)",
+                "radius": 3.609999895095825
+            }
+        ],
+        "follow_player": false,
+        "fov": 95.80000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.63856422901154, 2.9802322387695e-08, 0.76956897974014, 0.0), Vector4f.new(0.13296128809452, 0.98496156930923, -0.11032694578171, 0.0), Vector4f.new(-0.75799584388733, 0.17277365922928, 0.62896114587784, 0.0), Vector4f.new(-37.866317749023, 7.7817678451538, 7.9560599327087, 1.0))",
+        "name": "CornerTowardSpadeKeyDoor"
+    },
+    "CornerTowardSpadeKeyDoorCorner": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-37.003261566162, 5.5146622657776, 6.8476796150208)",
+                "radius": 0.75
+            }
+        ],
+        "follow_player": false,
+        "fov": 95.80000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.91916781663895, 2.2351741790771e-08, -0.39386686682701, 0.0), Vector4f.new(-0.15889009833336, 0.91501903533936, 0.37080198526382, 0.0), Vector4f.new(0.36039561033249, 0.40341091156006, -0.8410559296608, 0.0), Vector4f.new(-35.444271087646, 7.7288722991943, 4.740026473999, 1.0))",
+        "name": "CornerTowardSpadeKeyDoorCorner"
+    },
+    "DownHallFromShowersDoor": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-36.455059051514, 5.199999332428, -13.76144695282)",
+                "radius": 3.75
+            }
+        ],
+        "follow_player": false,
+        "fov": 86.30000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.93146324157715, -1.1175870895386e-08, 0.36383605003357, 0.0), Vector4f.new(0.095434106886387, 0.96498644351959, 0.24432250857353, 0.0), Vector4f.new(-0.35109686851501, 0.26229971647263, -0.89884930849075, 0.0), Vector4f.new(-36.96403503418, 7.7503790855408, -19.353158950806, 1.0))",
+        "name": "DownHallFromShowersDoor"
+    },
+    "FromLoungeEntry": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-26.215576171875, 5.199999332428, 6.9626450538635)",
+                "radius": 4.050000190734863
+            }
+        ],
+        "follow_player": false,
+        "fov": 83.30000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.004080593585968, -7.4505805969238e-09, 0.99999189376831, 0.0), Vector4f.new(0.33132243156433, 0.94351661205292, 0.0013520196080208, 0.0), Vector4f.new(-0.94350874423981, 0.33132523298264, -0.0038501024246216, 0.0), Vector4f.new(-31.858558654785, 7.6376261711121, 6.3111543655396, 1.0))",
+        "name": "FromLoungeEntry"
+    },
+    "InFrontOfSTARSDoor": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-35.321300506592, 5.1999988555908, -6.7076416015625)",
+                "radius": 2.5199999809265137
+            }
+        ],
+        "follow_player": false,
+        "fov": 82.30000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.91662818193436, 2.7939677238464e-09, 0.39974078536034, 0.0), Vector4f.new(0.092572242021561, 0.97281569242477, 0.21227338910103, 0.0), Vector4f.new(-0.3888740837574, 0.23158070445061, -0.89171028137207, 0.0), Vector4f.new(-37.502155303955, 7.2571487426758, -10.032865524292, 1.0))",
+        "name": "InFrontOfSTARSDoor"
+    },
+    "InFrontOfSTARSDoorTowardsShowerRoom": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-36.624576568604, 5.1999998092651, -3.6972522735596)",
+                "radius": 2.3499999046325684
+            }
+        ],
+        "follow_player": false,
+        "fov": 83.30000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.9992812871933, -2.9802322387695e-08, 0.037911087274551, 0.0), Vector4f.new(0.012986364774406, 0.93950092792511, -0.34230008721352, 0.0), Vector4f.new(-0.035617381334305, 0.34254640340805, 0.9388256072998, 0.0), Vector4f.new(-36.565937042236, 8.1225633621216, 2.1170327663422, 1.0))",
+        "name": "InFrontOfSTARSDoorTowardsShowerRoom"
+    },
+    "LininRoomDoor": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-29.942506790161, 5.4549975395203, 5.5187101364136)",
+                "radius": 3.0399999618530273
+            }
+        ],
+        "follow_player": false,
+        "fov": 83.30000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.64076256752014, 2.9802322387695e-08, -0.76773905754089, 0.0), Vector4f.new(-0.24821454286575, 0.94629454612732, -0.20716223120689, 0.0), Vector4f.new(0.72650724649429, 0.32330578565598, 0.60635018348694, 0.0), Vector4f.new(-27.871240615845, 7.3255519866943, 8.1907415390015, 1.0))",
+        "name": "LininRoomDoor"
+    },
+    "LookDownHall": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-36.65238571167, 5.199999332428, 3.4743852615356)",
+                "radius": 3.2300000190734863
+            }
+        ],
+        "follow_player": false,
+        "fov": 86.80000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.98905336856842, 1.1641532182693e-09, -0.14755813777447, 0.0), Vector4f.new(-0.032754778862, 0.97505152225494, -0.21954888105392, 0.0), Vector4f.new(0.14387677609921, 0.22197879850864, 0.96437799930573, 0.0), Vector4f.new(-35.66780090332, 7.1199765205383, 8.422755241394, 1.0))",
+        "name": "LookDownHall"
+    },
+    "OppositeHall": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-36.580554962158, 5.1999988555908, 1.4408066272736)",
+                "radius": 0.0
+            }
+        ],
+        "follow_player": false,
+        "fov": 83.30000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.99440705776215, -1.862645149231e-09, 0.10561938583851, 0.0), Vector4f.new(0.021540649235249, 0.9789822101593, 0.20280522108078, 0.0), Vector4f.new(-0.10339950025082, 0.20394599437714, -0.97350662946701, 0.0), Vector4f.new(-37.43701171875, 7.8142600059509, -4.0250110626221, 1.0))",
+        "name": "OppositeHall"
+    },
+    "ShowersDoor": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-36.430004119873, 5.2734003067017, -19.252000808716)",
+                "radius": 2.390000104904175
+            }
+        ],
+        "follow_player": false,
+        "fov": 89.30000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.70171755552292, -2.3283064365387e-09, -0.71245515346527, 0.0), Vector4f.new(-0.027574837207794, 0.99925071001053, -0.027159254997969, 0.0), Vector4f.new(0.71192133426666, 0.038703963160515, 0.701191842556, 0.0), Vector4f.new(-31.749893188477, 6.8097748756409, -15.032909393311, 1.0))",
+        "name": "ShowersDoor"
+    },
+    "ShowersDoor1": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-32.541114807129, 5.199999332428, -16.665405273438)",
+                "radius": 2.059999942779541
+            }
+        ],
+        "follow_player": false,
+        "fov": 90.0,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.24013984203339, -4.4703483581543e-08, 0.97073829174042, 0.0), Vector4f.new(0.18827472627163, 0.98101139068604, 0.046575143933296, 0.0), Vector4f.new(-0.95230543613434, 0.19394998252392, -0.23557981848717, 0.0), Vector4f.new(-38.06383895874, 7.4951233863831, -17.909931182861, 1.0))",
+        "name": "ShowersDoor1"
+    },
+    "StormyWindow": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-36.825393676758, 5.199999332428, -11.516265869141)",
+                "radius": 3.75
+            }
+        ],
+        "follow_player": false,
+        "fov": 83.30000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.92126566171646, 0.0, -0.38893458247185, 0.0), Vector4f.new(-0.066629111766815, 0.98521685600281, 0.15782368183136, 0.0), Vector4f.new(0.38318493962288, 0.17131191492081, -0.9076464176178, 0.0), Vector4f.new(-35.461009979248, 7.2160439491272, -15.787240982056, 1.0))",
+        "name": "StormyWindow"
+    },
+    "names": [
+        "CornerTowardSpadeKeyDoor",
+        "CornerTowardSpadeKeyDoorCorner",
+        "DownHallFromShowersDoor",
+        "FromLoungeEntry",
+        "InFrontOfSTARSDoor",
+        "InFrontOfSTARSDoorTowardsShowerRoom",
+        "LininRoomDoor",
+        "LookDownHall",
+        "OppositeHall",
+        "ShowersDoor",
+        "ShowersDoor1",
+        "StormyWindow"
+    ]
+}

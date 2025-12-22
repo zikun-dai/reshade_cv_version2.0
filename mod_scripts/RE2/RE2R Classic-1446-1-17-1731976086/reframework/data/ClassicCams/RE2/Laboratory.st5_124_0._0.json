@@ -1,0 +1,102 @@
+{
+    "GreenhouseEntry": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(79.157073974609, -2.5965104103088, 11.133785247803)",
+                "radius": 3.6700000762939453
+            }
+        ],
+        "follow_player": false,
+        "fov": 91.30000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.67997443675995, -2.9802322387695e-08, 0.73323577642441, 0.0), Vector4f.new(0.25332129001617, 0.93842458724976, 0.23492036759853, 0.0), Vector4f.new(-0.68808650970459, 0.34548404812813, -0.63810467720032, 0.0), Vector4f.new(75.561485290527, -0.014828264713287, 7.4184169769287, 1.0))",
+        "name": "GreenhouseEntry"
+    },
+    "GreenhouseLab": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(73.503379821777, -2.5553221702576, 9.792839050293)",
+                "radius": 2.930000066757202
+            }
+        ],
+        "follow_player": false,
+        "fov": 91.30000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.53206044435501, 2.0489096641541e-08, -0.84670650959015, 0.0), Vector4f.new(-0.36629369854927, 0.9015811085701, -0.23017466068268, 0.0), Vector4f.new(0.76337468624115, 0.4326100051403, 0.47969561815262, 0.0), Vector4f.new(79.001007080078, 0.08370566368103, 10.27748966217, 1.0))",
+        "name": "GreenhouseLab"
+    },
+    "GreenhouseLabBehind": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(77.050384521484, -2.5548479557037, 1.9587483406067)",
+                "radius": 2.930000066757202
+            }
+        ],
+        "follow_player": false,
+        "fov": 91.30000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.46930131316185, 2.9802322387695e-08, 0.88303810358047, 0.0), Vector4f.new(0.33682388067245, 0.92439460754395, 0.17900910973549, 0.0), Vector4f.new(-0.81627577543259, 0.38143759965897, -0.43381962180138, 0.0), Vector4f.new(73.465827941895, -0.66319954395294, 1.6614141464233, 1.0))",
+        "name": "GreenhouseLabBehind"
+    },
+    "GreenhouseLabHazmatMan": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(73.137954711914, -2.5548944473267, 2.217625617981)",
+                "radius": 2.930000066757202
+            }
+        ],
+        "follow_player": false,
+        "fov": 91.30000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.72232794761658, -2.9802322387695e-08, -0.69155073165894, 0.0), Vector4f.new(-0.42444458603859, 0.78949445486069, 0.44333431124687, 0.0), Vector4f.new(0.54597550630569, 0.61375766992569, -0.57027393579483, 0.0), Vector4f.new(74.871505737305, -0.036639392375946, 0.78751349449158, 1.0))",
+        "name": "GreenhouseLabHazmatMan"
+    },
+    "GreenhouseLabMachine": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(71.739898681641, -2.2070605754852, 9.106406211853)",
+                "radius": 1.0399999618530273
+            }
+        ],
+        "follow_player": false,
+        "fov": 91.30000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.52214926481247, 1.1175870895386e-08, -0.85285407304764, 0.0), Vector4f.new(-0.16377541422844, 0.98138862848282, 0.10026949644089, 0.0), Vector4f.new(0.83698123693466, 0.19203226268291, -0.51243138313293, 0.0), Vector4f.new(73.167922973633, -1.0214650630951, 8.2373094558716, 1.0))",
+        "name": "GreenhouseLabMachine"
+    },
+    "GreenhouseLabMachines": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(77.47119140625, -2.5540449619293, 5.1661348342896)",
+                "radius": 2.930000066757202
+            }
+        ],
+        "follow_player": false,
+        "fov": 91.30000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.99923020601273, -8.9406967163086e-08, -0.039231918752193, 0.0), Vector4f.new(-0.016336470842361, 0.90917944908142, 0.41608384251595, 0.0), Vector4f.new(0.035668879747391, 0.4164046049118, -0.90847957134247, 0.0), Vector4f.new(77.357383728027, -0.45273578166962, 1.54554271698, 1.0))",
+        "name": "GreenhouseLabMachines"
+    },
+    "GreenhouseLabToHazmatMan": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(72.781478881836, -2.554566860199, 5.9475345611572)",
+                "radius": 2.930000066757202
+            }
+        ],
+        "follow_player": false,
+        "fov": 91.30000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.96534752845764, 5.9604644775391e-08, -0.26096779108047, 0.0), Vector4f.new(-0.024775817990303, 0.99548316001892, -0.091648757457733, 0.0), Vector4f.new(0.25978899002075, 0.094938576221466, 0.96098732948303, 0.0), Vector4f.new(73.996040344238, -1.3338401317596, 9.840558052063, 1.0))",
+        "name": "GreenhouseLabToHazmatMan"
+    },
+    "names": [
+        "GreenhouseEntry",
+        "GreenhouseLab",
+        "GreenhouseLabBehind",
+        "GreenhouseLabHazmatMan",
+        "GreenhouseLabMachine",
+        "GreenhouseLabMachines",
+        "GreenhouseLabToHazmatMan"
+    ]
+}

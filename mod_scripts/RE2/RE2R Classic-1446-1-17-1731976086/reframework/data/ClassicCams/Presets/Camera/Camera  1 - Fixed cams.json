@@ -1,0 +1,5 @@
+{
+    "always_follow_player": false,
+    "follow_cam_randomize": false,
+    "desc": "The camera will be fixed in place and unmoving"
+}

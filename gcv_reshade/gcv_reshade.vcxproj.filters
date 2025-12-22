@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\3rdparty\cnpy.cpp" />
@@ -29,10 +29,8 @@
     <ClCompile Include="..\gcv_games\GTAV.cpp" />
     <ClCompile Include="..\gcv_games\HorizonZeroDawn.cpp" />
     <ClCompile Include="..\gcv_games\RDR2.cpp" />
-    <ClCompile Include="..\gcv_games\ResidentEvils.cpp" />
     <ClCompile Include="..\gcv_games\RoR2.cpp" />
     <ClCompile Include="..\gcv_games\Sekiro.cpp" />
-    <ClCompile Include="..\gcv_games\Shipbreaker.cpp" />
     <ClCompile Include="..\gcv_games\Witcher3.cpp" />
     <ClCompile Include="..\gcv_utils\camera_data_struct.cpp" />
     <ClCompile Include="..\gcv_utils\depth_utils.cpp" />
@@ -55,16 +53,10 @@
     <ClCompile Include="image_writer_thread_pool.cpp" />
     <ClCompile Include="recorder.cpp" />
     <ClCompile Include="tex_buffer_utils.cpp" />
-    <ClCompile Include="..\gcv_games\DeathStrandingDirectorsCut.cpp" />
+    <ClCompile Include="..\gcv_games\ResidentEvils.cpp" />
+    <ClCompile Include="..\gcv_games\Crysis2.cpp" />
     <ClCompile Include="..\gcv_games\DevilMayCry5.cpp" />
-    <ClCompile Include="..\gcv_games\SilentHill2.cpp" />
-    <ClCompile Include="..\gcv_games\Palworld.cpp" />
-    <ClCompile Include="..\gcv_games\ImmortalsFenyxRising.cpp" />
-    <ClCompile Include="..\gcv_games\AtomicHeart.cpp" />
-    <ClCompile Include="..\gcv_games\SilentHillF.cpp" />
-    <ClCompile Include="..\gcv_games\ReadyOrNot.cpp" />
-    <ClCompile Include="..\gcv_games\Ghostrunner.cpp" />
-    <ClCompile Include="..\gcv_games\Ghostrunner2.cpp" />
+    <ClCompile Include="..\gcv_games\Crysis3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdparty\cnpy.h" />
@@ -105,11 +97,9 @@
     <ClInclude Include="..\gcv_games\HogwartsLegacy.h" />
     <ClInclude Include="..\gcv_games\HorizonZeroDawn.h" />
     <ClInclude Include="..\gcv_games\RDR2.h" />
-    <ClInclude Include="..\gcv_games\ResidentEvils.h" />
     <ClInclude Include="..\gcv_games\RoR2.h" />
     <ClInclude Include="..\gcv_games\Sekiro.h" />
     <ClInclude Include="..\gcv_games\Stray.h" />
-    <ClInclude Include="..\gcv_games\Shipbreaker.h" />
     <ClInclude Include="..\gcv_games\Witcher3.h" />
     <ClInclude Include="..\gcv_utils\assert_utils.hpp" />
     <ClInclude Include="..\gcv_utils\camera_data_struct.h" />
@@ -144,16 +134,10 @@
     <ClInclude Include="copy_texture_into_packedbuf.h" />
     <ClInclude Include="recorder.h" />
     <ClInclude Include="tex_buffer_utils.h" />
-    <ClInclude Include="..\gcv_games\DeathStrandingDirectorsCut.h" />
+    <ClInclude Include="..\gcv_games\ResidentEvils.h" />
+    <ClInclude Include="..\gcv_games\Crysis2.h" />
     <ClInclude Include="..\gcv_games\DevilMayCry5.h" />
-    <ClInclude Include="..\gcv_games\SilentHill2.h" />
-    <ClInclude Include="..\gcv_games\Palworld.h" />
-    <ClInclude Include="..\gcv_games\ImmortalsFenyxRising.h" />
-    <ClInclude Include="..\gcv_games\AtomicHeart.h" />
-    <ClInclude Include="..\gcv_games\SilentHillF.h" />
-    <ClInclude Include="..\gcv_games\ReadyOrNot.h" />
-    <ClInclude Include="..\gcv_games\Ghostrunner.h" />
-    <ClInclude Include="..\gcv_games\Ghostrunner2.h" />
+    <ClInclude Include="..\gcv_games\Crysis3.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\3rdparty\fpzip\fpe.inl" />

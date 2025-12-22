@@ -1,0 +1,120 @@
+{
+    "ChiefsOfficeLobby0": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(26.718601226807, 5.199999332428, -17.875774383545)",
+                "radius": 1.9600000381469727
+            }
+        ],
+        "follow_player": false,
+        "fov": 74.80059051513672,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.72982883453369, -1.4901161193848e-08, -0.68362998962402, 0.0), Vector4f.new(-0.19283784925938, 0.9593910574913, -0.20586964488029, 0.0), Vector4f.new(0.65586847066879, 0.2820793390274, 0.70019125938416, 0.0), Vector4f.new(29.919544219971, 7.5837135314941, -15.276313781738, 1.0))",
+        "name": "ChiefsOfficeLobby0"
+    },
+    "ChiefsOfficeLobby1": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(24.942470550537, 5.3816633224487, -20.806644439697)",
+                "radius": 1.9600000381469727
+            }
+        ],
+        "follow_player": false,
+        "fov": 74.80059051513672,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.81826990842819, -2.9802322387695e-08, -0.57483410835266, 0.0), Vector4f.new(-0.42160582542419, 0.6797553896904, 0.60015100240707, 0.0), Vector4f.new(0.3907465338707, 0.73343908786774, -0.55622345209122, 0.0), Vector4f.new(27.83130645752, 8.8985805511475, -22.54355430603, 1.0))",
+        "name": "ChiefsOfficeLobby1"
+    },
+    "ChiefsOfficeLobbyEntry": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(26.122074127197, 5.4336013793945, -10.071357727051)",
+                "radius": 4.679999828338623
+            }
+        ],
+        "follow_player": false,
+        "fov": 74.80059051513672,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.88961267471313, -1.7695128917694e-08, 0.45671570301056, 0.0), Vector4f.new(0.17540967464447, 0.92330497503281, 0.34167146682739, 0.0), Vector4f.new(-0.42168793082237, 0.38406759500504, -0.82138389348984, 0.0), Vector4f.new(25.003688812256, 7.9349675178528, -15.312793731689, 1.0))",
+        "name": "ChiefsOfficeLobbyEntry"
+    },
+    "ChiefsOfficeLobbyStart": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(26.671709060669, 5.199999332428, -14.606038093567)",
+                "radius": 4.679999828338623
+            }
+        ],
+        "follow_player": false,
+        "fov": 74.80059051513672,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.9809182882309, -1.862645149231e-08, 0.194421261549, 0.0), Vector4f.new(0.071292355656624, 0.93034321069717, 0.35969281196594, 0.0), Vector4f.new(-0.1808785200119, 0.36668995022774, -0.91259080171585, 0.0), Vector4f.new(26.072191238403, 8.3844356536865, -20.413860321045, 1.0))",
+        "name": "ChiefsOfficeLobbyStart"
+    },
+    "ChiefsOfficeStairs0": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(29.594432830811, 6.8257875442505, -19.865169525146)",
+                "radius": 1.6399999856948853
+            }
+        ],
+        "follow_player": false,
+        "fov": 81.80000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.9977895617485, 7.4505805969238e-09, 0.06645604968071, 0.0), Vector4f.new(0.0088451206684113, 0.99110299348831, -0.13280284404755, 0.0), Vector4f.new(-0.065864756703377, 0.13309705257416, 0.98891228437424, 0.0), Vector4f.new(29.832977294922, 8.2134532928467, -16.144006729126, 1.0))",
+        "name": "ChiefsOfficeStairs0"
+    },
+    "ChiefsOfficeStairsMid": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(31.227794647217, 7.4000000953674, -22.327079772949)",
+                "radius": 1.6399999856948853
+            },
+            {
+                "col_pos": "Vector3f.new(31.69709777832, 9.0046253204346, -18.588533401489)",
+                "radius": 1.7799999713897705
+            }
+        ],
+        "follow_player": false,
+        "fov": 81.80000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.93672657012939, 1.1641532182693e-08, 0.35006195306778, 0.0), Vector4f.new(0.25136667490005, 0.69597780704498, -0.67262905836105, 0.0), Vector4f.new(-0.2436353713274, 0.71806335449219, 0.65194094181061, 0.0), Vector4f.new(30.059324264526, 13.486797332764, -15.005098342896, 1.0))",
+        "name": "ChiefsOfficeStairsMid"
+    },
+    "ChiefsOfficeStairsStart": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(30.022737503052, 5.199999332428, -15.91339302063)",
+                "radius": 3.259999990463257
+            }
+        ],
+        "follow_player": false,
+        "fov": 74.80059051513672,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.61647188663483, -1.3969838619232e-09, 0.7873769402504, 0.0), Vector4f.new(0.45928147435188, 0.81225270032883, -0.35959157347679, 0.0), Vector4f.new(-0.63954895734787, 0.58330577611923, 0.50073087215424, 0.0), Vector4f.new(27.176168441772, 8.4845819473267, -14.189430236816, 1.0))",
+        "name": "ChiefsOfficeStairsStart"
+    },
+    "ChiefsOfficeStairsTop": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(31.910242080688, 10.39999961853, -15.180987358093)",
+                "radius": 1.6399999856948853
+            }
+        ],
+        "follow_player": false,
+        "fov": 81.80000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.62847238779068, 2.2351741790771e-08, 0.77783197164536, 0.0), Vector4f.new(0.38536769151688, 0.86864322423935, 0.31136921048164, 0.0), Vector4f.new(-0.67565852403641, 0.49543815851212, -0.54591828584671, 0.0), Vector4f.new(26.839466094971, 13.563917160034, -18.115627288818, 1.0))",
+        "name": "ChiefsOfficeStairsTop"
+    },
+    "names": [
+        "ChiefsOfficeLobby0",
+        "ChiefsOfficeLobby1",
+        "ChiefsOfficeLobbyEntry",
+        "ChiefsOfficeLobbyStart",
+        "ChiefsOfficeStairs0",
+        "ChiefsOfficeStairsMid",
+        "ChiefsOfficeStairsStart",
+        "ChiefsOfficeStairsTop"
+    ]
+}

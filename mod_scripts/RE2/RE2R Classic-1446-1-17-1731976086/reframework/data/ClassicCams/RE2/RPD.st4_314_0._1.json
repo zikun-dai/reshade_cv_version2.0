@@ -1,0 +1,46 @@
+{
+    "PressRoomStairsBottomHalfway": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(30.979433059692, 2.3999993801117, -21.444446563721)",
+                "radius": 3.509999990463257
+            }
+        ],
+        "follow_player": false,
+        "fov": 74.80000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.82801061868668, -1.4901161193848e-08, 0.56071245670319, 0.0), Vector4f.new(0.4883788228035, 0.49128836393356, 0.72119474411011, 0.0), Vector4f.new(-0.27547150850296, 0.87099707126617, -0.40679201483727, 0.0), Vector4f.new(29.225982666016, 6.3207187652588, -22.724761962891, 1.0))",
+        "name": "PressRoomStairsBottomHalfway"
+    },
+    "PressRoomStairsBottomOver": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(29.772388458252, 0.0, -15.814138412476)",
+                "radius": 3.509999990463257
+            }
+        ],
+        "follow_player": false,
+        "fov": 92.30000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.91985231637955, 7.4505805969238e-09, -0.39226487278938, 0.0), Vector4f.new(-0.010444536805153, 0.99964547157288, -0.024492084980011, 0.0), Vector4f.new(0.39212581515312, 0.02662605047226, 0.91952621936798, 0.0), Vector4f.new(30.290655136108, 1.400461435318, -15.017841339111, 1.0))",
+        "name": "PressRoomStairsBottomOver"
+    },
+    "PressRoomStairsToBottom": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(31.508155822754, 4.2006568908691, -18.055889129639)",
+                "radius": 2.490000009536743
+            }
+        ],
+        "follow_player": false,
+        "fov": 74.80000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.89539301395416, 2.9802322387695e-08, -0.44527703523636, 0.0), Vector4f.new(-0.31443446874619, 0.70805770158768, -0.63228571414948, 0.0), Vector4f.new(0.31528186798096, 0.70615464448929, 0.63398993015289, 0.0), Vector4f.new(32.175914764404, 8.7816963195801, -15.088617324829, 1.0))",
+        "name": "PressRoomStairsToBottom"
+    },
+    "names": [
+        "PressRoomStairsBottomHalfway",
+        "PressRoomStairsBottomOver",
+        "PressRoomStairsToBottom"
+    ]
+}

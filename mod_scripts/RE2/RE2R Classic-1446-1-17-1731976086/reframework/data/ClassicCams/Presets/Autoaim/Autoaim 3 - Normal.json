@@ -1,0 +1,8 @@
+{
+    "autoaim_all": false,
+    "autoaim_hitscan": false,
+    "do_autoaim": true,
+    "lock_on_type": 2,
+    "autoaim_behind": true,
+    "desc": "Your weapon will autoaim at + follow the enemy's chest and can aim relative to the chest while following"
+}

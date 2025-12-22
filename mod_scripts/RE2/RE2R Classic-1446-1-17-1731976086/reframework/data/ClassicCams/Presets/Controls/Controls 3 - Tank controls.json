@@ -1,0 +1,7 @@
+{
+    "do_run_turnaround": false,
+    "run_type": 5,
+    "walk_type": 3,
+    "do_remake_run": false,
+    "desc": "Run forward and then steer by pressing left or right. You cannot run or pivot backwards or sideways\nWhile walking, you will turn by moving left or right"
+}

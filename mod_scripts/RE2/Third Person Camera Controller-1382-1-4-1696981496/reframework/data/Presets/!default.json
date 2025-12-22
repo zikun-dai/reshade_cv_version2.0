@@ -1,0 +1,9 @@
+{
+    "fov_multiplier": 1.0,
+    "gazedistance_multiplier": 1.0,
+    "offset": [
+        0.0,
+        0.0,
+        0.0
+    ]
+}

@@ -90,12 +90,20 @@ def cam2world_to_cv_unchanged(cam2world, pose_scale=1.0):
     # 1. 提取UE系旋转和平移
     R_cv = cam2world[:, :3]  # 3x3旋转矩阵（UE系）
     t_cv = cam2world[:, 3]   # 3x1平移向量（UE系，未缩放）
-    
+
+    R_cv_new = R_cv.copy()
+
+    R_cv_new[:,0] = R_cv[:,0]
+    R_cv_new[:,1] = R_cv[:,2]
+    R_cv_new[:,2] = -R_cv[:,1]
+
     # 4. 构造4x4 c2w矩阵
     c2w = np.eye(4, dtype=np.float64)
     c2w[:3, :3] = R_cv
     c2w[:3, 3] = t_cv
+
     return c2w, R_cv, t_cv
+
 
 # -------------------------- 加载深度和相机文件（优先camera.json，再找meta.json） --------------------------
 def load_depth_and_meta(depthfile:str, and_rgb:bool):

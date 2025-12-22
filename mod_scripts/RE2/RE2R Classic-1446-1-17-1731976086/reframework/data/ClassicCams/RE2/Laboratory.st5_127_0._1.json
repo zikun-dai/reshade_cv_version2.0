@@ -1,0 +1,32 @@
+{
+    "StorageStairsEntry": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(51.134010314941, -8.95188331604, 36.016052246094)",
+                "radius": 5.03000020980835
+            }
+        ],
+        "follow_player": false,
+        "fov": 74.80851745605469,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.44629511237144, -5.5879354476929e-09, -0.89488589763641, 0.0), Vector4f.new(0.10132376104593, 0.99356931447983, -0.050531938672066, 0.0), Vector4f.new(0.88913112878799, -0.11322535574436, -0.44342511892319, 0.0), Vector4f.new(56.487995147705, -8.3070859909058, 34.211284637451, 1.0))",
+        "name": "StorageStairsEntry"
+    },
+    "StorageStairsHallway": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(59.252258300781, -8.95188331604, 35.495307922363)",
+                "radius": 5.03000020980835
+            }
+        ],
+        "follow_player": false,
+        "fov": 74.80851745605469,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.10552129149437, 7.4505805969238e-09, 0.99441707134247, 0.0), Vector4f.new(0.21235451102257, 0.97693282365799, 0.022533727809787, 0.0), Vector4f.new(-0.97147876024246, 0.21354672312737, -0.10308712720871, 0.0), Vector4f.new(52.737621307373, -6.6004271507263, 34.81209564209, 1.0))",
+        "name": "StorageStairsHallway"
+    },
+    "names": [
+        "StorageStairsEntry",
+        "StorageStairsHallway"
+    ]
+}

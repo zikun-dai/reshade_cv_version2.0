@@ -1,0 +1,10 @@
+{
+    "always_follow_player": true,
+    "follow_cam_do_edges": true,
+    "follow_cam_edge_limit": 0.85,
+    "follow_cam_do_pitch": true,
+    "follow_cam_do_yaw": true,
+    "follow_cam_do_twist": false,
+    "follow_cam_randomize": true,
+    "desc": "All cameras will have randomized follow settings"
+}

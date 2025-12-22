@@ -13,7 +13,9 @@ public:
 
 	virtual bool can_interpret_depth_buffer() const override;
 	virtual float convert_to_physical_distance_depth_u64(uint64_t depthval) const override;
+	virtual bool get_camera_matrix(CamMatrixData& rcam, std::string& errstr) override;
 };
 
 REGISTER_GAME_INTERFACE(GameCrysis, 0, "crysis.exe");
 REGISTER_GAME_INTERFACE(GameCrysis, 1, "crysis64.exe");
+REGISTER_GAME_INTERFACE(GameCrysis, 2, "crysisremastered.exe");

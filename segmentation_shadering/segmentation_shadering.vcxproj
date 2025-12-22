@@ -116,14 +116,14 @@
       <PreprocessorDefinitions>RENDERDOC_FOR_SHADERS;RENDERDOC_EXPORTS;RENDERDOC_PLATFORM_WIN32;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_DEPRECATE;NOMINMAX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>Default</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\Projects\GameHacking\DirectXShaderCompiler\out\build\x64-Release\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>C:\Projects\GameHacking\DirectXShaderCompiler\out\build\x64-Release\lib;C:\Projects\GameHacking\DirectXShaderCompiler\out\build\x64-Release\bin</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\lib;$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\bin</AdditionalLibraryDirectories>
       <AdditionalDependencies>dxilconv.lib</AdditionalDependencies>
     </Lib>
     <ProjectReference />
@@ -146,7 +146,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>C:\Projects\GameHacking\DirectXShaderCompiler\out\build\x64-Release\lib;C:\Projects\GameHacking\DirectXShaderCompiler\out\build\x64-Release\bin</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\lib;$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\bin</AdditionalLibraryDirectories>
       <AdditionalDependencies>dxilconv.lib</AdditionalDependencies>
     </Lib>
     <ProjectReference />

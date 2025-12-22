@@ -1,0 +1,7 @@
+{
+    "do_run_turnaround": true,
+    "walk_type": 1,
+    "run_type": 1,
+    "do_remake_run": false,
+    "desc": "Unedited third person perspective controls relative to your character's direction"
+}

@@ -1,0 +1,218 @@
+{
+    "AdaPathDownSewers": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(95.152420043945, -10.417137145996, -53.951770782471)",
+                "radius": 3.0199999809265137
+            }
+        ],
+        "follow_player": false,
+        "fov": 74.82878875732422,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.10091383755207, -1.4243596524466e-08, 0.99489521980286, 0.0), Vector4f.new(0.36786484718323, 0.92913031578064, -0.037313114851713, 0.0), Vector4f.new(-0.92438727617264, 0.36975237727165, 0.093762122094631, 0.0), Vector4f.new(89.76717376709, -7.282482624054, -53.232501983643, 1.0))",
+        "name": "AdaPathDownSewers"
+    },
+    "AdaPathDownSewers0": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(103.05810546875, -13.156718254089, -53.401462554932)",
+                "radius": 3.0199999809265137
+            }
+        ],
+        "follow_player": false,
+        "fov": 74.82878875732422,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.030344046652317, 2.1987261789036e-08, -0.99953961372375, 0.0), Vector4f.new(-0.35201877355576, 0.93593198060989, 0.010686609894037, 0.0), Vector4f.new(0.93550115823746, 0.35218092799187, -0.028399929404259, 0.0), Vector4f.new(110.93211364746, -10.700820922852, -53.693798065186, 1.0))",
+        "name": "AdaPathDownSewers0"
+    },
+    "AdaPathDownSewers1": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(108.25547790527, -12.75929069519, -53.706073760986)",
+                "radius": 1.1100000143051147
+            }
+        ],
+        "follow_player": false,
+        "fov": 74.82878875732422,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.080529302358627, 0.0, 0.99675214290619, 0.0), Vector4f.new(0.283387362957, 0.95873212814331, -0.022895306348801, 0.0), Vector4f.new(-0.9556183218956, 0.28431087732315, 0.077205985784531, 0.0), Vector4f.new(104.28584289551, -10.75640296936, -53.202175140381, 1.0))",
+        "name": "AdaPathDownSewers1"
+    },
+    "AdaPathDownSewersBend": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(104.27484893799, -13.161712646484, -45.364356994629)",
+                "radius": 1.9800000190734863
+            }
+        ],
+        "follow_player": false,
+        "fov": 83.02899932861328,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.99653995037079, -3.7252902984619e-09, -0.083114877343178, 0.0), Vector4f.new(-0.021991848945618, 0.96435940265656, -0.2636803984642, 0.0), Vector4f.new(0.080152541399002, 0.26459589600563, 0.96102273464203, 0.0), Vector4f.new(104.12035369873, -11.343376159668, -41.555297851562, 1.0))",
+        "name": "AdaPathDownSewersBend"
+    },
+    "AdaPathDownSewersBendContinue": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(101.55972290039, -13.207766532898, -42.732086181641)",
+                "radius": 3.7899999618530273
+            }
+        ],
+        "follow_player": false,
+        "fov": 83.02899932861328,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.11426609754562, 1.862645149231e-09, 0.99345052242279, 0.0), Vector4f.new(0.11799179017544, 0.99292182922363, 0.013571355491877, 0.0), Vector4f.new(-0.98641866445541, 0.11876968294382, -0.1134572327137, 0.0), Vector4f.new(94.404792785645, -11.509313583374, -42.875102996826, 1.0))",
+        "name": "AdaPathDownSewersBendContinue"
+    },
+    "AdaPathDownSewersBendContinue0": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(95.312797546387, -13.171941757202, -42.67748260498)",
+                "radius": 1.9800000190734863
+            }
+        ],
+        "follow_player": false,
+        "fov": 83.02899932861328,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.096339613199234, -2.9802322387695e-08, -0.99534863233566, 0.0), Vector4f.new(-0.33307552337646, 0.94234889745712, 0.032238245010376, 0.0), Vector4f.new(0.93796569108963, 0.33463206887245, -0.090785473585129, 0.0), Vector4f.new(99.120979309082, -10.743760108948, -43.095863342285, 1.0))",
+        "name": "AdaPathDownSewersBendContinue0"
+    },
+    "AdaPathDownSewersBendContinue1": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(87.306533813477, -14.80274772644, -42.623645782471)",
+                "radius": 1.9800000190734863
+            }
+        ],
+        "follow_player": false,
+        "fov": 83.02899932861328,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.15410825610161, -2.7939677238464e-09, 0.98805397748947, 0.0), Vector4f.new(0.079748168587685, 0.99673742055893, 0.012438445352018, 0.0), Vector4f.new(-0.98483043909073, 0.080712363123894, -0.15360543131828, 0.0), Vector4f.new(80.000663757324, -14.305019378662, -43.451110839844, 1.0))",
+        "name": "AdaPathDownSewersBendContinue1"
+    },
+    "AdaPathDownSewersContinue": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(79.188407897949, -15.726940155029, -42.653953552246)",
+                "radius": 2.640000104904175
+            },
+            {
+                "col_pos": "Vector3f.new(75.095504760742, -15.727512359619, -42.621738433838)",
+                "radius": 2.640000104904175
+            }
+        ],
+        "follow_player": false,
+        "fov": 83.02899932861328,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.3303000330925, 3.7252902984619e-09, 0.94387626647949, 0.0), Vector4f.new(0.031275723129511, 0.99945092201233, 0.010944619774818, 0.0), Vector4f.new(-0.94335800409317, 0.033135425299406, -0.33011871576309, 0.0), Vector4f.new(71.470687866211, -14.692529678345, -43.39826965332, 1.0))",
+        "name": "AdaPathDownSewersContinue"
+    },
+    "AdaPathDownSewersContinue0": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(72.233390808105, -15.745067596436, -31.044540405273)",
+                "radius": 2.8399999141693115
+            }
+        ],
+        "follow_player": false,
+        "fov": 83.02899932861328,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.90675193071365, 2.7939677238464e-09, -0.4216645359993, 0.0), Vector4f.new(-0.076009228825569, 0.98361909389496, 0.16345107555389, 0.0), Vector4f.new(0.41475728154182, 0.1802599132061, -0.89189839363098, 0.0), Vector4f.new(73.124603271484, -14.005014419556, -35.782344818115, 1.0))",
+        "name": "AdaPathDownSewersContinue0"
+    },
+    "AdaPathDownSewersContinueCorner": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(73.113807678223, -15.604247093201, -43.262481689453)",
+                "radius": 2.630000114440918
+            }
+        ],
+        "follow_player": false,
+        "fov": 83.02899932861328,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.93512105941772, -8.9406967163086e-08, 0.3543284535408, 0.0), Vector4f.new(0.072703301906586, 0.97872298955917, -0.19187380373478, 0.0), Vector4f.new(-0.34678938984871, 0.20518609881401, 0.91522437334061, 0.0), Vector4f.new(71.619995117188, -13.931822776794, -38.182109832764, 1.0))",
+        "name": "AdaPathDownSewersContinueCorner"
+    },
+    "AdaPathDownSewersContinueDeadEnd": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(72.339775085449, -15.432740211487, -26.678888320923)",
+                "radius": 3.619999885559082
+            }
+        ],
+        "follow_player": false,
+        "fov": 83.02899932861328,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.95992511510849, 5.5879354476929e-09, -0.28025704622269, 0.0), Vector4f.new(-0.064235888421535, 0.97337853908539, 0.22001826763153, 0.0), Vector4f.new(0.27279609441757, 0.22920355200768, -0.93437045812607, 0.0), Vector4f.new(73.213577270508, -13.825194358826, -30.08614730835, 1.0))",
+        "name": "AdaPathDownSewersContinueDeadEnd"
+    },
+    "AdaPathDownSewersDoorPassage": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(71.991729736328, -15.668697357178, -36.623134613037)",
+                "radius": 2.430000066757202
+            }
+        ],
+        "follow_player": false,
+        "fov": 83.02899932861328,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.7975070476532, 0.0, -0.60330957174301, 0.0), Vector4f.new(-0.1178093701601, 0.98074913024902, -0.15573063492775, 0.0), Vector4f.new(0.59169548749924, 0.19527181982994, 0.78215426206589, 0.0), Vector4f.new(73.84098815918, -13.968817710876, -33.182830810547, 1.0))",
+        "name": "AdaPathDownSewersDoorPassage"
+    },
+    "AdaPathDownSewersDoorPassageEntry": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(68.048530578613, -15.503643035889, -34.50511932373)",
+                "radius": 2.430000066757202
+            }
+        ],
+        "follow_player": false,
+        "fov": 80.0,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.11824533343315, 5.5879354476929e-09, 0.99298453330994, 0.0), Vector4f.new(0.089990578591824, 0.99588495492935, 0.010716140270233, 0.0), Vector4f.new(-0.98889827728271, 0.090626366436481, -0.11775875091553, 0.0), Vector4f.new(63.661659240723, -14.65936088562, -34.553089141846, 1.0))",
+        "name": "AdaPathDownSewersDoorPassageEntry"
+    },
+    "AdaPathDownSewersFork0": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(104.56504058838, -13.104707717896, -50.981941223145)",
+                "radius": 1.9800000190734863
+            }
+        ],
+        "follow_player": false,
+        "fov": 81.8290023803711,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.9891956448555, 3.7252902984619e-09, 0.14660000801086, 0.0), Vector4f.new(0.024859985336661, 0.98551696538925, 0.16774493455887, 0.0), Vector4f.new(-0.14447675645351, 0.16957706212997, -0.97486913204193, 0.0), Vector4f.new(103.89727020264, -11.446006774902, -55.276359558105, 1.0))",
+        "name": "AdaPathDownSewersFork0"
+    },
+    "AdaPathScaffoldSewerEntrance1": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(86.997779846191, -9.8170127868652, -53.437339782715)",
+                "radius": 3.0199999809265137
+            }
+        ],
+        "follow_player": false,
+        "fov": 74.82878875732422,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.053803108632565, -7.9162418842316e-09, 0.99855160713196, 0.0), Vector4f.new(0.13661804795265, 0.99059647321701, 0.007361157797277, 0.0), Vector4f.new(-0.98916172981262, 0.13681621849537, -0.05329717323184, 0.0), Vector4f.new(82.726547241211, -8.0069904327393, -54.251224517822, 1.0))",
+        "name": "AdaPathScaffoldSewerEntrance1"
+    },
+    "names": [
+        "AdaPathDownSewers",
+        "AdaPathDownSewers0",
+        "AdaPathDownSewers1",
+        "AdaPathDownSewersBend",
+        "AdaPathDownSewersBendContinue",
+        "AdaPathDownSewersBendContinue0",
+        "AdaPathDownSewersBendContinue1",
+        "AdaPathDownSewersContinue",
+        "AdaPathDownSewersContinue0",
+        "AdaPathDownSewersContinueCorner",
+        "AdaPathDownSewersContinueDeadEnd",
+        "AdaPathDownSewersDoorPassage",
+        "AdaPathDownSewersDoorPassageEntry",
+        "AdaPathDownSewersFork0",
+        "AdaPathScaffoldSewerEntrance1"
+    ]
+}

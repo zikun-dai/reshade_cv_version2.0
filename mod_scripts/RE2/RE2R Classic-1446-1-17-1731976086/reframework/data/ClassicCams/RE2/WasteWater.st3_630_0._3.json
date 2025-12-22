@@ -1,0 +1,106 @@
+{
+    "SecretPassageForkRExit": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-33.542335510254, -42.294136047363, -10.834592819214)",
+                "radius": 2.359999895095825
+            }
+        ],
+        "follow_player": false,
+        "fov": 75.00545501708984,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.98998534679413, 3.7252902984619e-09, -0.14117202162743, 0.0), Vector4f.new(-0.034603297710419, 0.96949404478073, 0.24265983700752, 0.0), Vector4f.new(0.13686543703079, 0.24511466920376, -0.95978498458862, 0.0), Vector4f.new(-32.90576171875, -40.367622375488, -15.321660041809, 1.0))",
+        "name": "SecretPassageForkRExit"
+    },
+    "SecretPassageForkRExit0": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-33.361328125, -42.277694702148, -16.694526672363)",
+                "radius": 3.2699999809265137
+            }
+        ],
+        "follow_player": false,
+        "fov": 75.00545501708984,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.96411544084549, -1.4901161193848e-08, 0.26548367738724, 0.0), Vector4f.new(0.081494726240635, 0.95172017812729, -0.29595163464546, 0.0), Vector4f.new(-0.25266617536545, 0.30696702003479, 0.91756820678711, 0.0), Vector4f.new(-34.339359283447, -39.640727996826, -11.357365608215, 1.0))",
+        "name": "SecretPassageForkRExit0"
+    },
+    "SecretPassageForkRExit1": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-32.868228912354, -42.277694702148, -20.493808746338)",
+                "radius": 3.2699999809265137
+            }
+        ],
+        "follow_player": false,
+        "fov": 75.00545501708984,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.64958912134171, 0.0, 0.76028543710709, 0.0), Vector4f.new(0.18760231137276, 0.969078540802, 0.1602877676487, 0.0), Vector4f.new(-0.73677635192871, 0.24675251543522, -0.6295028924942, 0.0), Vector4f.new(-37.313278198242, -39.704235076904, -25.476835250854, 1.0))",
+        "name": "SecretPassageForkRExit1"
+    },
+    "UpperAreaBridge": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-26.783309936523, -42.257694244385, -31.108787536621)",
+                "radius": 3.2699999809265137
+            }
+        ],
+        "follow_player": false,
+        "fov": 75.00545501708984,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.81532120704651, 0.0, 0.57900869846344, 0.0), Vector4f.new(0.24877220392227, 0.9029945731163, -0.35030433535576, 0.0), Vector4f.new(-0.52284169197083, 0.42965188622475, 0.73623067140579, 0.0), Vector4f.new(-31.800659179688, -38.199283599854, -24.710109710693, 1.0))",
+        "name": "UpperAreaBridge"
+    },
+    "UpperAreaBridgeCross": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-31.177549362183, -42.257694244385, -30.315242767334)",
+                "radius": 3.2699999809265137
+            }
+        ],
+        "follow_player": false,
+        "fov": 75.00545501708984,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.89803540706635, 7.4505805969238e-09, -0.43992313742638, 0.0), Vector4f.new(-0.079086765646935, 0.98370790481567, -0.16144344210625, 0.0), Vector4f.new(0.43275585770607, 0.17977401614189, 0.8834046125412, 0.0), Vector4f.new(-29.383007049561, -39.582885742188, -23.585554122925, 1.0))",
+        "name": "UpperAreaBridgeCross"
+    },
+    "UpperAreaCorner": {
+        "col_idx": 2,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-27.877033233643, -42.277694702148, -21.228679656982)",
+                "radius": 3.2699999809265137
+            },
+            {
+                "col_pos": "Vector3f.new(-24.437528610229, -42.277694702148, -20.799028396606)",
+                "radius": 3.2699999809265137
+            }
+        ],
+        "follow_player": false,
+        "fov": 75.00545501708984,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.89195108413696, 0.0, -0.4521327316761, 0.0), Vector4f.new(-0.15220677852631, 0.94163262844086, 0.30026841163635, 0.0), Vector4f.new(0.42574292421341, 0.33664232492447, -0.83989018201828, 0.0), Vector4f.new(-23.139965057373, -39.509918212891, -30.734638214111, 1.0))",
+        "name": "UpperAreaCorner"
+    },
+    "UpperAreaToBridge": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-22.546306610107, -42.27282333374, -27.26265335083)",
+                "radius": 3.2699999809265137
+            }
+        ],
+        "follow_player": false,
+        "fov": 75.00545501708984,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.85068190097809, 0.0, -0.52568078041077, 0.0), Vector4f.new(-0.14164941012859, 0.96301186084747, -0.22922383248806, 0.0), Vector4f.new(0.50623691082001, 0.26945894956589, 0.81921660900116, 0.0), Vector4f.new(-22.308071136475, -40.149703979492, -20.666223526001, 1.0))",
+        "name": "UpperAreaToBridge"
+    },
+    "names": [
+        "SecretPassageForkRExit",
+        "SecretPassageForkRExit0",
+        "SecretPassageForkRExit1",
+        "UpperAreaBridge",
+        "UpperAreaBridgeCross",
+        "UpperAreaCorner",
+        "UpperAreaToBridge"
+    ]
+}

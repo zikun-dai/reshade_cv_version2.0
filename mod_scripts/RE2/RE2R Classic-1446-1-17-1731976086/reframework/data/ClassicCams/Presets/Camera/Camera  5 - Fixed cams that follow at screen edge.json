@@ -1,0 +1,7 @@
+{
+    "always_follow_player": true,
+    "follow_cam_do_edges": true,
+    "follow_cam_edge_limit": 0.75,
+    "follow_cam_randomize": false,
+    "desc": "The camera will follow only when you are almost past the edge of the fixed camera frame"
+}

@@ -1,0 +1,6 @@
+{
+    "always_follow_player": true,
+    "follow_cam_do_edges": false,
+    "follow_cam_randomize": false,
+    "desc": "The camera will follow the player's center"
+}

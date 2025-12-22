@@ -1,0 +1,359 @@
+{
+    "AlleyEntrance": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(46.22505569458, -1.4305114746094e-06, 68.767219543457)",
+                "radius": 4.5
+            }
+        ],
+        "custom_func_code": "",
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.9150602221489, 4.4703483581543e-08, -0.40331727266312, 0.0), Vector4f.new(-0.12282113730907, 0.95250356197357, -0.27866077423096, 0.0), Vector4f.new(0.38416117429733, 0.30452728271484, 0.87159818410873, 0.0), Vector4f.new(48.805362701416, 3.0906779766083, 75.688934326172, 1.0))",
+        "name": "AlleyEntrance",
+        "override_pl_light": true,
+        "pl_light_str": 1.940000057220459
+    },
+    "Blindspot": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(19.465188980103, -0.20000076293945, 78.670463562012)",
+                "radius": 2.940000057220459
+            }
+        ],
+        "custom_func_code": "",
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.015823572874069, 6.5263350279565e-10, -0.9998751282692, 0.0), Vector4f.new(-0.21139088273048, 0.97739589214325, -0.0033453665673733, 0.0), Vector4f.new(0.97727382183075, 0.21141734719276, 0.015465885400772, 0.0), Vector4f.new(26.791408538818, 2.2261035442352, 78.640762329102, 1.0))",
+        "name": "Blindspot",
+        "override_pl_light": true,
+        "pl_light_str": 5.0
+    },
+    "BlueCar": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(21.719223022461, -0.19999980926514, 84.354988098145)",
+                "radius": 5.0
+            }
+        ],
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.60311472415924, 1.4901161193848e-08, -0.79765492677689, 0.0), Vector4f.new(-0.25163584947586, 0.94893568754196, -0.19026425480843, 0.0), Vector4f.new(0.7569232583046, 0.31546959280968, 0.57231706380844, 0.0), Vector4f.new(28.750001907349, 2.9902110099792, 87.089279174805, 1.0))",
+        "name": "BlueCar",
+        "override_pl_light": true,
+        "pl_light_str": 5.0
+    },
+    "Cars": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(40.004024505615, -0.19999933242798, 82.631591796875)",
+                "radius": 4.329999923706055
+            }
+        ],
+        "custom_func_code": "",
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.91629201173782, -1.862645149231e-08, 0.40051120519638, 0.0), Vector4f.new(0.14077569544315, 0.93619161844254, 0.32206749916077, 0.0), Vector4f.new(-0.37495532631874, 0.35148999094963, -0.85782492160797, 0.0), Vector4f.new(36.186210632324, 3.1907877922058, 74.880462646484, 1.0))",
+        "name": "Cars",
+        "override_pl_light": true,
+        "pl_light_str": 3.0
+    },
+    "CrashCar": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(52.031326293945, -0.19999980926514, 88.09912109375)",
+                "radius": 2.880000114440918
+            }
+        ],
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.22742825746536, 3.733021003427e-09, 0.97379487752914, 0.0), Vector4f.new(0.13805364072323, 0.98989981412888, -0.032242201268673, 0.0), Vector4f.new(-0.96395933628082, 0.14176870882511, 0.22513115406036, 0.0), Vector4f.new(45.354202270508, 2.3504238128662, 90.848388671875, 1.0))",
+        "name": "CrashCar",
+        "override_pl_light": true,
+        "pl_light_str": 3.0
+    },
+    "DeadEnd": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(53.290088653564, -0.19999933242798, 85.47770690918)",
+                "radius": 9.789999961853027
+            }
+        ],
+        "custom_func_code": "",
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.59427613019943, 7.9162418842316e-09, 0.80426144599915, 0.0), Vector4f.new(0.19309391081333, 0.97075098752975, 0.14267882704735, 0.0), Vector4f.new(-0.78073763847351, 0.24008844792843, -0.57689410448074, 0.0), Vector4f.new(43.978584289551, 3.7742109298706, 78.582908630371, 1.0))",
+        "name": "DeadEnd",
+        "override_pl_light": true,
+        "pl_light_str": 4.010000228881836
+    },
+    "DeadEnd0": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(46.286808013916, 0.28782916069031, 92.045417785645)",
+                "radius": 9.789999961853027
+            }
+        ],
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.90494793653488, 3.7252902984619e-09, -0.42552307248116, 0.0), Vector4f.new(-0.17242687940598, 0.91422271728516, 0.3666957616806, 0.0), Vector4f.new(0.38902279734612, 0.40521201491356, -0.82732403278351, 0.0), Vector4f.new(50.626300811768, 4.7876052856445, 82.102813720703, 1.0))",
+        "name": "DeadEnd0",
+        "override_pl_light": true,
+        "pl_light_str": 3.0
+    },
+    "DeadEnd2": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(60.046779632568, -0.19999980926514, 87.283432006836)",
+                "radius": 9.789999961853027
+            }
+        ],
+        "fov": 94.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.68210178613663, 2.9802322387695e-08, 0.7312570810318, 0.0), Vector4f.new(0.17125660181046, 0.97218972444534, -0.15974467992783, 0.0), Vector4f.new(-0.71092051267624, 0.23419487476349, 0.66313225030899, 0.0), Vector4f.new(55.496536254883, 2.0801954269409, 92.010414123535, 1.0))",
+        "name": "DeadEnd2",
+        "override_pl_light": true,
+        "pl_light_str": 3.0
+    },
+    "DeadEnd3": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(63.734432220459, -0.20000004768372, 87.254554748535)",
+                "radius": 9.789999961853027
+            }
+        ],
+        "fov": 94.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.087183117866516, -4.8421497922391e-09, 0.99619233608246, 0.0), Vector4f.new(0.20654591917992, 0.97826987504959, -0.01807614415884, 0.0), Vector4f.new(-0.97454500198364, 0.20733536779881, 0.08528858423233, 0.0), Vector4f.new(58.040256500244, 1.5615956783295, 87.396270751953, 1.0))",
+        "name": "DeadEnd3",
+        "override_pl_light": true,
+        "pl_light_str": 3.0
+    },
+    "Havok": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(33.197925567627, -0.19999980926514, 78.950386047363)",
+                "radius": 4.329999923706055
+            }
+        ],
+        "custom_func_code": "",
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.61618745326996, -4.0978193283081e-08, 0.78759980201721, 0.0), Vector4f.new(0.18091002106667, 0.97326201200485, -0.1415369361639, 0.0), Vector4f.new(-0.76654094457626, 0.22969794273376, 0.59971177577972, 0.0), Vector4f.new(26.509292602539, 2.3575336933136, 83.365501403809, 1.0))",
+        "name": "Havok",
+        "override_pl_light": true,
+        "pl_light_str": 3.0
+    },
+    "Havok0": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(37.33810043335, -0.20000004768372, 81.607192993164)",
+                "radius": 4.329999923706055
+            }
+        ],
+        "cust_fn_stopped": true,
+        "custom_func_code": "local smoke_vfx2 = scene:call(\"findGameObject(System.String)\", \"epv_0002_opening_epvs_fire_env_0006_03\")\nif smoke_vfx2 then smoke_vfx2:set_DrawSelf(false) end\nStop()",
+        "do_custom_func": true,
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.6056279540062, -4.7450612328248e-09, -0.79574823379517, 0.0), Vector4f.new(-0.28383332490921, 0.93422383069992, 0.21601992845535, 0.0), Vector4f.new(0.74340695142746, 0.3566874563694, -0.56579208374023, 0.0), Vector4f.new(43.921619415283, 2.6847553253174, 75.708061218262, 1.0))",
+        "name": "Havok0",
+        "override_pl_light": true,
+        "pl_light_str": 3.0
+    },
+    "HavokNook": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(37.690315246582, 0.28542900085449, 76.66845703125)",
+                "radius": 2.7100000381469727
+            }
+        ],
+        "custom_func_code": "",
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.28433725237846, -3.1146782930591e-09, 0.95872437953949, 0.0), Vector4f.new(0.043428488075733, 0.99897354841232, -0.012879967689514, 0.0), Vector4f.new(-0.95774018764496, 0.04529820010066, 0.28404533863068, 0.0), Vector4f.new(33.652374267578, 1.2423084974289, 79.620964050293, 1.0))",
+        "name": "HavokNook",
+        "override_pl_light": true,
+        "pl_light_str": 3.0
+    },
+    "Scene": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(44.700283050537, -0.19999885559082, 87.77823638916)",
+                "radius": 8.649999618530273
+            }
+        ],
+        "dead_zone_sz": 0.20999999344348907,
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.53497391939163, -3.7252902984619e-08, -0.84486854076385, 0.0), Vector4f.new(-0.3107048869133, 0.92992264032364, -0.19673950970173, 0.0), Vector4f.new(0.78566241264343, 0.36775529384613, 0.49748423695564, 0.0), Vector4f.new(52.252449035645, 5.4047966003418, 91.696769714355, 1.0))",
+        "name": "Scene",
+        "override_pl_light": true,
+        "pl_light_str": 4.0
+    },
+    "Start": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(18.61528968811, -0.20000028610229, 82.051940917969)",
+                "radius": 2.680000066757202
+            }
+        ],
+        "cust_fn_stopped": true,
+        "custom_func_code": "",
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.9238543510437, 0.0, -0.38274449110031, 0.0), Vector4f.new(-0.071180567145348, 0.98255461454391, -0.17181301116943, 0.0), Vector4f.new(0.37606739997864, 0.18597415089607, 0.90773731470108, 0.0), Vector4f.new(19.951097488403, 1.9022042751312, 86.375396728516, 1.0))",
+        "name": "Start",
+        "override_pl_light": true,
+        "pl_light_str": 4.0
+    },
+    "TankerOverview": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(13.513731002808, -0.19999933242798, 80.941932678223)",
+                "radius": 8.1899995803833
+            }
+        ],
+        "custom_func_code": "",
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.66482079029083, 3.2596290111542e-08, -0.74700278043747, 0.0), Vector4f.new(-0.40598028898239, 0.83942276239395, 0.36131617426872, 0.0), Vector4f.new(0.62705117464066, 0.54347896575928, -0.55806571245193, 0.0), Vector4f.new(23.150287628174, 7.3020114898682, 72.883644104004, 1.0))",
+        "name": "TankerOverview",
+        "override_pl_light": true,
+        "pl_light_str": 4.0
+    },
+    "ToAlley": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(47.325206756592, -0.20000028610229, 74.795257568359)",
+                "radius": 9.789999961853027
+            }
+        ],
+        "custom_func_code": "",
+        "dead_zone_sz": 0.5049999952316284,
+        "follow_loose": true,
+        "follow_no_yaw": true,
+        "follow_player": true,
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.87055063247681, 2.2351741790771e-08, -0.4920794069767, 0.0), Vector4f.new(-0.16672597825527, 0.94085156917572, -0.29495915770531, 0.0), Vector4f.new(0.46297359466553, 0.3388192653656, 0.81905889511108, 0.0), Vector4f.new(52.990097045898, 6.0389037132263, 84.944625854492, 1.0))",
+        "name": "ToAlley",
+        "override_pl_light": true,
+        "pl_light_str": 2.75
+    },
+    "WhiteCar": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(22.884704589844, -0.20000076293945, 81.114730834961)",
+                "radius": 7.260000228881836
+            }
+        ],
+        "custom_func_code": "local smoke_vfx = scene:call(\"findGameObject(System.String)\", \"epv_0002_opening_epvs_fire_env_0006\")\nif smoke_vfx then smoke_vfx:set_DrawSelf(false) end\nStop()",
+        "do_custom_func": true,
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.19796968996525, -2.9802322387695e-08, 0.98020803928375, 0.0), Vector4f.new(0.24842277169228, 0.96735149621964, -0.050173193216324, 0.0), Vector4f.new(-0.94820564985275, 0.25343888998032, 0.19150626659393, 0.0), Vector4f.new(15.697919845581, 3.0715141296387, 82.457366943359, 1.0))",
+        "name": "WhiteCar",
+        "override_pl_light": true,
+        "pl_light_str": 3.0
+    },
+    "ZombieFeasting": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(27.207178115845, -0.20000028610229, 75.517272949219)",
+                "radius": 4.829999923706055
+            }
+        ],
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.93367296457291, -2.9802322387695e-08, -0.3581268787384, 0.0), Vector4f.new(-0.013766318559647, 0.99926090240479, 0.035890161991119, 0.0), Vector4f.new(0.35786217451096, 0.038439780473709, -0.93298292160034, 0.0), Vector4f.new(30.357053756714, 0.9072699546814, 70.769844055176, 1.0))",
+        "name": "ZombieFeasting",
+        "override_pl_light": true,
+        "pl_light_str": 3.0
+    },
+    "ZombieFeasting0": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(29.928447723389, 0.05768871307373, 70.491241455078)",
+                "radius": 4.829999923706055
+            }
+        ],
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.88968324661255, -8.4762632468482e-09, 0.456578373909, 0.0), Vector4f.new(0.095876485109329, 0.97770369052887, -0.18682380020618, 0.0), Vector4f.new(-0.44639831781387, 0.20998913049698, 0.86984664201736, 0.0), Vector4f.new(24.109720230103, 3.6472635269165, 80.163116455078, 1.0))",
+        "name": "ZombieFeasting0",
+        "override_pl_light": true,
+        "pl_light_str": 3.0
+    },
+    "ZombieFeastingNook": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(24.867660522461, -9.5367431640625e-07, 72.454978942871)",
+                "radius": 3.5
+            }
+        ],
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.48276898264885, -3.7252902984619e-08, -0.87574779987335, 0.0), Vector4f.new(-0.32221761345863, 0.92985183000565, -0.17762729525566, 0.0), Vector4f.new(0.81431573629379, 0.36793425679207, 0.44890359044075, 0.0), Vector4f.new(29.886068344116, 3.2186923027039, 74.950477600098, 1.0))",
+        "name": "ZombieFeastingNook",
+        "override_pl_light": true,
+        "pl_light_str": 3.0
+    },
+    "ZombieWakeup": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(46.661220550537, -9.5367431640625e-07, 62.852001190186)",
+                "radius": 4.5
+            }
+        ],
+        "custom_func_code": "",
+        "dead_zone_sz": 0.12999999523162842,
+        "follow_loose": true,
+        "follow_player": true,
+        "follow_twist": true,
+        "fov": 74.45170593261719,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.45305541157722, -0.23697055876255, -0.85941004753113, 0.0), Vector4f.new(-0.75477123260498, 0.61497056484222, 0.2283232063055, 0.0), Vector4f.new(0.47440606355667, 0.75210118293762, -0.45747441053391, 0.0), Vector4f.new(49.138748168945, 5.4095845222473, 58.549007415771, 1.0))",
+        "name": "ZombieWakeup",
+        "override_pl_light": true,
+        "pl_light_str": 1.4800000190734863
+    },
+    "ZombieWakeupPast": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(43.703506469727, 4.7683715820312e-07, 59.162662506104)",
+                "radius": 4.5
+            }
+        ],
+        "fov": 75.5260009765625,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.18411779403687, 4.0978193283081e-08, -0.98290407657623, 0.0), Vector4f.new(-0.46385055780411, 0.88164222240448, -0.086888551712036, 0.0), Vector4f.new(0.8665696978569, 0.47191846370697, 0.16232605278492, 0.0), Vector4f.new(50.417625427246, 3.6963911056519, 60.255611419678, 1.0))",
+        "name": "ZombieWakeupPast",
+        "override_pl_light": true,
+        "pl_light_str": 1.4800000190734863
+    },
+    "names": [
+        "AlleyEntrance",
+        "Blindspot",
+        "BlueCar",
+        "Cars",
+        "CrashCar",
+        "DeadEnd",
+        "DeadEnd0",
+        "DeadEnd2",
+        "DeadEnd3",
+        "Havok",
+        "Havok0",
+        "HavokNook",
+        "Scene",
+        "Start",
+        "TankerOverview",
+        "ToAlley",
+        "WhiteCar",
+        "ZombieFeasting",
+        "ZombieFeasting0",
+        "ZombieFeastingNook",
+        "ZombieWakeup",
+        "ZombieWakeupPast"
+    ]
+}

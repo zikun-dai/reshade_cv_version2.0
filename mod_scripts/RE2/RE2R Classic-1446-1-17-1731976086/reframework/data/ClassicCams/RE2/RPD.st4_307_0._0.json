@@ -1,0 +1,60 @@
+{
+    "InterrogationRoom2": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(9.1161413192749, 0.0, -21.378305435181)",
+                "radius": 3.6500000953674316
+            }
+        ],
+        "follow_player": false,
+        "fov": 82.80000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.36514163017273, 7.4505805969238e-09, -0.93095219135284, 0.0), Vector4f.new(-0.10566803812981, 0.99353736639023, 0.041445553302765, 0.0), Vector4f.new(0.92493581771851, 0.11350537836552, -0.36278188228607, 0.0), Vector4f.new(13.682336807251, 1.8125171661377, -21.534898757935, 1.0))",
+        "name": "InterrogationRoom2"
+    },
+    "InterrogationRoomBack": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(6.4276704788208, 0.0, -19.762630462646)",
+                "radius": 3.6500000953674316
+            }
+        ],
+        "follow_player": false,
+        "fov": 82.80000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.35779118537903, 0.0, -0.93380153179169, 0.0), Vector4f.new(-0.13880425691605, 0.98889070749283, -0.053183615207672, 0.0), Vector4f.new(0.9234277009964, 0.14864426851273, 0.35381641983986, 0.0), Vector4f.new(11.183905601501, 1.8296879529953, -17.520124435425, 1.0))",
+        "name": "InterrogationRoomBack"
+    },
+    "InterrogationRoomEntry": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(13.747059822083, 0.025364398956299, -21.32723236084)",
+                "radius": 3.6500000953674316
+            }
+        ],
+        "follow_player": false,
+        "fov": 82.80000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.23167826235294, -7.4505805969238e-09, 0.97279238700867, 0.0), Vector4f.new(0.054374113678932, 0.99843668937683, -0.012949597090483, 0.0), Vector4f.new(-0.97127163410187, 0.055894881486893, 0.2313160598278, 0.0), Vector4f.new(7.3087778091431, 1.5673856735229, -17.676210403442, 1.0))",
+        "name": "InterrogationRoomEntry"
+    },
+    "InterrogationRoomMirror": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(10.296070098877, 0.065571308135986, -17.284269332886)",
+                "radius": 3.6500000953674316
+            }
+        ],
+        "follow_player": false,
+        "fov": 82.80000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.91659641265869, 2.9802322387695e-08, -0.39981392025948, 0.0), Vector4f.new(-0.22704613208771, 0.82311153411865, 0.52051657438278, 0.0), Vector4f.new(0.32909137010574, 0.56787991523743, -0.75446105003357, 0.0), Vector4f.new(11.895687103271, 3.6522605419159, -21.888460159302, 1.0))",
+        "name": "InterrogationRoomMirror"
+    },
+    "names": [
+        "InterrogationRoom2",
+        "InterrogationRoomBack",
+        "InterrogationRoomEntry",
+        "InterrogationRoomMirror"
+    ]
+}

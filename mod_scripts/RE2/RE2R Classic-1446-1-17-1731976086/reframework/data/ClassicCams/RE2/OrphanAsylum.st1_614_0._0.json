@@ -1,0 +1,32 @@
+{
+    "RunFromXToElevator": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(63.967433929443, -17.525732040405, -161.70967102051)",
+                "radius": 3.009999990463257
+            }
+        ],
+        "follow_player": false,
+        "fov": 77.0,
+        "mat": "Matrix4x4f.new(Vector4f.new(0.97277736663818, -1.3133103493601e-09, 0.23174229264259, 0.0), Vector4f.new(0.088502585887909, 0.92420321702957, -0.3715046942234, 0.0), Vector4f.new(-0.21417705714703, 0.38190111517906, 0.89904403686523, 0.0), Vector4f.new(60.365459442139, -14.635583877563, -156.35345458984, 1.0))",
+        "name": "RunFromXToElevator"
+    },
+    "RunFromXToElevator0": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(57.541366577148, -17.525732040405, -160.8473815918)",
+                "radius": 3.009999990463257
+            }
+        ],
+        "follow_player": false,
+        "fov": 77.0,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.28884923458099, 1.4617398846895e-08, -0.95737457275391, 0.0), Vector4f.new(-0.29629883170128, 0.95090240240097, 0.089396245777607, 0.0), Vector4f.new(0.91036975383759, 0.30949103832245, -0.27466741204262, 0.0), Vector4f.new(64.073936462402, -14.721998214722, -162.68203735352, 1.0))",
+        "name": "RunFromXToElevator0"
+    },
+    "names": [
+        "RunFromXToElevator",
+        "RunFromXToElevator0"
+    ]
+}

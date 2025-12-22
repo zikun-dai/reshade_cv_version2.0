@@ -1,0 +1,8 @@
+{
+    "autoaim_all": false,
+    "autoaim_hitscan": false,
+    "do_autoaim": true,
+    "lock_on_type": 1,
+    "autoaim_behind": false,
+    "desc": "Your weapon will autoaim at the enemy's chest only while first drawing it"
+}

@@ -1,0 +1,19 @@
+{
+    "CentralElevatorInside": {
+        "col_idx": 1,
+        "colliders": [
+            {
+                "col_pos": "Vector3f.new(-0.091353110969067, 0.019906759262085, 0.048765070736408)",
+                "radius": 2.130000114440918
+            }
+        ],
+        "follow_player": true,
+        "fov": 94.80000305175781,
+        "mat": "Matrix4x4f.new(Vector4f.new(-0.29845970869064, 1.3038516044617e-08, -0.95442229509354, 0.0), Vector4f.new(-0.23980364203453, 0.96792089939117, 0.074989564716816, 0.0), Vector4f.new(0.92380523681641, 0.25125527381897, -0.28888532519341, 0.0), Vector4f.new(1.8462790250778, 2.1511526107788, -1.0117123126984, 1.0))",
+        "name": "CentralElevatorInside",
+        "parent_name": "Cage"
+    },
+    "names": [
+        "CentralElevatorInside"
+    ]
+}

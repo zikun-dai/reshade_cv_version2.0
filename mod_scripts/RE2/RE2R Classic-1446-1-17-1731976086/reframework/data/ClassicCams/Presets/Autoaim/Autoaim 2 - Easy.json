@@ -1,0 +1,8 @@
+{
+    "autoaim_all": true,
+    "autoaim_hitscan": false,
+    "do_autoaim": true,
+    "lock_on_type": 2,
+    "autoaim_behind": true,
+    "desc": "Your weapon will continuously autoaim at the enemy's chest, head or legs depending on where you aim"
+}
