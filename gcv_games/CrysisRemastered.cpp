@@ -1,5 +1,5 @@
 // Copyright (C) 2022 Jason Bunk
-#include "Crysis.h"
+#include "CrysisRemastered.h"
 #include "gcv_utils/memread.h"
 #include <cstdint>
 #include <cmath>

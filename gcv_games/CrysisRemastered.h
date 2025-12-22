@@ -16,6 +16,4 @@ public:
 	virtual bool get_camera_matrix(CamMatrixData& rcam, std::string& errstr) override;
 };
 
-REGISTER_GAME_INTERFACE(GameCrysis, 0, "crysis.exe");
-REGISTER_GAME_INTERFACE(GameCrysis, 1, "crysis64.exe");
-REGISTER_GAME_INTERFACE(GameCrysis, 2, "crysisremastered.exe");
+REGISTER_GAME_INTERFACE(GameCrysis, 0, "crysisremastered.exe");
