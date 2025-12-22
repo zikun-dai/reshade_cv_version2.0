@@ -6,6 +6,9 @@
 #include <reshade.hpp>
 #include <cstdio>
 
+static uint64_t g_crysis_translation_log_counter = 0;
+static int g_crysis_translation_log_interval_frames = 3;
+
 std::string GameCrysis::gamename_verbose() const { return "Crysis2008_GOG_DX10_x64"; } // tested for this build
 
 std::string GameCrysis::camera_dll_name() const { return ""; }
@@ -99,6 +102,20 @@ bool GameCrysis::get_camera_matrix(CamMatrixData& rcam, std::string& errstr) {
 	// 		static_cast<double>(cambuf[row * 4 + 2]), static_cast<double>(cambuf[row * 4 + 3]));
 	// 	reshade::log_message(reshade::log_level::info, linebuf);
 	// }
+
+	++g_crysis_translation_log_counter;
+	if (g_crysis_translation_log_interval_frames > 0 &&
+		(g_crysis_translation_log_counter % static_cast<uint64_t>(g_crysis_translation_log_interval_frames) == 0)) {
+		const CamMatrix& M = rcam.extrinsic_cam2world;
+		char translation_log[160];
+		std::snprintf(translation_log, sizeof(translation_log),
+			"[Crysis] translation (frame %llu): %.6f %.6f %.6f",
+			static_cast<unsigned long long>(g_crysis_translation_log_counter),
+			static_cast<double>(M(0, cam_matrix_position_column)),
+			static_cast<double>(M(1, cam_matrix_position_column)),
+			static_cast<double>(M(2, cam_matrix_position_column)));
+		reshade::log_message(reshade::log_level::info, translation_log);
+	}
 
 	return true;
 }
