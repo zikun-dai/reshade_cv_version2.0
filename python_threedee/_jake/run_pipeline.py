@@ -4,7 +4,7 @@ import sys
 
 # ====== User configuration ======
 SCRIPT_DIR = r"C:\Users\user\Desktop\project\gamehack\reshade_cv_version2.0\python_threedee"
-DATA_DIR = r"D:\SteamLibrary\steamapps\common\RESIDENT EVIL 2  BIOHAZARD RE2\cv_saved\actions_2025-11-21_200679704"
+DATA_DIR = r"D:\SteamLibrary\steamapps\common\RESIDENT EVIL 2  BIOHAZARD RE2\cv_saved\actions_2025-12-20_2232229760"
 
 # If you want to force a specific Python from a conda env:
 # PYTHON_EXE = r"C:\Users\user\miniconda3\envs\yourenv\python.exe"
@@ -36,7 +36,7 @@ def main():
         os.path.join(SCRIPT_DIR, "load_point_cloud_ue.py"),  # load_point_cloud.py  load_point_cloud_re2.py
         depth_pattern,
         "-max", "50.0",
-        "-ss", "50",
+        "-ss", "5",
         "-o", output_path,
     ]
     run(cmd2, cwd=DATA_DIR)

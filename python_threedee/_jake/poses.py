@@ -4,7 +4,7 @@ import glob, os
 import json
 
 # ====== User configuration ======
-DATA_DIR = r"D:\SteamLibrary\steamapps\common\RESIDENT EVIL 2  BIOHAZARD RE2\cv_saved\actions_2025-11-21_169375118"
+DATA_DIR = r"C:\_Relax\GOG Galaxy\Games\Crysis\Bin64\cv_saved\actions_2025-12-19_480428794"
 # ================================
 
 # hyperparameter
@@ -30,13 +30,15 @@ global_z_color[:,2] = 1
 
 # load camera's RT matrix
 c2ws = []
+frame_idxs = []
 json_pattern = os.path.join(DATA_DIR, "*.json")
 json_paths = sorted(glob.glob(json_pattern))
 
 for json_path in json_paths:
     with open(json_path) as f:
-        c2w = np.array(json.load(f)['extrinsic_cam2world']).reshape(3, 4)
-        c2ws.append(c2w)
+        data = json.load(f)
+    c2ws.append(np.asarray(data["extrinsic_cam2world"], dtype=np.float32).reshape(3, 4))
+    frame_idxs.append(data.get("frame_idx"))
 c2ws = np.array(c2ws)
 print(c2ws.shape)
 # c2ws[:, :3, 3] /= 100
@@ -45,7 +47,9 @@ print(c2ws.shape)
 camera_centers = c2ws[:,:3,3] / scale_factor
 camera_centers_color = np.zeros(camera_centers.shape)
 
-camera_xs = np.linspace(0, 0.1, N_camera).reshape(N_camera, 1, 1)
+axis_len = 0.1
+
+camera_xs = np.linspace(0, axis_len, N_camera).reshape(N_camera, 1, 1)
 camera_x_dirs = c2ws[:,:3,0]
 camera_x_dirs = camera_x_dirs.reshape(1, *camera_x_dirs.shape)
 camera_xs = camera_xs * camera_x_dirs + camera_centers[None]
@@ -53,7 +57,7 @@ camera_xs = camera_xs.reshape(-1, 3)
 camera_xs_color = np.zeros(camera_xs.shape)
 camera_xs_color[:,0] = 1
 
-camera_ys = np.linspace(0, 0.1, N_camera).reshape(N_camera, 1, 1)
+camera_ys = np.linspace(0, axis_len, N_camera).reshape(N_camera, 1, 1)
 camera_y_dirs = c2ws[:,:3,1]
 camera_y_dirs = camera_y_dirs.reshape(1, *camera_y_dirs.shape)
 camera_ys = camera_ys * camera_y_dirs + camera_centers[None]
@@ -61,7 +65,7 @@ camera_ys = camera_ys.reshape(-1, 3)
 camera_ys_color = np.zeros(camera_ys.shape)
 camera_ys_color[:,1] = 1
 
-camera_zs = np.linspace(0, 0.1, N_camera).reshape(N_camera, 1, 1)
+camera_zs = np.linspace(0, axis_len, N_camera).reshape(N_camera, 1, 1)
 camera_z_dirs = c2ws[:,:3,2]
 camera_z_dirs = camera_z_dirs.reshape(1, *camera_z_dirs.shape)
 camera_zs = camera_zs * camera_z_dirs + camera_centers[None]
@@ -92,9 +96,16 @@ app.initialize()
 
 vis = o3d.visualization.O3DVisualizer()
 vis.add_geometry("Points", pcd)
+camera_x_ends = camera_centers + axis_len * c2ws[:, :3, 0]
+camera_y_ends = camera_centers + axis_len * c2ws[:, :3, 1]
+camera_z_ends = camera_centers + axis_len * c2ws[:, :3, 2]
 
-for idx in range(0, len(camera_centers)):
-    vis.add_3d_label(pcd.points[idx], "{}".format(idx+1))
+add_label = vis.add_3d_label
+for idx, frame_idx in enumerate(frame_idxs):
+    label = str(frame_idx if frame_idx is not None else idx)
+    add_label(camera_x_ends[idx], label)
+    add_label(camera_y_ends[idx], label)
+    add_label(camera_z_ends[idx], label)
 vis.reset_camera_to_default()
 
 app.add_window(vis)

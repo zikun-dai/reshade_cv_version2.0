@@ -1,6 +1,8 @@
 import numpy as np
 from typing import Sequence
 
+#TODO:
+
 
 def is_valid_rotation_matrix(matrix: np.ndarray, tol: float = 1e-6) -> bool:
     """
@@ -26,19 +28,8 @@ def _build_matrix(values: Sequence[float]) -> np.ndarray:
     return np.asarray(values, dtype=float).reshape(3, 3)
 
 
-def test_is_valid_rotation_matrix() -> None:
-    """Unit tests for `is_valid_rotation_matrix` using representative matrices."""
-    # Identity is a trivial valid rotation matrix.
-    assert is_valid_rotation_matrix(np.eye(3))
 
-    # This matrix violates orthonormality/determinant=1; should be rejected.
-    invalid_matrix = _build_matrix(
-        [-0.007182, 0.989533, 0.144131, 0.0, -0.144135, 0.989558, 1.047198, 0.0, 0.0]
-    )
-    assert not is_valid_rotation_matrix(invalid_matrix)
-
-
-def main() -> None:
+def check_rotation_matrix() -> None:
     """Check whether the provided values form a valid rotation matrix."""
     values = (
         -0.007182,
@@ -54,6 +45,25 @@ def main() -> None:
     matrix = _build_matrix(values)
     print(is_valid_rotation_matrix(matrix))
 
+def main() -> None:
+    M_UE_to_CV = np.array([
+        [0, 1,  0],
+        [0, 0, -1],
+        [1, 0,  0]
+    ])
+    M_UE_to_CV_T = np.array([
+        [0, 0, 1],
+        [1, 0, 0],
+        [0,-1, 0]
+    ])
+    mat = np.array([
+        [0, 11, 21],
+        [1, 12, 22],
+        [2, 13, 23]
+    ])
+    # 计算 M_UE_to_CV @ mat @ M_UE_to_CV_T
+    result = M_UE_to_CV @ mat
+    print(result)
 
 if __name__ == "__main__":
     main()

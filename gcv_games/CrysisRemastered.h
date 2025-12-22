@@ -18,3 +18,4 @@ public:
 
 REGISTER_GAME_INTERFACE(GameCrysis, 0, "crysis.exe");
 REGISTER_GAME_INTERFACE(GameCrysis, 1, "crysis64.exe");
+REGISTER_GAME_INTERFACE(GameCrysis, 2, "crysisremastered.exe");

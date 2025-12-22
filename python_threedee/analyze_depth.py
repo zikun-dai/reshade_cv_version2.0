@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 np.set_printoptions(threshold=np.inf)
 
 # 你的 .npy 文件路径
-file_path = r"C:\Program Files (x86)\Steam\steamapps\common\Euro Truck Simulator 2\bin\win_x64\cv_saved\EuroTruckSimulator2_2025-10-27_122773412_depth.npy"
+file_path = r"D:\SteamLibrary\steamapps\common\Crysis Remastered\Bin64\cv_saved\Crysis_2025-12-11_144444266_depth.npy"
 try:
     # 加载 .npy 文件
     data = np.load(file_path)

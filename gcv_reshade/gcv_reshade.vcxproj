@@ -111,9 +111,9 @@
     <ClCompile Include="..\3rdparty\fpzip\version.cpp" />
     <ClCompile Include="..\3rdparty\fpzip\write.cpp" />
     <ClCompile Include="..\gcv_games\Control.cpp" />
-    <ClCompile Include="..\gcv_games\Crysis.cpp" />
     <ClCompile Include="..\gcv_games\Crysis2.cpp" />
     <ClCompile Include="..\gcv_games\Crysis3.cpp" />
+    <ClCompile Include="..\gcv_games\CrysisRemastered.cpp" />
     <ClCompile Include="..\gcv_games\Cyberpunk2077.cpp" />
     <ClCompile Include="..\gcv_games\DarkSoulsIII.cpp" />
     <ClCompile Include="..\gcv_games\DevilMayCry5.cpp" />
@@ -185,9 +185,9 @@
     <ClInclude Include="..\gcv_games\BlackMythWukong.h" />
     <ClInclude Include="..\gcv_games\Borderlands3.h" />
     <ClInclude Include="..\gcv_games\Control.h" />
-    <ClInclude Include="..\gcv_games\Crysis.h" />
     <ClInclude Include="..\gcv_games\Crysis2.h" />
     <ClInclude Include="..\gcv_games\Crysis3.h" />
+    <ClInclude Include="..\gcv_games\CrysisRemastered.h" />
     <ClInclude Include="..\gcv_games\Cyberpunk2077.h" />
     <ClInclude Include="..\gcv_games\DarkSoulsIII.h" />
     <ClInclude Include="..\gcv_games\DevilMayCry5.h" />

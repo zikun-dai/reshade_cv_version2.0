@@ -18,7 +18,7 @@ def hex_to_floats(hex_str: str):
 if __name__ == "__main__":
     # 示例：你可以把这串换成自己从 CE 复制出来的 16 进制
     hex_input = """
-    B7 6D 2B 42
+    FC 03 B2 44 DA 18 01 45 16 DE CB 42
     """
     result = hex_to_floats(hex_input)
     

@@ -91,6 +91,12 @@ def cam2world_to_cv_unchanged(cam2world, pose_scale=1.0):
     R_cv = cam2world[:, :3]  # 3x3旋转矩阵（UE系）
     t_cv = cam2world[:, 3]   # 3x1平移向量（UE系，未缩放）
 
+    R_cv_new = R_cv.copy()
+
+    # R_cv_new[:,0] = -R_cv[:,0]
+    R_cv_new[:,1] = R_cv[:,2]
+    R_cv_new[:,2] = -R_cv[:,1]
+
     # 4. 构造4x4 c2w矩阵
     c2w = np.eye(4, dtype=np.float64)
     c2w[:3, :3] = R_cv
@@ -138,7 +144,7 @@ def load_depth_and_meta(depthfile:str, and_rgb:bool):
             cam_data = json.load(f)
     
     # 3. 验证相机文件必要字段（两种文件统一验证标准）
-    required_keys = ['extrinsic_cam2world', 'fov_h_degrees']
+    required_keys = ['extrinsic_cam2world', 'fov_v_degrees']
     for k in required_keys:
         if k not in cam_data:
             print(f"[警告] {os.path.basename(cam_file)}缺少字段'{k}': {sorted(cam_data.keys())}")
@@ -176,7 +182,7 @@ def load_cloud_via_meta(depthfile:str,
     aspect_ratio = W / H
 
     # 1. 从相机数据读取参数（camera.json和meta.json结构一致）
-    fov_h_deg = float(cam_data['fov_h_degrees'])  # 垂直FOV
+    fov_h_deg = float(cam_data['fov_v_degrees'])  # 垂直FOV
     cam2world = np.array(cam_data['extrinsic_cam2world'], dtype=np.float64).reshape(3, 4)  # 3x4相机矩阵
     print("cam2world:\n", cam2world)
     # 2. 转换为OpenCV系c2w矩阵（与正确脚本对齐）
@@ -185,7 +191,7 @@ def load_cloud_via_meta(depthfile:str,
     print(f"[DEBUG] 帧 {depthbnam} 的c2w矩阵:\n{c2w}")
 
     # 3. 计算内参（用垂直FOV，与正确脚本逻辑一致）
-    fx, fy, cx, cy = make_K_from_fovx(fov_h_deg, W, H, aspect_ratio)
+    fx, fy, cx, cy = make_K_from_fovy(fov_h_deg, W, H, aspect_ratio)
     print(f"[DEBUG] 内参: fx={fx:.2f}, fy={fy:.2f}, cx={cx:.2f}, cy={cy:.2f}")
 
     # 4. 点云反投影

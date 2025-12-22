@@ -36,22 +36,14 @@ json_paths = sorted(glob.glob(json_pattern))
 for json_path in json_paths:
     with open(json_path) as f:
         c2w = np.array(json.load(f)['extrinsic_cam2world']).reshape(3, 4)
-        # c2ws.append(c2w)  默认是这一行代码
-        # 拆成 R 和 t
-        R_cv = c2w[:, :3]   # 3x3 旋转
-        t_cv = c2w[:, 3]    # 3x1 平移
-        
-        # 按照之前的规则：x 不变，y<-z，z<- -y
-        R_cv_new = R_cv.copy()
-        R_cv_new[:, 0] = R_cv[:, 0]
-        R_cv_new[:, 1] = R_cv[:, 2]
-        R_cv_new[:, 2] = -R_cv[:, 1]
-
-        # 再拼回 3x4（poses.py 只需要 3x4 就够了）
-        c2w_new = np.concatenate([R_cv_new, t_cv[:, None]], axis=1)
-
-        c2ws.append(c2w_new)
+        c2ws.append(c2w)
 c2ws = np.array(c2ws)
+rot = c2ws[:, :3, :3]
+rot_y = rot[:, :, 1].copy()
+rot[:, :, 1] = rot[:, :, 2]
+rot[:, :, 2] = rot_y
+rot[:, :, 2] *= -1
+c2ws[:, :3, :3] = rot
 print(c2ws.shape)
 # c2ws[:, :3, 3] /= 100
 
