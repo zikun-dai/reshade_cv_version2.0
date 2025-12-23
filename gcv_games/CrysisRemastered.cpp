@@ -48,24 +48,14 @@ bool GameCrysis::get_camera_matrix(CamMatrixData& rcam, std::string& errstr) {
 	SIZE_T nbytesread = 0;
 
 	float cambuf[12] = {};
-	const uint64_t cam_matrix_offset = 0x23FB2B0ull;
-	if (!tryreadmemory(gamename_verbose() + std::string("_3x4cam"), errstr, mygame_handle_exe,
+	const uint64_t cam_matrix_offset = 0x255F6D0ull;
+	if (!tryreadmemory(gamename_verbose() + std::string("_4x3cam"), errstr, mygame_handle_exe,
 		(LPCVOID)(dll_base + cam_matrix_offset), reinterpret_cast<LPVOID>(cambuf),
 		sizeof(cambuf), &nbytesread)) {
 		return false;
 	}
-	for (int row = 0; row < 3; ++row) {
-		const int base = row * 4;
-		const float old_col1 = cambuf[base + 1];
-		cambuf[base + 1] = cambuf[base + 2];
-		cambuf[base + 2] = -old_col1;
-	}
-
-	rcam.extrinsic_cam2world = cam_matrix_from_flattened_row_major_buffer(cambuf);
-	
-	//CamMatrix& M = rcam.extrinsic_cam2world;
-	//M.col(1) = -M.col(1);// negate 2nd column (after swap)
-
+	const auto cam_matrix_4x3 = eigen_matrix_from_flattened_row_major_buffer<float, 4, 3>(cambuf);
+	rcam.extrinsic_cam2world = cam_matrix_4x3.transpose();
 	rcam.extrinsic_status = CamMatrix_AllGood;
 
 	// read fov

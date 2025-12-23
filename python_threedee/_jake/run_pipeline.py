@@ -4,7 +4,7 @@ import sys
 
 # ====== User configuration ======
 SCRIPT_DIR = r"C:\Users\user\Desktop\project\gamehack\reshade_cv_version2.0\python_threedee"
-DATA_DIR = r"C:\_Relax\Steam\steamapps\common\Crysis Remastered\Bin64\cv_saved\f11_mode"
+DATA_DIR = r"C:\_Relax\Steam\steamapps\common\Crysis Remastered\Bin64\cv_saved\actions_2025-12-23_106405183"
 
 # If you want to force a specific Python from a conda env:
 # PYTHON_EXE = r"C:\Users\user\miniconda3\envs\yourenv\python.exe"
