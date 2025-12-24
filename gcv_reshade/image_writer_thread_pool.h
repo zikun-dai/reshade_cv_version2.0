@@ -37,6 +37,7 @@ public:
 	std::string gamename_simpler();
 	std::string gamename_verbose();
 	bool get_camera_matrix(CamMatrixData &rcam, std::string &errstr);
+	void update_camera_intrinsics();
 	GameInterface* get_game_interface() {
         init_on_startup(); // 确保 game 实例已初始化
         return game;

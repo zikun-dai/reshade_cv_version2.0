@@ -24,10 +24,14 @@ public:
 
 	// return a camera matrix status from above enum (can return multiple flags)
 	virtual bool get_camera_matrix(CamMatrixData &rcam, std::string &errstr) = 0;
+	// update cached intrinsics (fov, etc.) outside of get_camera_matrix to reduce latency
+	virtual void update_camera_intrinsics() {}
 
 	// convert from integer depth to floating-point distance
 	virtual bool can_interpret_depth_buffer() const { return false; }
 	virtual float convert_to_physical_distance_depth_u64(uint64_t depthval) const { return 0.0f; }
+	// update depth conversion parameters (far plane, etc.) before per-pixel conversion
+	virtual void update_depth_conversion_params() {}
 
 	// memory scans
 	virtual bool scan_all_memory_for_scripted_cam_matrix(std::string& errstr) { errstr += "not implemented"; return false; }

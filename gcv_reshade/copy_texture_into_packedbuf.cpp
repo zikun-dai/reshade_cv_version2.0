@@ -50,6 +50,9 @@ void depth_gray_bytesLE_to_f32(simple_packed_buf &dstBuf, const resource_desc &d
 		reshade::log_message(reshade::log_level::error, std::string(std::string("depth_gray_bytesLE_to_f32: dstBuf.pixfmt ") + std::to_string(static_cast<int64_t>(dstBuf.pixfmt))).c_str());
 		return;
 	}
+	if (gamehandle != nullptr) {
+		gamehandle->update_depth_conversion_params();
+	}
 	const size_t settings_depthbyteskeep = (settings.depthbyteskeep > 0) ? settings.depthbyteskeep : hint_srcbyteskeep;
 	const size_t settings_depthbytes     = (settings.depthbytes > 0) ? settings.depthbytes : hint_srcbytes;
 	const int settings_adjustpitchhack   = (settings.adjustpitchhack != 0) ? settings.adjustpitchhack : hint_pitchadjusthack;

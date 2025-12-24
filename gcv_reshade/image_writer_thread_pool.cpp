@@ -128,6 +128,12 @@ bool image_writer_thread_pool::get_camera_matrix(CamMatrixData& rcam, std::strin
     return game->get_camera_matrix(rcam, errstr);
 }
 
+void image_writer_thread_pool::update_camera_intrinsics() {
+    if (!init_on_startup()) return;
+    if (!init_in_game()) return;
+    if (game) game->update_camera_intrinsics();
+}
+
 bool image_writer_thread_pool::save_texture_image_needing_resource_barrier_copy(
     const std::string& base_filename, uint64_t image_writers,
     reshade::api::command_queue* queue, reshade::api::resource tex,

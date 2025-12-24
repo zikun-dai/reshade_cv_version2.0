@@ -24,6 +24,7 @@ bool GameCrysis::can_interpret_depth_buffer() const {
 // need to scan far plane in memory because it seems to change per level? 
 #define FAR_PLANE_DISTANCE 13000.0
 static float g_far_plane_distance = FAR_PLANE_DISTANCE;
+static float g_cached_fov_v_degrees = -1.0f;
 
 float GameCrysis::convert_to_physical_distance_depth_u64(uint64_t depthval) const {
 	const float far_plane_distance = g_far_plane_distance;
@@ -38,6 +39,38 @@ float GameCrysis::convert_to_physical_distance_depth_u64(uint64_t depthval) cons
     const float numerator_constant = (-f * n) / (n - f);
     const float denominator_constant = n / (n - f);
     return numerator_constant / (depth - denominator_constant);
+}
+
+void GameCrysis::update_camera_intrinsics() {
+	if (!init_in_game()) return;
+
+	const UINT_PTR dll_base = (UINT_PTR)camera_dll;
+	SIZE_T nbytesread = 0;
+	std::string errstr;
+
+	const uint64_t proj11_offset = 0x7D68FF4ull;
+	float proj11 = 0.0f;
+	if (tryreadmemory(gamename_verbose() + std::string("_proj11"), errstr, mygame_handle_exe,
+		(LPCVOID)(dll_base + proj11_offset), reinterpret_cast<LPVOID>(&proj11),
+		sizeof(proj11), &nbytesread)) {
+		g_cached_fov_v_degrees = static_cast<float>(2.0 * std::atan(1.0f / proj11) * (180.0 / 3.14159265358979323846));
+	}
+}
+
+void GameCrysis::update_depth_conversion_params() {
+	if (!init_in_game()) return;
+
+	const UINT_PTR dll_base = (UINT_PTR)camera_dll;
+	SIZE_T nbytesread = 0;
+	std::string errstr;
+
+	const uint64_t far_plane_offset = 0x23FB310ull;
+	float far_plane_distance = g_far_plane_distance;
+	if (tryreadmemory(gamename_verbose() + std::string("_far_plane"), errstr, mygame_handle_exe,
+		(LPCVOID)(dll_base + far_plane_offset), reinterpret_cast<LPVOID>(&far_plane_distance),
+		sizeof(far_plane_distance), &nbytesread)) {
+		g_far_plane_distance = far_plane_distance;
+	}
 }
 
 bool GameCrysis::get_camera_matrix(CamMatrixData& rcam, std::string& errstr) {
@@ -57,27 +90,10 @@ bool GameCrysis::get_camera_matrix(CamMatrixData& rcam, std::string& errstr) {
 	const auto cam_matrix_4x3 = eigen_matrix_from_flattened_row_major_buffer<float, 4, 3>(cambuf);
 	rcam.extrinsic_cam2world = cam_matrix_4x3.transpose();
 	rcam.extrinsic_status = CamMatrix_AllGood;
-
-	// read fov
-	const uint64_t proj11_offset = 0x7D68FF4ull;
-	float proj11 = 0.0f;
-	if (!tryreadmemory(gamename_verbose() + std::string("_proj11"), errstr, mygame_handle_exe,
-		(LPCVOID)(dll_base + proj11_offset), reinterpret_cast<LPVOID>(&proj11),
-		sizeof(proj11), &nbytesread)) {
-		return false;
+	if (g_cached_fov_v_degrees > 0.0f) {
+		rcam.fov_v_degrees = g_cached_fov_v_degrees;
 	}
-	rcam.fov_v_degrees = static_cast<float>(2.0 * std::atan(1.0f / proj11) * (180.0 / 3.14159265358979323846));
 	camera_matrix_postprocess_rotate(rcam);
-	
-	// read far plane
-	nbytesread = 0;
-	const uint64_t far_plane_offset = 0x23FB310ull;
-	float far_plane_distance = g_far_plane_distance;
-	if (tryreadmemory(gamename_verbose() + std::string("_far_plane"), errstr, mygame_handle_exe,
-		(LPCVOID)(dll_base + far_plane_offset), reinterpret_cast<LPVOID>(&far_plane_distance),
-		sizeof(far_plane_distance), &nbytesread)) {
-		g_far_plane_distance = far_plane_distance;
-	}
 
 	// //log far plane distance
 	// char logbuf[96];

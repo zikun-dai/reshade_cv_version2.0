@@ -12,6 +12,8 @@ public:
 	virtual std::string gamename_verbose() const override;
 
 	virtual bool can_interpret_depth_buffer() const override;
+	virtual void update_camera_intrinsics() override;
+	virtual void update_depth_conversion_params() override;
 	virtual float convert_to_physical_distance_depth_u64(uint64_t depthval) const override;
 	virtual bool get_camera_matrix(CamMatrixData& rcam, std::string& errstr) override;
 };
