@@ -59,8 +59,8 @@ void GameSilentHill2::process_camera_buffer_from_igcs(
     // --- 严格按照 Python 脚本逻辑重写 ---
 
     // 步骤 1: 计算 UE 坐标系下的旋转矩阵 R_ue (C2W)
-    // Python 中使用了 -yaw，这里也对 yaw 取反
-	const float new_roll = -roll;
+    // Python 中使用了 -yaw
+	const float new_roll = 0.0;
     const float neg_yaw = -yaw;
 
 

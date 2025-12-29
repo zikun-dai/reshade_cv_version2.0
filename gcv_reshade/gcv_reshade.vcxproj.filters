@@ -184,9 +184,6 @@
     <ClCompile Include="..\gcv_games\Spider-Man.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
-    <ClCompile Include="..\gcv_games\DragonAge.cpp">
-      <Filter>gcv_games</Filter>
-    </ClCompile>
     <ClCompile Include="..\gcv_games\GodOfWar.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
@@ -233,6 +230,18 @@
       <Filter>gcv_games</Filter>
     </ClCompile>
     <ClCompile Include="..\gcv_games\ResidentEvils2.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\Ghostrunner.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\Ghostrunner2.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\ReadyOrNot.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\SilentHillF.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
   </ItemGroup>
@@ -468,9 +477,6 @@
     <ClInclude Include="..\gcv_games\Spider-Man.h">
       <Filter>gcv_games</Filter>
     </ClInclude>
-    <ClInclude Include="..\gcv_games\DragonAge.h">
-      <Filter>gcv_games</Filter>
-    </ClInclude>
     <ClInclude Include="..\gcv_games\GodOfWar.h">
       <Filter>gcv_games</Filter>
     </ClInclude>
@@ -535,6 +541,18 @@
       <Filter>gcv_games</Filter>
     </ClInclude>
     <ClInclude Include="..\gcv_games\ResidentEvils2.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\Ghostrunner.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\Ghostrunner2.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\ReadyOrNot.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\SilentHillF.h">
       <Filter>gcv_games</Filter>
     </ClInclude>
   </ItemGroup>

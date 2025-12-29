@@ -1,29 +1,29 @@
 // Copyright (C) 2022 Jason Bunk
-#include "DevilMayCry5.h"
+#include "ReadyOrNot.h"
 #include "gcv_utils/depth_utils.h"
 #include "gcv_utils/scripted_cam_buf_templates.h"
 
 
-std::string GameDevilMayCry5::gamename_verbose() const { return "DevilMayCry5"; } // hopefully continues to work with future patches via the mod lua
+std::string GameReadyOrNot::gamename_verbose() const { return "ReadyOrNot"; } // hopefully continues to work with future patches via the mod lua
 
-std::string GameDevilMayCry5::camera_dll_name() const { return ""; } // no dll name, it's available in the exe memory space
-uint64_t GameDevilMayCry5::camera_dll_mem_start() const { return 0; }
-GameCamDLLMatrixType GameDevilMayCry5::camera_dll_matrix_format() const { return GameCamDLLMatrix_allmemscanrequiredtofindscriptedcambuf; }
+std::string GameReadyOrNot::camera_dll_name() const { return ""; } // no dll name, it's available in the exe memory space
+uint64_t GameReadyOrNot::camera_dll_mem_start() const { return 0; }
+GameCamDLLMatrixType GameReadyOrNot::camera_dll_matrix_format() const { return GameCamDLLMatrix_allmemscanrequiredtofindscriptedcambuf; }
 
-scriptedcam_checkbuf_funptr GameDevilMayCry5::get_scriptedcambuf_checkfun() const {
+scriptedcam_checkbuf_funptr GameReadyOrNot::get_scriptedcambuf_checkfun() const {
 	return template_check_scriptedcambuf_hash<double, 13, 1>;
 }
-uint64_t GameDevilMayCry5::get_scriptedcambuf_sizebytes() const {
+uint64_t GameReadyOrNot::get_scriptedcambuf_sizebytes() const {
 	return template_scriptedcambuf_sizebytes<double, 13, 1>();
 }
-bool GameDevilMayCry5::copy_scriptedcambuf_to_matrix(uint8_t* buf, uint64_t buflen, CamMatrixData& rcam, std::string& errstr) const {
+bool GameReadyOrNot::copy_scriptedcambuf_to_matrix(uint8_t* buf, uint64_t buflen, CamMatrixData& rcam, std::string& errstr) const {
 	return template_copy_scriptedcambuf_extrinsic_cam2world_and_fov<double, 13, 1>(buf, buflen, rcam, false, errstr);
 }
 
-bool GameDevilMayCry5::can_interpret_depth_buffer() const {
+bool GameReadyOrNot::can_interpret_depth_buffer() const {
 	return true;
 }
-float GameDevilMayCry5::convert_to_physical_distance_depth_u64(uint64_t depthval) const {
+float GameReadyOrNot::convert_to_physical_distance_depth_u64(uint64_t depthval) const {
 	// const double normalizeddepth = static_cast<double>(depthval) / 4294967295.0;
 	// // This game has a logarithmic depth buffer with unknown constant(s).
 	// // These numbers were found by a curve fit, so are approximate,
@@ -33,14 +33,14 @@ float GameDevilMayCry5::convert_to_physical_distance_depth_u64(uint64_t depthval
     float depth;
     std::memcpy(&depth, &depth_as_u32, sizeof(float));
 
-    const float n = 0.1f;
+    const float n = 0.001f;
     const float f = 10000.0f;
     const float numerator_constant = (-f * n) / (n - f);
     const float denominator_constant = n / (n - f);
     return numerator_constant / (depth - denominator_constant);
 }
 
-uint64_t GameDevilMayCry5::get_scriptedcambuf_triggerbytes() const
+uint64_t GameReadyOrNot::get_scriptedcambuf_triggerbytes() const
 {
     // 将 double 类型的注入专用魔数转换为 8 字节的整数
     const double magic_double = 1.20040525131452021e-12;
@@ -50,7 +50,7 @@ uint64_t GameDevilMayCry5::get_scriptedcambuf_triggerbytes() const
     return magic_int;
 }
 
-void GameDevilMayCry5::process_camera_buffer_from_igcs(
+void GameReadyOrNot::process_camera_buffer_from_igcs(
     double* camera_data_buffer,
     const float* camera_ue_pos, // 对应 Python 中的 location {x, y, z}
     float roll, float pitch, float yaw, // 弧度
@@ -60,14 +60,12 @@ void GameDevilMayCry5::process_camera_buffer_from_igcs(
 
     // 步骤 1: 计算 UE 坐标系下的旋转矩阵 R_ue (C2W)
     // Python 中使用了 -yaw，这里也对 yaw 取反
-    const float new_pitch = -pitch;
-	const float new_roll = -roll;
-
+    const float neg_yaw = -yaw;
 
     // 根据 Python 中的 rot_x_lh, rot_y_lh, rot_z_lh 定义
-    const float cr = cos(new_roll), sr = sin(new_roll);
-    const float cp = cos(new_pitch), sp = sin(new_pitch);
-    const float cz = cos(yaw), sz = sin(yaw);
+    const float cr = cos(roll), sr = sin(roll);
+    const float cp = cos(pitch), sp = sin(pitch);
+    const float cz = cos(neg_yaw), sz = sin(neg_yaw);
 
     // R_x(roll)
     const float Rx[3][3] = {
@@ -123,28 +121,28 @@ void GameDevilMayCry5::process_camera_buffer_from_igcs(
     // 步骤 3: 转换并缩放平移向量 t_cv
     // t_cv = [location.z, location.y, location.x] / 100.0
     // camera_ue_pos[0] = x, [1] = y, [2] = z
-    const float scale = 0.5f;
+    const float scale = 0.01f; // 1/100
     const float t_cv[3] = {
-        camera_ue_pos[0] * scale,  // t_cv[0] = x
-        camera_ue_pos[1] * scale, // t_cv[1] = y
-        camera_ue_pos[2] * scale, // t_cv[2] = z
+        camera_ue_pos[1] * scale, // t_cv[0] = y
+        -camera_ue_pos[2] * scale, // t_cv[1] = -z
+        camera_ue_pos[0] * scale  // t_cv[2] = x
     };
 
     // 步骤 4: 将最终的 c2w (R_cv, t_cv) 矩阵填充到缓冲区
     // 第一行
     camera_data_buffer[2] = R_cv[0][0];
-    camera_data_buffer[3] = R_cv[0][1];
-    camera_data_buffer[4] = R_cv[0][2];
+    camera_data_buffer[3] = -R_cv[0][1];
+    camera_data_buffer[4] = -R_cv[0][2];
     camera_data_buffer[5] = t_cv[0];
     // 第二行
     camera_data_buffer[6] = R_cv[1][0];
-    camera_data_buffer[7] = R_cv[1][1];
-    camera_data_buffer[8] = R_cv[1][2];
+    camera_data_buffer[7] = -R_cv[1][1];
+    camera_data_buffer[8] = -R_cv[1][2];
     camera_data_buffer[9] = t_cv[1];
     // 第三行
     camera_data_buffer[10] = R_cv[2][0];
-    camera_data_buffer[11] = R_cv[2][1];
-    camera_data_buffer[12] = R_cv[2][2];
+    camera_data_buffer[11] = -R_cv[2][1];
+    camera_data_buffer[12] = -R_cv[2][2];
     camera_data_buffer[13] = t_cv[2];
     // FOV
     camera_data_buffer[14] = fov;

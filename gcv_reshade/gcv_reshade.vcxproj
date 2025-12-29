@@ -45,7 +45,7 @@
     <TargetExt>.addon</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir);$(SolutionDir)3rdparty;$(SolutionDir)renderdoc;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)3rdparty;$(SolutionDir)renderdoc;$(SolutionDir)gcv_utils;$(SolutionDir)..\reshade-5.8.0\include;$(SolutionDir)..\reshade-5.8.0\deps\imgui;$(SolutionDir)..\vcpkg\installed\x64-windows\include;$(SolutionDir)..\vcpkg\installed\x64-windows\include\eigen3;$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\lib;$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir);$(SolutionDir)3rdparty;$(SolutionDir)renderdoc;$(IncludePath)</IncludePath>
@@ -81,8 +81,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)build\x64\$(Configuration);$(SolutionDir)..\vcpkg\installed\x64-windows-static\lib;$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\lib;$(SolutionDir)SimConnect SDK\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>dxilconv.lib;segmentation_shadering.lib;xxhash.lib;libhdf5.lib;libhdf5_cpp.lib;SimConnect.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)build\x64\$(Configuration)\;$(SolutionDir)..\vcpkg\installed\x64-windows\lib;$(SolutionDir)..\DirectXShaderCompiler\out\build\x64-Release\lib;$(SolutionDir)SimConnect SDK\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxilconv.lib;segmentation_shadering.lib;xxhash.lib;hdf5.lib;hdf5_cpp.lib;SimConnect.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -131,9 +131,10 @@
     <ClCompile Include="..\gcv_games\AssassinsCreedValhalla.cpp" />
     <ClCompile Include="..\gcv_games\Borderlands3.cpp" />
     <ClCompile Include="..\gcv_games\Borderlands4.cpp" />
-    <ClCompile Include="..\gcv_games\DragonAge.cpp" />
     <ClCompile Include="..\gcv_games\EldenRing.cpp" />
     <ClCompile Include="..\gcv_games\EuroTruckSimulator2.cpp" />
+    <ClCompile Include="..\gcv_games\Ghostrunner.cpp" />
+    <ClCompile Include="..\gcv_games\Ghostrunner2.cpp" />
     <ClCompile Include="..\gcv_games\GodOfWar.cpp" />
     <ClCompile Include="..\gcv_games\GodofWar5.cpp" />
     <ClCompile Include="..\gcv_games\Hi-Fi-RUSH.cpp" />
@@ -144,9 +145,11 @@
     <ClCompile Include="..\gcv_games\MilesMorales.cpp" />
     <ClCompile Include="..\gcv_games\msfs_simconnect_manager.cpp" />
     <ClCompile Include="..\gcv_games\Palworld.cpp" />
+    <ClCompile Include="..\gcv_games\ReadyOrNot.cpp" />
     <ClCompile Include="..\gcv_games\ResidentEvils2.cpp" />
     <ClCompile Include="..\gcv_games\ResidentEvils3.cpp" />
     <ClCompile Include="..\gcv_games\SilentHill2.cpp" />
+    <ClCompile Include="..\gcv_games\SilentHillF.cpp" />
     <ClCompile Include="..\gcv_games\Spider-Man.cpp" />
     <ClCompile Include="..\gcv_games\Stray.cpp" />
     <ClCompile Include="..\gcv_games\SandFall.cpp" />
@@ -223,7 +226,6 @@
     <ClInclude Include="..\gcv_games\DeathStrandingDirectorsCut.h" />
     <ClInclude Include="..\gcv_games\DevilMayCry5.h" />
     <ClInclude Include="..\gcv_games\DishonoredDOTO.h" />
-    <ClInclude Include="..\gcv_games\DragonAge.h" />
     <ClInclude Include="..\gcv_games\EldenRing.h" />
     <ClInclude Include="..\gcv_games\EuroTruckSimulator2.h" />
     <ClInclude Include="..\gcv_games\FinalFantasy7.h" />
@@ -231,6 +233,8 @@
     <ClInclude Include="..\gcv_games\game_interface.h" />
     <ClInclude Include="..\gcv_games\game_interface_factory_registration.h" />
     <ClInclude Include="..\gcv_games\game_with_camera_data_in_one_dll.h" />
+    <ClInclude Include="..\gcv_games\Ghostrunner.h" />
+    <ClInclude Include="..\gcv_games\Ghostrunner2.h" />
     <ClInclude Include="..\gcv_games\GodOfWar.h" />
     <ClInclude Include="..\gcv_games\GodofWar5.h" />
     <ClInclude Include="..\gcv_games\GTAV.h" />
@@ -245,6 +249,7 @@
     <ClInclude Include="..\gcv_games\msfs_simconnect_manager.h" />
     <ClInclude Include="..\gcv_games\Palworld.h" />
     <ClInclude Include="..\gcv_games\RDR2.h" />
+    <ClInclude Include="..\gcv_games\ReadyOrNot.h" />
     <ClInclude Include="..\gcv_games\ResidentEvils2.h" />
     <ClInclude Include="..\gcv_games\ResidentEvils3.h" />
     <ClInclude Include="..\gcv_games\RoR2.h" />
@@ -252,6 +257,7 @@
     <ClInclude Include="..\gcv_games\SandFall.h" />
     <ClInclude Include="..\gcv_games\Sekiro.h" />
     <ClInclude Include="..\gcv_games\SilentHill2.h" />
+    <ClInclude Include="..\gcv_games\SilentHillF.h" />
     <ClInclude Include="..\gcv_games\Spider-Man.h" />
     <ClInclude Include="..\gcv_games\Stray.h" />
     <ClInclude Include="..\gcv_games\Shipbreaker.h" />
