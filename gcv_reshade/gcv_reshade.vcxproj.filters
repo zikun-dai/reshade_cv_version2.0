@@ -49,9 +49,6 @@
     <ClCompile Include="..\3rdparty\fpzip\write.cpp">
       <Filter>3rdparty\fpzip</Filter>
     </ClCompile>
-    <ClCompile Include="..\gcv_games\game_interface.cpp">
-      <Filter>gcv_games</Filter>
-    </ClCompile>
     <ClCompile Include="..\gcv_games\Crysis.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
@@ -64,14 +61,8 @@
     <ClCompile Include="..\gcv_games\Control.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
-    <ClCompile Include="..\gcv_games\game_interface_factory.cpp">
-      <Filter>gcv_games</Filter>
-    </ClCompile>
     <ClCompile Include="..\gcv_utils\scan_for_camera_matrix.cpp">
       <Filter>gcv_utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\gcv_games\game_with_camera_data_in_one_dll.cpp">
-      <Filter>gcv_games</Filter>
     </ClCompile>
     <ClCompile Include="..\gcv_games\HorizonZeroDawn.cpp">
       <Filter>gcv_games</Filter>
@@ -193,15 +184,6 @@
     <ClCompile Include="..\gcv_games\EuroTruckSimulator2.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
-    <ClCompile Include="..\gcv_games\MicrosoftFlightSimulator2020.cpp">
-      <Filter>gcv_games</Filter>
-    </ClCompile>
-    <ClCompile Include="..\gcv_games\MicrosoftFlightSimulator2024.cpp">
-      <Filter>gcv_games</Filter>
-    </ClCompile>
-    <ClCompile Include="..\gcv_games\msfs_simconnect_manager.cpp">
-      <Filter>gcv_games</Filter>
-    </ClCompile>
     <ClCompile Include="..\gcv_games\SilentHill2.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
@@ -242,6 +224,15 @@
       <Filter>gcv_games</Filter>
     </ClCompile>
     <ClCompile Include="..\gcv_games\SilentHillF.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\game_interface.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\game_interface_factory.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gcv_games\game_with_camera_data_in_one_dll.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
   </ItemGroup>
@@ -324,12 +315,6 @@
     <ClInclude Include="..\3rdparty\fpzip\write.h">
       <Filter>3rdparty\fpzip</Filter>
     </ClInclude>
-    <ClInclude Include="..\gcv_games\game_interface_factory.h">
-      <Filter>gcv_games</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gcv_games\game_interface.h">
-      <Filter>gcv_games</Filter>
-    </ClInclude>
     <ClInclude Include="..\gcv_games\Crysis.h">
       <Filter>gcv_games</Filter>
     </ClInclude>
@@ -342,14 +327,8 @@
     <ClInclude Include="..\gcv_games\Control.h">
       <Filter>gcv_games</Filter>
     </ClInclude>
-    <ClInclude Include="..\gcv_games\game_interface_factory_registration.h">
-      <Filter>gcv_games</Filter>
-    </ClInclude>
     <ClInclude Include="..\gcv_utils\scan_for_camera_matrix.h">
       <Filter>gcv_utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gcv_games\game_with_camera_data_in_one_dll.h">
-      <Filter>gcv_games</Filter>
     </ClInclude>
     <ClInclude Include="..\gcv_games\HorizonZeroDawn.h">
       <Filter>gcv_games</Filter>
@@ -501,15 +480,6 @@
     <ClInclude Include="..\gcv_games\EuroTruckSimulator2.h">
       <Filter>gcv_games</Filter>
     </ClInclude>
-    <ClInclude Include="..\gcv_games\MicrosoftFlightSimulator2020.h">
-      <Filter>gcv_games</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gcv_games\MicrosoftFlightSimulator2024.h">
-      <Filter>gcv_games</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gcv_games\msfs_simconnect_manager.h">
-      <Filter>gcv_games</Filter>
-    </ClInclude>
     <ClInclude Include="..\gcv_games\SilentHill2.h">
       <Filter>gcv_games</Filter>
     </ClInclude>
@@ -553,6 +523,18 @@
       <Filter>gcv_games</Filter>
     </ClInclude>
     <ClInclude Include="..\gcv_games\SilentHillF.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\game_interface.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\game_interface_factory.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\game_interface_factory_registration.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\game_with_camera_data_in_one_dll.h">
       <Filter>gcv_games</Filter>
     </ClInclude>
   </ItemGroup>
