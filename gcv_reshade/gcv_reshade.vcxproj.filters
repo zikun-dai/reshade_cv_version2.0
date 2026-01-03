@@ -235,6 +235,9 @@
     <ClCompile Include="..\gcv_games\game_with_camera_data_in_one_dll.cpp">
       <Filter>gcv_games</Filter>
     </ClCompile>
+    <ClCompile Include="..\gcv_games\Hellblade.cpp">
+      <Filter>gcv_games</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdparty\concurrentqueue.h">
@@ -535,6 +538,9 @@
       <Filter>gcv_games</Filter>
     </ClInclude>
     <ClInclude Include="..\gcv_games\game_with_camera_data_in_one_dll.h">
+      <Filter>gcv_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gcv_games\Hellblade.h">
       <Filter>gcv_games</Filter>
     </ClInclude>
   </ItemGroup>

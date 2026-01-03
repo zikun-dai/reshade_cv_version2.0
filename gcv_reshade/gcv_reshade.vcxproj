@@ -140,6 +140,7 @@
     <ClCompile Include="..\gcv_games\Ghostrunner2.cpp" />
     <ClCompile Include="..\gcv_games\GodOfWar.cpp" />
     <ClCompile Include="..\gcv_games\GodofWar5.cpp" />
+    <ClCompile Include="..\gcv_games\Hellblade.cpp" />
     <ClCompile Include="..\gcv_games\Hi-Fi-RUSH.cpp" />
     <ClCompile Include="..\gcv_games\HorizonForbiddenWest.cpp" />
     <ClCompile Include="..\gcv_games\ImmortalsFenyxRising.cpp" />
@@ -235,6 +236,7 @@
     <ClInclude Include="..\gcv_games\GodOfWar.h" />
     <ClInclude Include="..\gcv_games\GodofWar5.h" />
     <ClInclude Include="..\gcv_games\GTAV.h" />
+    <ClInclude Include="..\gcv_games\Hellblade.h" />
     <ClInclude Include="..\gcv_games\Hi-Fi-RUSH.h" />
     <ClInclude Include="..\gcv_games\HogwartsLegacy.h" />
     <ClInclude Include="..\gcv_games\HorizonForbiddenWest.h" />
