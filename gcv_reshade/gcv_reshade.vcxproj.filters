@@ -57,6 +57,7 @@
     <ClCompile Include="..\gcv_games\DevilMayCry5.cpp" />
     <ClCompile Include="..\gcv_games\Crysis3.cpp" />
     <ClCompile Include="..\gcv_games\CrysisRemastered.cpp" />
+    <ClCompile Include="..\gcv_games\CrysisGOG.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdparty\cnpy.h" />
@@ -138,6 +139,7 @@
     <ClInclude Include="..\gcv_games\DevilMayCry5.h" />
     <ClInclude Include="..\gcv_games\Crysis3.h" />
     <ClInclude Include="..\gcv_games\CrysisRemastered.h" />
+    <ClInclude Include="..\gcv_games\CrysisGOG.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\3rdparty\fpzip\fpe.inl" />
