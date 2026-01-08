@@ -9,13 +9,13 @@
 static uint64_t g_crysis_translation_log_counter = 0;
 static int g_crysis_translation_log_interval_frames = 3;
 
-std::string GameCrysis::gamename_verbose() const { return "Crysis2008_GOG_DX10_x64"; } // tested for this build
+std::string GameCrysisRemastered::gamename_verbose() const { return "Crysis2008_GOG_DX10_x64"; } // tested for this build
 
-std::string GameCrysis::camera_dll_name() const { return ""; }
-uint64_t GameCrysis::camera_dll_mem_start() const { return 0x23FB2BCull; } //unused, assign offset before reading
-GameCamDLLMatrixType GameCrysis::camera_dll_matrix_format() const { return GameCamDLLMatrix_3x4; }
+std::string GameCrysisRemastered::camera_dll_name() const { return ""; }
+uint64_t GameCrysisRemastered::camera_dll_mem_start() const { return 0x23FB2BCull; } //unused, assign offset before reading
+GameCamDLLMatrixType GameCrysisRemastered::camera_dll_matrix_format() const { return GameCamDLLMatrix_3x4; }
 
-bool GameCrysis::can_interpret_depth_buffer() const {
+bool GameCrysisRemastered::can_interpret_depth_buffer() const {
 	return true;
 }
 
@@ -25,7 +25,7 @@ bool GameCrysis::can_interpret_depth_buffer() const {
 #define FAR_PLANE_DISTANCE 13000.0
 static float g_far_plane_distance = FAR_PLANE_DISTANCE;
 
-float GameCrysis::convert_to_physical_distance_depth_u64(uint64_t depthval) const {
+float GameCrysisRemastered::convert_to_physical_distance_depth_u64(uint64_t depthval) const {
 	const float far_plane_distance = g_far_plane_distance;
 	
 	// convert to physical distance
@@ -38,9 +38,10 @@ float GameCrysis::convert_to_physical_distance_depth_u64(uint64_t depthval) cons
     const float numerator_constant = (-f * n) / (n - f);
     const float denominator_constant = n / (n - f);
     return numerator_constant / (depth - denominator_constant);
+	// return depth;
 }
 
-bool GameCrysis::get_camera_matrix(CamMatrixData& rcam, std::string& errstr) {
+bool GameCrysisRemastered::get_camera_matrix(CamMatrixData& rcam, std::string& errstr) {
 	rcam.extrinsic_status = CamMatrix_Uninitialized;
 	if (!init_in_game()) return false;
 

@@ -7,13 +7,13 @@
 #include <reshade.hpp>
 #include <cstdio>
 
-std::string GameCrysis::gamename_verbose() const { return "Crysis2008_GOG_DX10_x64"; } // tested for this build
+std::string GameCrysisGOG::gamename_verbose() const { return "Crysis2008_GOG_DX10_x64"; } // tested for this build
 
-std::string GameCrysis::camera_dll_name() const { return "Cry3DEngine.dll"; }
-uint64_t GameCrysis::camera_dll_mem_start() const { return 0x2008F0ull; }
-GameCamDLLMatrixType GameCrysis::camera_dll_matrix_format() const { return GameCamDLLMatrix_3x4; }
+std::string GameCrysisGOG::camera_dll_name() const { return "Cry3DEngine.dll"; }
+uint64_t GameCrysisGOG::camera_dll_mem_start() const { return 0x2008F0ull; }
+GameCamDLLMatrixType GameCrysisGOG::camera_dll_matrix_format() const { return GameCamDLLMatrix_3x4; }
 
-bool GameCrysis::can_interpret_depth_buffer() const {
+bool GameCrysisGOG::can_interpret_depth_buffer() const {
 	return true;
 }
 
@@ -24,13 +24,14 @@ bool GameCrysis::can_interpret_depth_buffer() const {
 
 static float g_far_plane_distance = FAR_PLANE_DISTANCE;
 
-float GameCrysis::convert_to_physical_distance_depth_u64(uint64_t depthval) const {
+float GameCrysisGOG::convert_to_physical_distance_depth_u64(uint64_t depthval) const {
 	const float far_plane_distance = g_far_plane_distance;
 	const double znorm = static_cast<double>(depthval) / 16777215.0;
 	return static_cast<float>(NEAR_PLANE_DISTANCE / std::max(0.0000001, 1.0 - znorm * (1.0 - NEAR_PLANE_DISTANCE / far_plane_distance)));
+	// return depthval;
 }
 
-bool GameCrysis::get_camera_matrix(CamMatrixData& rcam, std::string& errstr) {
+bool GameCrysisGOG::get_camera_matrix(CamMatrixData& rcam, std::string& errstr) {
 	if (!GameWithCameraDataInOneDLL::get_camera_matrix(rcam, errstr)) {
 		return false;
 	}

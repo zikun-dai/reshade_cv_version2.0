@@ -2,7 +2,7 @@
 // Copyright (C) 2022 Jason Bunk
 #include "game_with_camera_data_in_one_dll.h"
 
-class GameCrysis : public GameWithCameraDataInOneDLL {
+class GameCrysisRemastered : public GameWithCameraDataInOneDLL {
 protected:
 	virtual std::string camera_dll_name() const override;
 	virtual uint64_t camera_dll_mem_start() const override;
@@ -16,4 +16,4 @@ public:
 	virtual bool get_camera_matrix(CamMatrixData& rcam, std::string& errstr) override;
 };
 
-REGISTER_GAME_INTERFACE(GameCrysis, 0, "crysisremastered.exe");
+REGISTER_GAME_INTERFACE(GameCrysisRemastered, 0, "crysisremastered.exe");
