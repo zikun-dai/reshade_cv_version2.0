@@ -2,143 +2,117 @@
 #include "Crysis3.h"
 #include "gcv_utils/memread.h"
 #include "gcv_utils/scripted_cam_buf_templates.h"
+#include <cstdint>
+#include <cmath>
+#include <reshade.hpp>
+#include <cstdio>
+
+// static uint64_t g_crysis_translation_log_counter = 0;
+// static int g_crysis_translation_log_interval_frames = 3;
 
 std::string GameCrysis3::gamename_verbose() const { return "Crysis3Remastered"; } // tested for this build
 
 std::string GameCrysis3::camera_dll_name() const { return ""; }
-uint64_t GameCrysis3::camera_dll_mem_start() const { return 0; }
-GameCamDLLMatrixType GameCrysis3::camera_dll_matrix_format() const { return GameCamDLLMatrix_allmemscanrequiredtofindscriptedcambuf; }
-
-scriptedcam_checkbuf_funptr GameCrysis3::get_scriptedcambuf_checkfun() const {
-	return template_check_scriptedcambuf_hash<double, 13, 2>;
-}
-uint64_t GameCrysis3::get_scriptedcambuf_sizebytes() const {
-	return template_scriptedcambuf_sizebytes<double, 13, 2>();
-}
-bool GameCrysis3::copy_scriptedcambuf_to_matrix(uint8_t* buf, uint64_t buflen, CamMatrixData& rcam, std::string& errstr) const {
-	return template_copy_scriptedcambuf_extrinsic_cam2world_and_fov<double, 13, 2>(buf, buflen, rcam, false, errstr);
-}
+uint64_t GameCrysis3::camera_dll_mem_start() const { return 0x24A7778ull; } //unused, assign offset before reading
+GameCamDLLMatrixType GameCrysis3::camera_dll_matrix_format() const { return GameCamDLLMatrix_3x4; }
 
 bool GameCrysis3::can_interpret_depth_buffer() const {
 	return true;
 }
 
-#define NEAR_PLANE_DISTANCE 0.25
+#define NEAR_PLANE_DISTANCE 0.12
 
-// need to scan far plane in memory because it seems to change per level?
-#define FAR_PLANE_DISTANCE 13000.0
+// need to scan far plane in memory because it seems to change per level? 
+#define FAR_PLANE_DISTANCE 10000.0
+static float g_far_plane_distance = FAR_PLANE_DISTANCE;
 
 float GameCrysis3::convert_to_physical_distance_depth_u64(uint64_t depthval) const {
-	const double znorm = static_cast<double>(depthval) / 16777215.0;
-	return static_cast<float>(NEAR_PLANE_DISTANCE / std::max(0.0000001, 1.0 - znorm * (1.0 - NEAR_PLANE_DISTANCE / FAR_PLANE_DISTANCE)));
+	const float far_plane_distance = g_far_plane_distance;
+	
+	// // convert to physical distance
+	// uint32_t depth_as_u32 = static_cast<uint32_t>(depthval);
+    // float depth;
+    // std::memcpy(&depth, &depth_as_u32, sizeof(float));
+
+    // const float n = NEAR_PLANE_DISTANCE;
+    // const float f = far_plane_distance;
+    // const float numerator_constant = (-f * n) / (n - f);
+    // const float denominator_constant = n / (n - f);
+    // return numerator_constant / (depth - denominator_constant);
+
+    // // CR2转化公式
+	// return static_cast<float>(NEAR_PLANE_DISTANCE / std::max(0.0000001, 1.0 - depth * (1.0 - NEAR_PLANE_DISTANCE / far_plane_distance)));
+    const double znorm = static_cast<double>(depthval) / 16777215.0;
+	return static_cast<float>(NEAR_PLANE_DISTANCE / std::max(0.0000001, 1.0 - znorm * (1.0 - NEAR_PLANE_DISTANCE / far_plane_distance)));
 }
 
-uint64_t GameCrysis3::get_scriptedcambuf_triggerbytes() const
-{
-    // 将 double 类型的注入专用魔数转换为 8 字节的整数
-    const double magic_double = 1.20040525131452021e-12;
-    uint64_t magic_int;
-    static_assert(sizeof(magic_double) == sizeof(magic_int));
-    memcpy(&magic_int, &magic_double, sizeof(magic_int));
-    return magic_int;
-}
+bool GameCrysis3::get_camera_matrix(CamMatrixData& rcam, std::string& errstr) {
+	rcam.extrinsic_status = CamMatrix_Uninitialized;
+	if (!init_in_game()) return false;
 
-void GameCrysis3::process_camera_buffer_from_igcs(
-    double* camera_data_buffer,
-    const float* camera_ue_pos, // 对应 Python 中的 location {x, y, z}
-    float roll, float pitch, float yaw, // 弧度
-    float fov)
-{
-    // --- 严格按照 Python 脚本逻辑重写 ---
+	const UINT_PTR dll_base = (UINT_PTR)camera_dll;
+	SIZE_T nbytesread = 0;
 
-    // 步骤 1: 计算 UE 坐标系下的旋转矩阵 R_ue (C2W)
-    // Python 中使用了 -yaw，这里也对 yaw 取反
-    const float new_pitch = -pitch;
-	const float new_roll = -roll;
+	float cambuf[12] = {};
+	const uint64_t cam_matrix_offset = 0x24A7778ull;
+	if (!tryreadmemory(gamename_verbose() + std::string("_4x3cam"), errstr, mygame_handle_exe,
+		(LPCVOID)(dll_base + cam_matrix_offset), reinterpret_cast<LPVOID>(cambuf),
+		sizeof(cambuf), &nbytesread)) {
+		return false;
+	}
+	const auto cam_matrix_4x3 = eigen_matrix_from_flattened_row_major_buffer<float, 4, 3>(cambuf);
+	rcam.extrinsic_cam2world = cam_matrix_4x3.transpose();
+	rcam.extrinsic_status = CamMatrix_AllGood;
+
+	//// read fov
+	//const uint64_t proj11_offset = 0x1ED58F4ull;
+	//float proj11 = 0.0f;
+	//if (!tryreadmemory(gamename_verbose() + std::string("_proj11"), errstr, mygame_handle_exe,
+	//	(LPCVOID)(dll_base + proj11_offset), reinterpret_cast<LPVOID>(&proj11),
+	//	sizeof(proj11), &nbytesread)) {
+	//	return false;
+	//}
+	//rcam.fov_v_degrees = static_cast<float>(2.0 * std::atan(1.0f / proj11) * (180.0 / 3.14159265358979323846));
+	rcam.fov_v_degrees = 55.0f;
+	camera_matrix_postprocess_rotate(rcam);
+	
+	// // read far plane
+	// nbytesread = 0;
+	// const uint64_t far_plane_offset = 0x23FB310ull;
+	// float far_plane_distance = g_far_plane_distance;
+	// if (tryreadmemory(gamename_verbose() + std::string("_far_plane"), errstr, mygame_handle_exe,
+	// 	(LPCVOID)(dll_base + far_plane_offset), reinterpret_cast<LPVOID>(&far_plane_distance),
+	// 	sizeof(far_plane_distance), &nbytesread)) {
+	// 	g_far_plane_distance = far_plane_distance;
+	// }
+
+	// //log far plane distance
+	// char logbuf[96];
+	// std::snprintf(logbuf, sizeof(logbuf), "[Crysis] far plane distance: %.6f", static_cast<double>(far_plane_distance));
+	// reshade::log_message(reshade::log_level::info, logbuf);
 
 
-    // 根据 Python 中的 rot_x_lh, rot_y_lh, rot_z_lh 定义
-    const float cr = cos(new_roll), sr = sin(new_roll);
-    const float cp = cos(new_pitch), sp = sin(new_pitch);
-    const float cz = cos(yaw), sz = sin(yaw);
+	// char linebuf[160];
+	// for (int row = 0; row < 3; ++row) {
+	// 	std::snprintf(linebuf, sizeof(linebuf), "[Crysis] row %d: %.6f %.6f %.6f %.6f", row,
+	// 		static_cast<double>(cambuf[row * 4 + 0]), static_cast<double>(cambuf[row * 4 + 1]),
+	// 		static_cast<double>(cambuf[row * 4 + 2]), static_cast<double>(cambuf[row * 4 + 3]));
+	// 	reshade::log_message(reshade::log_level::info, linebuf);
+	// }
 
-    // R_x(roll)
-    const float Rx[3][3] = {
-        { 1,  0,   0  },
-        { 0,  cr,  sr },
-        { 0, -sr,  cr }
-    };
-    // R_y(pitch)
-    const float Ry[3][3] = {
-        { cp,  0, -sp },
-        { 0,   1,  0  },
-        { sp,  0,  cp }
-    };
-    // R_z(-yaw)
-    const float Rz[3][3] = {
-        { cz,  sz, 0 },
-        { -sz, cz, 0 },
-        { 0,   0,  1 }
-    };
+	// ++g_crysis_translation_log_counter;
+	// if (g_crysis_translation_log_interval_frames > 0 &&
+	// 	(g_crysis_translation_log_counter % static_cast<uint64_t>(g_crysis_translation_log_interval_frames) == 0)) {
+	// 	const CamMatrix& M = rcam.extrinsic_cam2world;
+	// 	char translation_log[160];
+	// 	std::snprintf(translation_log, sizeof(translation_log),
+	// 		"[Crysis] translation (frame %llu): %.6f %.6f %.6f",
+	// 		static_cast<unsigned long long>(g_crysis_translation_log_counter),
+	// 		static_cast<double>(M(0, cam_matrix_position_column)),
+	// 		static_cast<double>(M(1, cam_matrix_position_column)),
+	// 		static_cast<double>(M(2, cam_matrix_position_column)));
+	// 	reshade::log_message(reshade::log_level::info, translation_log);
+	// }
 
-    // R_ue = Rz @ Ry @ Rx
-    float R_ue_temp[3][3] = {0};
-    float R_ue[3][3] = {0};
-    // R_ue_temp = Rz @ Ry
-    for (int i = 0; i < 3; ++i) for (int j = 0; j < 3; ++j) for (int k = 0; k < 3; ++k)
-        R_ue_temp[i][j] += Rz[i][k] * Ry[k][j];
-    // R_ue = R_ue_temp @ Rx
-    for (int i = 0; i < 3; ++i) for (int j = 0; j < 3; ++j) for (int k = 0; k < 3; ++k)
-        R_ue[i][j] += R_ue_temp[i][k] * Rx[k][j];
-
-    // 步骤 2: 将 R_ue 转换到 OpenCV 坐标系
-    // R_cv = M_UE_to_CV @ R_ue @ M_UE_to_CV.T
-    const float M_UE_to_CV[3][3] = {
-        { 0, 1,  0 },
-        { 0, 0, -1 },
-        { 1, 0,  0 }
-    };
-    const float M_UE_to_CV_T[3][3] = {
-        { 0, 0, 1 },
-        { 1, 0, 0 },
-        { 0,-1, 0 }
-    };
-
-    float R_cv_temp[3][3] = {0};
-    float R_cv[3][3] = {0};
-    // R_cv_temp = R_ue @ M_UE_to_CV.T
-    for (int i = 0; i < 3; ++i) for (int j = 0; j < 3; ++j) for (int k = 0; k < 3; ++k)
-        R_cv_temp[i][j] += R_ue[i][k] * M_UE_to_CV_T[k][j];
-    // R_cv = M_UE_to_CV @ R_cv_temp
-    for (int i = 0; i < 3; ++i) for (int j = 0; j < 3; ++j) for (int k = 0; k < 3; ++k)
-        R_cv[i][j] += M_UE_to_CV[i][k] * R_cv_temp[k][j];
-
-    // 步骤 3: 转换并缩放平移向量 t_cv
-    // t_cv = [location.z, location.y, location.x] / 100.0
-    // camera_ue_pos[0] = x, [1] = y, [2] = z
-    const float scale = 0.5f;
-    const float t_cv[3] = {
-        camera_ue_pos[0] * scale,  // t_cv[0] = x
-        camera_ue_pos[1] * scale, // t_cv[1] = y
-        camera_ue_pos[2] * scale, // t_cv[2] = z
-    };
-
-    // 步骤 4: 将最终的 c2w (R_cv, t_cv) 矩阵填充到缓冲区
-    // 第一行
-    camera_data_buffer[2] = R_cv[0][0];
-    camera_data_buffer[3] = R_cv[0][1];
-    camera_data_buffer[4] = R_cv[0][2];
-    camera_data_buffer[5] = t_cv[0];
-    // 第二行
-    camera_data_buffer[6] = R_cv[1][0];
-    camera_data_buffer[7] = R_cv[1][1];
-    camera_data_buffer[8] = R_cv[1][2];
-    camera_data_buffer[9] = t_cv[1];
-    // 第三行
-    camera_data_buffer[10] = R_cv[2][0];
-    camera_data_buffer[11] = R_cv[2][1];
-    camera_data_buffer[12] = R_cv[2][2];
-    camera_data_buffer[13] = t_cv[2];
-    // FOV
-    camera_data_buffer[14] = fov;
+	return true;
 }
