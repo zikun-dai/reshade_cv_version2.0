@@ -115,7 +115,7 @@
     <ClCompile Include="..\gcv_games\Crysis3.cpp" />
     <ClCompile Include="..\gcv_games\CrysisGOG.cpp" />
     <ClCompile Include="..\gcv_games\CrysisRemastered.cpp" />
-    <ClCompile Include="..\gcv_games\Cyberpunk2077.cpp" />
+    <ClCompile Include="..\gcv_games\Cyberpunk2026.cpp" />
     <ClCompile Include="..\gcv_games\DarkSoulsIII.cpp" />
     <ClCompile Include="..\gcv_games\DevilMayCry5.cpp" />
     <ClCompile Include="..\gcv_games\DishonoredDOTO.cpp" />
@@ -137,7 +137,7 @@
     <ClCompile Include="..\gcv_games\RDR2.cpp" />
     <ClCompile Include="..\gcv_games\RoR2.cpp" />
     <ClCompile Include="..\gcv_games\Sekiro.cpp" />
-    <ClCompile Include="..\gcv_games\Witcher3.cpp" />
+    <ClCompile Include="..\gcv_games\Witcher3CE.cpp" />
     <ClCompile Include="..\gcv_utils\camera_data_struct.cpp" />
     <ClCompile Include="..\gcv_utils\depth_utils.cpp" />
     <ClCompile Include="..\gcv_utils\geometry.cpp" />
@@ -190,7 +190,7 @@
     <ClInclude Include="..\gcv_games\Crysis3.h" />
     <ClInclude Include="..\gcv_games\CrysisGOG.h" />
     <ClInclude Include="..\gcv_games\CrysisRemastered.h" />
-    <ClInclude Include="..\gcv_games\Cyberpunk2077.h" />
+    <ClInclude Include="..\gcv_games\Cyberpunk2026.h" />
     <ClInclude Include="..\gcv_games\DarkSoulsIII.h" />
     <ClInclude Include="..\gcv_games\DevilMayCry5.h" />
     <ClInclude Include="..\gcv_games\DishonoredDOTO.h" />
@@ -207,7 +207,7 @@
     <ClInclude Include="..\gcv_games\RoR2.h" />
     <ClInclude Include="..\gcv_games\Sekiro.h" />
     <ClInclude Include="..\gcv_games\Stray.h" />
-    <ClInclude Include="..\gcv_games\Witcher3.h" />
+    <ClInclude Include="..\gcv_games\Witcher3CE.h" />
     <ClInclude Include="..\gcv_utils\assert_utils.hpp" />
     <ClInclude Include="..\gcv_utils\camera_data_struct.h" />
     <ClInclude Include="..\gcv_utils\depth_utils.h" />

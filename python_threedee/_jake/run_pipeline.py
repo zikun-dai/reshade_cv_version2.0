@@ -4,7 +4,7 @@ import sys
 
 # ====== User configuration ======
 SCRIPT_DIR = r"C:\Users\user\Desktop\project\gamehack\reshade_cv_version2.0\python_threedee"
-DATA_DIR = r"D:\SteamLibrary\steamapps\common\Crysis3Remastered\Bin64\cv_saved\actions_2026-01-09_222467206"
+DATA_DIR = r"D:\SteamLibrary\steamapps\common\The Witcher 3\bin\x64\cv_saved\actions_2026-01-26_268680410"
 
 # If you want to force a specific Python from a conda env:
 # PYTHON_EXE = r"C:\Users\user\miniconda3\envs\yourenv\python.exe"
