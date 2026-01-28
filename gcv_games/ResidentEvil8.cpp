@@ -1,0 +1,39 @@
+// Copyright (C) 2022 Jason Bunk
+#include "ResidentEvil8.h"
+#include "gcv_utils/depth_utils.h"
+#include "gcv_utils/scripted_cam_buf_templates.h"
+
+
+std::string ResidentEvil8::gamename_verbose() const { return "ResidentEvil8"; }
+
+std::string ResidentEvil8::camera_dll_name() const { return ""; } // no dll name, it's available in the exe memory space
+uint64_t ResidentEvil8::camera_dll_mem_start() const { return 0; }
+GameCamDLLMatrixType ResidentEvil8::camera_dll_matrix_format() const { return GameCamDLLMatrix_allmemscanrequiredtofindscriptedcambuf; }
+
+scriptedcam_checkbuf_funptr ResidentEvil8::get_scriptedcambuf_checkfun() const {
+	return template_check_scriptedcambuf_hash<double, 13, 2>;
+}
+uint64_t ResidentEvil8::get_scriptedcambuf_sizebytes() const {
+	return template_scriptedcambuf_sizebytes<double, 13, 2>();
+}
+bool ResidentEvil8::copy_scriptedcambuf_to_matrix(uint8_t* buf, uint64_t buflen, CamMatrixData& rcam, std::string& errstr) const {
+	bool ret = template_copy_scriptedcambuf_extrinsic_cam2world_and_fov<double, 13, 2>(buf, buflen, rcam, false, errstr);
+	if (!ret)
+		return false;
+	CamMatrix& M = rcam.extrinsic_cam2world;
+	M.col(1).swap(M.col(2)); // swap 2nd and 3rd columns
+	M.col(2) = -M.col(2); // negate 3rd column (after swap)
+	return true;
+}
+
+bool ResidentEvil8::can_interpret_depth_buffer() const {
+	return true;
+}
+float ResidentEvil8::convert_to_physical_distance_depth_u64(uint64_t depthval) const {
+	const double normalizeddepth = static_cast<double>(depthval) / 4294967295.0;
+	// This game has a logarithmic depth buffer with unknown constant(s).
+	// These numbers were found by a curve fit, so are approximate.
+	return 1.28 / (0.0004253421645545 + exp_fast_approx(354.8489261773826 * normalizeddepth - 83.12790960252826));
+}
+
+
