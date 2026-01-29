@@ -81,7 +81,7 @@ void depth_gray_bytesLE_to_f32(simple_packed_buf &dstBuf, const resource_desc &d
 		}
 	}
 	uint8_t *src_p = static_cast<uint8_t *>(data.data);
-	if (!gamehandle_can_interpret_depth && !settings.debug_mode) {
+	if (!gamehandle_can_interpret_depth && !settings.debug_mode && !settings.alreadyfloat) {
 		dstBuf.pixfmt = BUF_PIX_FMT_GRAYU32;
 	}
 	constexpr uint64_t clipu32 = static_cast<uint64_t>(std::numeric_limits<uint32_t>::max());

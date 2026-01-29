@@ -1,5 +1,45 @@
+虽然游戏内不勾选GcvDepthExport.fx就不会卡死退出，但此时我无法正确截取到深度图（按下F11时得到的深度图依然是之前那种空的npy文  
+件）;
+关闭fx时按下F11的log输出如下：
+```log
+21:27:00:337 [45244] | INFO  | [CV Capture] created 3 image writer threads
+21:27:01:803 [45244] | INFO  | [CV Capture] saving texture of shape 1280 x 720 of format 28:r8g8b8a8_unorm with interpretation 0
+21:27:01:815 [45244] | INFO  | [CV Capture] 11021
+21:27:01:827 [45244] | INFO  | [CV Capture] 11021
+21:27:01:847 [45244] | INFO  | [CV Capture] saving texture of shape 1280 x 720 of format 41:r32_float with interpretation 1
+21:27:01:849 [45244] | ERROR | [CV Capture] capture ResidentEvil8_2026-01-28_64465273_: semseg failed; ; metajson: good; RGB and depth good
+21:27:01:858 [52068] | INFO  | Successfully compiled 'D:\SteamLibrary\steamapps\common\Resident Evil Village BIOHAZARD VILLAGE\reshade-shaders\Shaders\GcvDepthExport.fx' permutation in 0.001000 s.
+21:27:01:997 [45244] | INFO  | [CV Capture] Saved img 'D:\SteamLibrary\steamapps\common\Resident Evil Village BIOHAZARD VILLAGE\cv_saved\ResidentEvil8_2026-01-28_64465273_depth' of type 3 with writer(s) 11 
+21:27:02:218 [45244] | INFO  | [CV Capture] Saved img 'D:\SteamLibrary\steamapps\common\Resident Evil Village BIOHAZARD VILLAGE\cv_saved\ResidentEvil8_2026-01-28_64465273_RGB' of type 2 with writer(s) 1 
+```
+
+```
+min和max都是0；.npy的完整地址在"D:\SteamLibrary\steamapps\common\Resident Evil Village BIOHAZARD                             
+  VILLAGE\cv_saved\ResidentEvil8_2026-01-28_64465273_depth.npy"；Reshade.ini在"D:\SteamLibrary\steamapps\common\Resident Evil  
+  Village BIOHAZARD VILLAGE\ReShade.ini"，EffectSearchPaths=.\reshade-shaders\Shaders\**，
+```
+
+<!-- 1. 我将reshade-shaders\Shaders\GcvDepthExport.fx复制到游戏文件夹，在游戏中的reshade菜单enable GcvDepthExport.fx之后游戏画面就就会变成红色，是我使用方法不对吗？还是说这个这个effect存在问题？
+2. 在enable GcvDepthExport.fx后，我按下F11后并不是截取单帧，而是在持续地截取、导致游戏很快就卡死退出；在cv_saved中有很多截取到的*RGB.png，虽然标着RGB但看起来里面的内容是深度图，我希望深度图依然走之前的npy管线而不是生成.png文件；
+3. 我按下F9开启录制后，也是很快卡死退出，Reshade.log("D:\SteamLibrary\steamapps\common\Resident Evil Village BIOHAZARD VILLAGE\ReShade.log")中显示如下：
+```bash
+21:08:38:605 [50536] | INFO  | [CV Capture] REC start (mode 1): D:\SteamLibrary\steamapps\common\Resident Evil Village BIOHAZARD VILLAGE\cv_saved\actions_2026-01-28_96663014/
+21:08:40:123 [50536] | INFO  | [CV Capture] 1517065
+21:08:40:123 [50536] | INFO  | [CV Capture] 1517065
+21:08:40:126 [50536] | INFO  | [CV Capture] created 3 image writer threads
+21:08:40:126 [50536] | INFO  | [CV Capture] saving texture of shape 1280 x 720 of format 41:r32_float with interpretation 1
+21:08:40:129 [50536] | INFO  | [CV Capture] 5140
+21:08:40:129 [50536] | INFO  | [CV Capture] saving texture of shape 1280 x 720 of format 28:r8g8b8a8_unorm with interpretation 0
+21:08:40:989 [51448] | INFO  | Successfully compiled 'D:\SteamLibrary\steamapps\common\Resident Evil Village BIOHAZARD VILLAGE\reshade-shaders\Shaders\GcvDepthExport.fx' permutation in 0.002000 s.
+21:08:41:018 [50536] | INFO  | [CV Capture] 44
+21:08:41:027 [50536] | INFO  | [CV Capture] 38
+21:08:41:038 [50536] | INFO  | [CV Capture] 39
+21:08:41:038 [50536] | INFO  | [CV Capture] 27
+......(之后的内容省略)
+``` -->
+
 <!-- 1. 删掉reload_effect_next_frame是否会对整体的pipeline造成什么影响？
-2. 我另外问了copilot，给出的回答如下：
+1. 我另外问了copilot，给出的回答如下：
 ```
 修正说明：
 •	原因：reshade::api::effect_runtime 没有 reload_effect_next_frame 成员函数。正确的 API 是 reload_effects()，用于重新加载所有效果文件。
