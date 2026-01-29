@@ -20,6 +20,7 @@ enum TextureInterpretation {
 	TexInterp_RGB = 0,
 	TexInterp_Depth,
 	TexInterp_IndexedSeg,
+	TexInterp_LinearDepthF32,
 };
 
 bool copy_texture_image_needing_resource_barrier_into_packedbuf(

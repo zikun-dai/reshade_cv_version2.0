@@ -330,7 +330,18 @@ bool copy_texture_image_given_ready_resource_into_packedbuf(
 	case format::r32_float:
 	case format::r32_typeless:
 		if (!dstBuf.set_pixfmt_and_alloc_bytes(BUF_PIX_FMT_GRAYF32)) return false;
-		depth_gray_bytesLE_to_f32(dstBuf, desc, data, 0, 4, 0, gamehandle, depth_settings);
+		if (tex_interp == TexInterp_LinearDepthF32) {
+			// Data is already linearized float from DepthCapture.fx - direct memcpy
+			for (size_t y = 0; y < desc.texture.height; ++y) {
+				const uint8_t *src_row = static_cast<uint8_t*>(data.data) + y * data.row_pitch;
+				float *dst_row = dstBuf.rowptr<float>(y);
+				if (dst_row) {
+					memcpy(dst_row, src_row, desc.texture.width * sizeof(float));
+				}
+			}
+		} else {
+			depth_gray_bytesLE_to_f32(dstBuf, desc, data, 0, 4, 0, gamehandle, depth_settings);
+		}
 		break;
 	case format::r32g32b32a32_float:
 	case format::r32g32b32a32_uint:

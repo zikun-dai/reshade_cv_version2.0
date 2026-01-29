@@ -32,6 +32,58 @@
 #include "tex_buffer_utils.h"
 using Json = nlohmann::json_abi_v3_12_0::json;
 
+// Shader-based depth capture for DX12/Vulkan
+static reshade::api::resource g_depth_capture_resource = { 0 };
+static bool g_depth_capture_lookup_failed = false;
+static uint64_t g_depth_capture_frame_counter = 0;
+
+static reshade::api::resource try_get_depth_capture_resource(reshade::api::effect_runtime* runtime) {
+    // Periodic re-lookup to handle effect reloads
+    g_depth_capture_frame_counter++;
+    if (g_depth_capture_frame_counter % 300 == 0) {
+        g_depth_capture_resource = { 0 };
+        g_depth_capture_lookup_failed = false;
+    }
+
+    if (g_depth_capture_resource.handle != 0)
+        return g_depth_capture_resource;
+    if (g_depth_capture_lookup_failed)
+        return { 0 };
+
+    // Find the texture variable
+    reshade::api::effect_texture_variable var = runtime->find_texture_variable("DepthCapture.fx", "DepthCaptureTex");
+    if (var == 0) {
+        g_depth_capture_lookup_failed = true;
+        reshade::log_message(reshade::log_level::warning, "DepthCapture.fx not found, falling back to selected_depth_stencil");
+        return { 0 };
+    }
+
+    // Auto-enable the technique
+    runtime->enumerate_techniques("DepthCapture.fx", [](reshade::api::effect_runtime* rt, reshade::api::effect_technique tech) {
+        rt->set_technique_state(tech, true);
+    });
+
+    // Get the resource from the texture binding
+    reshade::api::resource_view srv = { 0 }, srv_srgb = { 0 };
+    runtime->get_texture_binding(var, &srv, &srv_srgb);
+    if (srv.handle == 0) {
+        g_depth_capture_lookup_failed = true;
+        reshade::log_message(reshade::log_level::warning, "DepthCapture.fx: failed to get texture binding");
+        return { 0 };
+    }
+
+    reshade::api::resource res = runtime->get_device()->get_resource_from_view(srv);
+    if (res.handle == 0) {
+        g_depth_capture_lookup_failed = true;
+        reshade::log_message(reshade::log_level::warning, "DepthCapture.fx: failed to get resource from view");
+        return { 0 };
+    }
+
+    g_depth_capture_resource = res;
+    reshade::log_message(reshade::log_level::info, "DepthCapture.fx: successfully acquired depth capture resource");
+    return g_depth_capture_resource;
+}
+
 static double g_camera_data_buffer[17] = {
     1.20040525131452021e-12,  // 第二个魔数签名
     // 1.38097189588312856e-12,
@@ -161,6 +213,10 @@ static void on_destroy(reshade::api::device* device) {
         g_actions_csv = nullptr;
     }
 
+    g_depth_capture_resource = { 0 };
+    g_depth_capture_lookup_failed = false;
+    g_depth_capture_frame_counter = 0;
+
     device->destroy_private_data<image_writer_thread_pool>();
 }
 
@@ -279,8 +335,14 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime* runtime,
 
                     // Logic 1: save depth data
                     if (g_recording_mode == 1) {
-                        generic_depth_data& genericdepdata = runtime->get_private_data<generic_depth_data>();
-                        reshade::api::resource depth_res = genericdepdata.selected_depth_stencil;
+                        reshade::api::resource depth_res = try_get_depth_capture_resource(runtime);
+                        TextureInterpretation depth_interp = TexInterp_LinearDepthF32;
+                        if (depth_res.handle == 0) {
+                            // Fallback to old path (DX11 / no shader)
+                            generic_depth_data& genericdepdata = runtime->get_private_data<generic_depth_data>();
+                            depth_res = genericdepdata.selected_depth_stencil;
+                            depth_interp = TexInterp_Depth;
+                        }
                         reshade::api::command_queue* const q2 = runtime->get_command_queue();
 
                         if (depth_res.handle != 0) {
@@ -289,15 +351,14 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime* runtime,
                                         g_rec_dir.c_str(), (unsigned long long)g_rec_idx);
                             const std::string basefilen = std::string(basebuf);
 
-                            uint32_t writers = ImageWriter_numpy;  // 生成 depth.npy
-                            // ImageWriter_STB_png
+                            uint32_t writers = ImageWriter_numpy;
                             const bool ok_depth =
                                 shdata.save_texture_image_needing_resource_barrier_copy(
                                     basefilen + "depth",
                                     writers,
                                     q2,
                                     depth_res,
-                                    TexInterp_Depth);
+                                    depth_interp);
                             if (!ok_depth) {
                                 reshade::log_message(reshade::log_level::warning,
                                                      "record: failed to save per-frame depth (.npy/.fpzip)");
@@ -438,9 +499,15 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime* runtime,
                     reshade::log_message(reshade::log_level::info,
                                          ("Frame skipped1111: Δt=%lld us", std::to_string(delta_us_depth1).c_str()));
                 }
+                reshade::api::resource f11_depth_res = try_get_depth_capture_resource(runtime);
+                TextureInterpretation f11_depth_interp = TexInterp_LinearDepthF32;
+                if (f11_depth_res.handle == 0) {
+                    f11_depth_res = genericdepdata.selected_depth_stencil;
+                    f11_depth_interp = TexInterp_Depth;
+                }
                 if (shdata.save_texture_image_needing_resource_barrier_copy(basefilen + std::string("depth"),
                                                                             ImageWriter_STB_png | ImageWriter_epr | ImageWriter_numpy | (shdata.game_knows_depthbuffer() ? ImageWriter_fpzip : 0),
-                                                                            cmdqueue, genericdepdata.selected_depth_stencil, TexInterp_Depth)) {
+                                                                            cmdqueue, f11_depth_res, f11_depth_interp)) {
                     capmessage << "RGB and depth good";
                 } else {
                     capmessage << "RGB good, but failed to capture depth";
