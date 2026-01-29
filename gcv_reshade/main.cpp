@@ -177,13 +177,19 @@ static bool render_depth_export(reshade::api::effect_runtime* runtime,
         return false;
     }
 
-    if (!cmd_list) {
-        auto* q = runtime->get_command_queue();
-        cmd_list = q ? q->get_immediate_command_list() : nullptr;
-        if (!cmd_list) return false;
+    auto& genericdepdata = runtime->get_private_data<generic_depth_data>();
+    if (genericdepdata.selected_shader_resource.handle == 0) {
+        reshade::log_message(reshade::log_level::warning, "depth export: selected_shader_resource is null");
+        return false;
     }
 
+    auto* q = runtime->get_command_queue();
+    if (!q) return false;
+    cmd_list = q->get_immediate_command_list();
+    if (!cmd_list) return false;
+
     using namespace reshade::api;
+    runtime->update_texture_bindings("DEPTH", genericdepdata.selected_shader_resource, {0});
     if (shdata.depth_export_last_state != resource_usage::render_target) {
         cmd_list->barrier(shdata.depth_export_tex, shdata.depth_export_last_state, resource_usage::render_target);
     }
@@ -191,6 +197,7 @@ static bool render_depth_export(reshade::api::effect_runtime* runtime,
 
     cmd_list->barrier(shdata.depth_export_tex, resource_usage::render_target, resource_usage::shader_resource);
     shdata.depth_export_last_state = resource_usage::shader_resource;
+    q->flush_immediate_command_list();
     return true;
 }
 
