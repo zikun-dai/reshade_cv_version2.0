@@ -158,6 +158,36 @@ bool image_writer_thread_pool::save_texture_image_needing_resource_barrier_copy(
     return true;
 }
 
+bool image_writer_thread_pool::save_texture_image_needing_resource_barrier_copy_with_depth_settings(
+    const std::string& base_filename, uint64_t image_writers,
+    reshade::api::command_queue* queue, reshade::api::resource tex,
+    TextureInterpretation tex_interp, const depth_tex_settings& settings) {
+    if (tex == 0) {
+        reshade::log_message(reshade::log_level::error, std::string(std::string("texture null: failed to save ") + base_filename).c_str());
+        return false;
+    }
+
+    if (num_threads() == 0) change_num_threads(3);
+    if (num_threads() == 0) return false;
+    init_in_game();
+    queue_item_image2write* qume = new queue_item_image2write(image_writers,
+                                                              output_filepath_creates_outdir_if_needed(base_filename));
+    if (!qume) {
+        reshade::log_message(reshade::log_level::error, "failed to allocate new queue entry");
+        return false;
+    }
+    if (!copy_texture_image_needing_resource_barrier_into_packedbuf(
+            game, qume->mybuf, queue, tex, tex_interp, settings)) {
+        delete qume;
+        return false;
+    }
+    if (!images2writequeue.enqueue(qume)) {
+        delete qume;
+        return false;
+    }
+    return true;
+}
+
 bool image_writer_thread_pool::save_segmentation_app_indexed_image_needing_resource_barrier_copy(
     const std::string& base_filename, reshade::api::command_queue* queue, nlohmann::json& metajson) {
     if (num_threads() == 0) change_num_threads(3);

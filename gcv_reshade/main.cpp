@@ -32,6 +32,9 @@
 #include "tex_buffer_utils.h"
 using Json = nlohmann::json_abi_v3_12_0::json;
 
+static constexpr const char* kDepthFxFile = "GcvDepthExport.fx";
+static constexpr const char* kDepthFxTech = "GcvDepthExport";
+
 static double g_camera_data_buffer[17] = {
     1.20040525131452021e-12,  // 第二个魔数签名
     // 1.38097189588312856e-12,
@@ -128,6 +131,69 @@ void UpdateCameraBufferFromReshade(reshade::api::effect_runtime* runtime) {
 
 typedef std::chrono::steady_clock hiresclock;
 
+static bool ensure_depth_export_target(reshade::api::effect_runtime* runtime, image_writer_thread_pool& shdata) {
+    auto* device = runtime->get_device();
+    uint32_t w = 0;
+    uint32_t h = 0;
+    runtime->get_screenshot_width_and_height(&w, &h);
+    if (w == 0 || h == 0) return false;
+
+    if (shdata.depth_export_tex.handle != 0 && (shdata.depth_export_w != w || shdata.depth_export_h != h)) {
+        device->destroy_resource_view(shdata.depth_export_rtv);
+        device->destroy_resource(shdata.depth_export_tex);
+        shdata.depth_export_tex = {0};
+        shdata.depth_export_rtv = {0};
+    }
+
+    if (shdata.depth_export_tex.handle == 0) {
+        using namespace reshade::api;
+        resource_desc desc(w, h, 1, 1, format::r32_float, 1, memory_heap::gpu_only,
+                           resource_usage::render_target | resource_usage::copy_source | resource_usage::shader_resource);
+        if (!device->create_resource(desc, nullptr, resource_usage::render_target, &shdata.depth_export_tex)) {
+            return false;
+        }
+        if (!device->create_resource_view(shdata.depth_export_tex, resource_usage::render_target,
+                                          resource_view_desc(format::r32_float), &shdata.depth_export_rtv)) {
+            return false;
+        }
+        shdata.depth_export_w = w;
+        shdata.depth_export_h = h;
+        shdata.depth_export_last_state = resource_usage::render_target;
+    }
+    return true;
+}
+
+static bool render_depth_export(reshade::api::effect_runtime* runtime,
+                                reshade::api::command_list* cmd_list,
+                                image_writer_thread_pool& shdata) {
+    if (!ensure_depth_export_target(runtime, shdata)) return false;
+
+    auto tech = runtime->find_technique(kDepthFxFile, kDepthFxTech);
+    if (tech.handle == 0) {
+        if (!shdata.depth_export_warned_missing_fx) {
+            reshade::log_message(reshade::log_level::warning, "GcvDepthExport.fx missing or failed to compile");
+            shdata.depth_export_warned_missing_fx = true;
+        }
+        return false;
+    }
+
+    if (!cmd_list) {
+        auto* q = runtime->get_command_queue();
+        cmd_list = q ? q->get_immediate_command_list() : nullptr;
+        if (!cmd_list) return false;
+    }
+
+    using namespace reshade::api;
+    if (shdata.depth_export_last_state != resource_usage::render_target) {
+        cmd_list->barrier(shdata.depth_export_tex, shdata.depth_export_last_state, resource_usage::render_target);
+    }
+    runtime->render_technique(tech, cmd_list, shdata.depth_export_rtv);
+
+    cmd_list->barrier(shdata.depth_export_tex, resource_usage::render_target, resource_usage::shader_resource);
+    shdata.depth_export_last_state = resource_usage::shader_resource;
+    return true;
+}
+
 // ------------------ Global recording status ------------------
 static int g_recording_mode = 0;  // 0: not recording, 1: depth mode, 2: controls mode
 static int g_video_fps = 1;
@@ -149,8 +215,9 @@ static void on_init(reshade::api::device* device) {
     shdata.init_time = hiresclock::now();
 }
 static void on_destroy(reshade::api::device* device) {
-    device->get_private_data<image_writer_thread_pool>().change_num_threads(0);
-    device->get_private_data<image_writer_thread_pool>().print_waiting_log_messages();
+    auto& shdata = device->get_private_data<image_writer_thread_pool>();
+    shdata.change_num_threads(0);
+    shdata.print_waiting_log_messages();
 
     if (g_rec) {
         g_rec->stop();
@@ -161,18 +228,27 @@ static void on_destroy(reshade::api::device* device) {
         g_actions_csv = nullptr;
     }
 
+    if (shdata.depth_export_tex.handle != 0) {
+        device->destroy_resource_view(shdata.depth_export_rtv);
+        device->destroy_resource(shdata.depth_export_tex);
+        shdata.depth_export_tex = {0};
+        shdata.depth_export_rtv = {0};
+    }
+
     device->destroy_private_data<image_writer_thread_pool>();
 }
 
 // ------------------  Recording ------------------
 static void on_reshade_finish_effects(reshade::api::effect_runtime* runtime,
-                                      reshade::api::command_list*, reshade::api::resource_view rtv, reshade::api::resource_view) {
+                                      reshade::api::command_list* cmd_list, reshade::api::resource_view rtv, reshade::api::resource_view) {
     auto& shdata = runtime->get_device()->get_private_data<image_writer_thread_pool>();
     CamMatrixData gamecam;
     std::string errstr;
     bool shaderupdatedwithcampos = false;
     float shadercamposbuf[4];
     reshade::api::device* const device = runtime->get_device();
+    const auto api = device->get_api();
+    const bool use_fx_depth = (api == reshade::api::device_api::d3d12 || api == reshade::api::device_api::vulkan);
     auto& segmapp = device->get_private_data<segmentation_app_data>();
     UpdateCameraBufferFromReshade(runtime);
     {  // record
@@ -291,13 +367,27 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime* runtime,
 
                             uint32_t writers = ImageWriter_numpy;  // 生成 depth.npy
                             // ImageWriter_STB_png
-                            const bool ok_depth =
-                                shdata.save_texture_image_needing_resource_barrier_copy(
+                            bool ok_depth = false;
+                            if (use_fx_depth && render_depth_export(runtime, cmd_list, shdata)) {
+                                depth_tex_settings fx_depth_settings;
+                                fx_depth_settings.alreadyfloat = true;
+                                fx_depth_settings.depthbytes = 4;
+                                fx_depth_settings.depthbyteskeep = 4;
+                                ok_depth = shdata.save_texture_image_needing_resource_barrier_copy_with_depth_settings(
+                                    basefilen + "depth",
+                                    writers,
+                                    q2,
+                                    shdata.depth_export_tex,
+                                    TexInterp_Depth,
+                                    fx_depth_settings);
+                            } else {
+                                ok_depth = shdata.save_texture_image_needing_resource_barrier_copy(
                                     basefilen + "depth",
                                     writers,
                                     q2,
                                     depth_res,
                                     TexInterp_Depth);
+                            }
                             if (!ok_depth) {
                                 reshade::log_message(reshade::log_level::warning,
                                                      "record: failed to save per-frame depth (.npy/.fpzip)");
@@ -438,9 +528,26 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime* runtime,
                     reshade::log_message(reshade::log_level::info,
                                          ("Frame skipped1111: Δt=%lld us", std::to_string(delta_us_depth1).c_str()));
                 }
-                if (shdata.save_texture_image_needing_resource_barrier_copy(basefilen + std::string("depth"),
-                                                                            ImageWriter_STB_png | ImageWriter_epr | ImageWriter_numpy | (shdata.game_knows_depthbuffer() ? ImageWriter_fpzip : 0),
-                                                                            cmdqueue, genericdepdata.selected_depth_stencil, TexInterp_Depth)) {
+                bool ok_depth = false;
+                if (use_fx_depth && render_depth_export(runtime, cmd_list, shdata)) {
+                    depth_tex_settings fx_depth_settings;
+                    fx_depth_settings.alreadyfloat = true;
+                    fx_depth_settings.depthbytes = 4;
+                    fx_depth_settings.depthbyteskeep = 4;
+                    ok_depth = shdata.save_texture_image_needing_resource_barrier_copy_with_depth_settings(
+                        basefilen + std::string("depth"),
+                        ImageWriter_STB_png | ImageWriter_epr | ImageWriter_numpy,
+                        cmdqueue,
+                        shdata.depth_export_tex,
+                        TexInterp_Depth,
+                        fx_depth_settings);
+                } else {
+                    ok_depth = shdata.save_texture_image_needing_resource_barrier_copy(
+                        basefilen + std::string("depth"),
+                        ImageWriter_STB_png | ImageWriter_epr | ImageWriter_numpy | (shdata.game_knows_depthbuffer() ? ImageWriter_fpzip : 0),
+                        cmdqueue, genericdepdata.selected_depth_stencil, TexInterp_Depth);
+                }
+                if (ok_depth) {
                     capmessage << "RGB and depth good";
                 } else {
                     capmessage << "RGB good, but failed to capture depth";

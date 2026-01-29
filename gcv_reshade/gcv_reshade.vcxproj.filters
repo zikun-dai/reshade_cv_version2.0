@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{C8B7A2F0-1A44-4C1C-9C58-7E6D2C4A9D1B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="..\3rdparty\cnpy.cpp" />
     <ClCompile Include="..\3rdparty\fpzip\error.cpp" />
     <ClCompile Include="..\3rdparty\fpzip\rcdecoder.cpp" />
@@ -152,5 +157,8 @@
     <None Include="..\3rdparty\fpzip\rcdecoder.inl" />
     <None Include="..\3rdparty\fpzip\rcencoder.inl" />
     <None Include="..\3rdparty\fpzip\rcqsmodel.inl" />
+    <None Include="..\reshade-shaders\Shaders\GcvDepthExport.fx">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

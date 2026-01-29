@@ -16,5 +16,4 @@
 *.ply
 *.pcd
 python_test
-reshade-shaders/
 __pycache__/

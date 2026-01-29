@@ -29,6 +29,12 @@ public:
 
 	bool camcoordsinitialized = false;
 	bool grabcamcoords = false;
+	reshade::api::resource depth_export_tex = { 0 };
+	reshade::api::resource_view depth_export_rtv = { 0 };
+	uint32_t depth_export_w = 0;
+	uint32_t depth_export_h = 0;
+	reshade::api::resource_usage depth_export_last_state = reshade::api::resource_usage::shader_resource;
+	bool depth_export_warned_missing_fx = false;
 
 	// methods from GameInterface
 	bool init_on_startup();
@@ -53,6 +59,10 @@ public:
 		const std::string &base_filename, uint64_t image_writers,
 		reshade::api::command_queue *queue, reshade::api::resource tex,
 		TextureInterpretation tex_interp);
+	bool save_texture_image_needing_resource_barrier_copy_with_depth_settings(
+		const std::string &base_filename, uint64_t image_writers,
+		reshade::api::command_queue *queue, reshade::api::resource tex,
+		TextureInterpretation tex_interp, const depth_tex_settings &settings);
 
 	bool save_segmentation_app_indexed_image_needing_resource_barrier_copy(
 		const std::string& base_filename, reshade::api::command_queue* queue, nlohmann::json & metajson);

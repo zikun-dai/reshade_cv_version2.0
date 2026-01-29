@@ -253,6 +253,7 @@
     <None Include="..\3rdparty\fpzip\rcdecoder.inl" />
     <None Include="..\3rdparty\fpzip\rcencoder.inl" />
     <None Include="..\3rdparty\fpzip\rcqsmodel.inl" />
+    <None Include="..\reshade-shaders\Shaders\GcvDepthExport.fx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\renderdoc\renderdoc.vcxproj">
