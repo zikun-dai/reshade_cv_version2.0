@@ -1,3 +1,8 @@
+非常好，目前能够输出得到深度的npy文件了；但是线性深度无法直接用于重建场景（无法和c2w中的transltion对应，translation是以metre为尺度的）；
+以赛博朋克2077为例（游戏类对应gcv_games\Cyberpunk2077.cpp和.h），它有一个convert_to_physical_distance_depth_u64函数，负责将原始深度缓存区的depthval转化为真实尺度（以metre为单位），不同游戏的深度转化函数不一定相同，均定义于各自游戏类中的convert_to_physical_distance_depth_u64函数中；
+
+当前新的pipeline从reshade中得到的深度是看起来是来自于ReShade::GetLinearizedDepth?我看到reshade-shaders\Shaders\DisplayDepth.fx中有ReShade::DepthBuffer，这个变量和convert_to_physical_distance_depth_u64中的depthval是同一个数值吗？能否使用类似convert_to_physical_distance_depth_u64的方法来得到真实尺度的深度图呢？或者你有什么办法能够将当前的深度（看起来是归一化的线性深度？我不确定，只知道npy文件float数值都在0到1之间，且我利用单帧的RGB、相机外参.json、当前的归一化深度重建出来的点云看起来结构是正常的，但是多帧重建时深度的尺度不对导致点云无法对齐）
+
 <!-- 新增.fx之后是否需要在游戏内reshade菜单enable新的.fx文件，是否会影响addon的RGB采集（displaydept     
   h.fx打开时屏幕画面会被法线图和深度图覆盖导致F11和F9/F10采集到的图片/视频数据不是原始的RGB）  
 

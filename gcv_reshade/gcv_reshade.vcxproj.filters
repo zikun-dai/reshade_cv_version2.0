@@ -56,9 +56,9 @@
     <ClCompile Include="..\gcv_games\Crysis3.cpp" />
     <ClCompile Include="..\gcv_games\CrysisRemastered.cpp" />
     <ClCompile Include="..\gcv_games\CrysisGOG.cpp" />
-    <ClCompile Include="..\gcv_games\Cyberpunk2026.cpp" />
     <ClCompile Include="..\gcv_games\Witcher3CE.cpp" />
     <ClCompile Include="..\gcv_games\ResidentEvil8.cpp" />
+    <ClCompile Include="..\gcv_games\Cyberpunk2077.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdparty\cnpy.h" />
@@ -139,9 +139,9 @@
     <ClInclude Include="..\gcv_games\Crysis3.h" />
     <ClInclude Include="..\gcv_games\CrysisRemastered.h" />
     <ClInclude Include="..\gcv_games\CrysisGOG.h" />
-    <ClInclude Include="..\gcv_games\Cyberpunk2026.h" />
     <ClInclude Include="..\gcv_games\Witcher3CE.h" />
     <ClInclude Include="..\gcv_games\ResidentEvil8.h" />
+    <ClInclude Include="..\gcv_games\Cyberpunk2077.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\3rdparty\fpzip\fpe.inl" />

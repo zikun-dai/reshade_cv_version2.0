@@ -331,12 +331,28 @@ bool copy_texture_image_given_ready_resource_into_packedbuf(
 	case format::r32_typeless:
 		if (!dstBuf.set_pixfmt_and_alloc_bytes(BUF_PIX_FMT_GRAYF32)) return false;
 		if (tex_interp == TexInterp_LinearDepthF32) {
-			// Data is already linearized float from DepthCapture.fx - direct memcpy
+			// Data from DepthCapture.fx: raw normalized depth [0,1] from GPU sampling
+			// Convert to physical distance using game-specific conversion
+			const bool gamehandle_can_interpret_depth = gamehandle != nullptr && gamehandle->can_interpret_depth_buffer();
+
 			for (size_t y = 0; y < desc.texture.height; ++y) {
 				const uint8_t *src_row = static_cast<uint8_t*>(data.data) + y * data.row_pitch;
+				const float *src_f = reinterpret_cast<const float*>(src_row);
 				float *dst_row = dstBuf.rowptr<float>(y);
 				if (dst_row) {
-					memcpy(dst_row, src_row, desc.texture.width * sizeof(float));
+					if (gamehandle_can_interpret_depth) {
+						// Convert normalized float [0,1] to uint64 equivalent for game-specific conversion
+						// Most depth formats use uint32 range, so we scale to UINT32_MAX
+						for (size_t x = 0; x < desc.texture.width; ++x) {
+							const float normalized_depth = src_f[x];
+							// Convert to uint64 as if it came from a 32-bit depth buffer
+							const uint64_t depth_as_uint = static_cast<uint64_t>(normalized_depth * 4294967295.0);
+							dst_row[x] = gamehandle->convert_to_physical_distance_depth_u64(depth_as_uint);
+						}
+					} else {
+						// No game-specific conversion available, just copy raw normalized depth
+						memcpy(dst_row, src_f, desc.texture.width * sizeof(float));
+					}
 				}
 			}
 		} else {
