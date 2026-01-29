@@ -18,3 +18,15 @@
 python_test
 reshade-shaders/
 __pycache__/
+
+# 忽略 reshade-shaders 下的所有内容
+/reshade-shaders/*
+
+# 但允许进入 Shaders 目录（否则无法包含里面的指定文件）
+!/reshade-shaders/Shaders/
+
+# Shaders 里也先全忽略
+/reshade-shaders/Shaders/*
+
+# 最后只放行这一份文件
+!/reshade-shaders/Shaders/GcvDepthExport.fx
