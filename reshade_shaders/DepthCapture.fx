@@ -39,16 +39,16 @@ float PS_DepthCapture(float4 pos : SV_Position, float2 texcoord : TEXCOORD) : SV
     // Sample raw depth
     float depth = tex2Dlod(ReShade::DepthBuffer, float4(texcoord, 0, 0)).x * RESHADE_DEPTH_MULTIPLIER;
 
-    // Apply logarithmic conversion if needed (this is GPU-side decoding, not game-specific conversion)
-#if RESHADE_DEPTH_INPUT_IS_LOGARITHMIC
-    const float C = 0.01;
-    depth = (exp(depth * log(C + 1.0)) - 1.0) / C;
-#endif
+//     // Apply logarithmic conversion if needed (this is GPU-side decoding, not game-specific conversion)
+// #if RESHADE_DEPTH_INPUT_IS_LOGARITHMIC
+//     const float C = 0.01;
+//     depth = (exp(depth * log(C + 1.0)) - 1.0) / C;
+// #endif
 
-    // Apply reversed flip if needed (convert 1=near/0=far to 0=near/1=far)
-#if RESHADE_DEPTH_INPUT_IS_REVERSED
-    depth = 1.0 - depth;
-#endif
+//     // Apply reversed flip if needed (convert 1=near/0=far to 0=near/1=far)
+// #if RESHADE_DEPTH_INPUT_IS_REVERSED
+//     depth = 1.0 - depth;
+// #endif
 
     // IMPORTANT: Do NOT apply the final linearization step
     // Return raw normalized depth [0,1] for C++ side game-specific conversion
