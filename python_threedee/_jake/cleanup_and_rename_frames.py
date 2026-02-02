@@ -2,7 +2,7 @@ import re
 from pathlib import Path
 
 # ====== User configuration ======
-DATA_DIR = r"C:\\_Relax\\Steam\\steamapps\\common\\Crysis Remastered\\Bin64\\cv_saved\\f11_mode"
+DATA_DIR = r"D:\SteamLibrary\steamapps\common\God of War Ragnarok\cv_saved\f11_mode"
 # ================================
 
 ALLOWED_SUFFIXES = ["_depth.npy", "_RGB.png", "_meta.json", "_camera.json"]
