@@ -4,7 +4,7 @@ import sys
 
 # ====== User configuration ======
 SCRIPT_DIR = r"C:\Users\user\Desktop\project\gamehack\reshade_cv_version2.0\python_threedee"
-DATA_DIR = r"D:\SteamLibrary\steamapps\common\God of War Ragnarok\cv_saved\actions_2026-01-30_76713169"
+DATA_DIR = r"D:\SteamLibrary\steamapps\common\Horizon Forbidden West Complete Edition\cv_saved\f11-mode"
 
 # If you want to force a specific Python from a conda env:
 # PYTHON_EXE = r"C:\Users\user\miniconda3\envs\yourenv\python.exe"
@@ -25,7 +25,7 @@ def main():
         os.path.join(SCRIPT_DIR, "unpack_h5_and_video.py"),
         DATA_DIR,
     ]
-    run(cmd1)
+    # run(cmd1)
 
     # Step 2: build point cloud using load_point_cloud_SUFFIX.py
     depth_pattern = os.path.join(DATA_DIR, "frame_*.npy")

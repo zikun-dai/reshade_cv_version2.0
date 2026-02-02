@@ -181,7 +181,7 @@ def load_cloud_via_meta(depthfile:str,
     print("cam2world:\n", cam2world)
     # 2. 转换为OpenCV系c2w矩阵（与正确脚本对齐）
     c2w, R_cv, t_cv = cam2world_to_cv_unchanged(cam2world, pose_scale)
-    t_cv *= 2  # 单位从mm转为m
+    # t_cv *= 2  # 单位从mm转为m
     print(f"[DEBUG] 帧 {depthbnam} 的c2w矩阵:\n{c2w}")
 
     # 3. 计算内参（用垂直FOV，与正确脚本逻辑一致）

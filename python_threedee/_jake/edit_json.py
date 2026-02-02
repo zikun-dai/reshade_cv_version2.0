@@ -4,7 +4,7 @@ import math
 import sys
 import numpy as np
 
-DATA_DIR = Path(r"C:\_Relax\GOG Galaxy\Games\Crysis\Bin64\cv_saved\actions_2025-12-19_480428794")
+DATA_DIR = Path(r"D:\SteamLibrary\steamapps\common\God of War Ragnarok\cv_saved\actions_2026-01-30_56871928")
 TARGET_FOV = 60
 
 _CAM_ANGLES = (
@@ -120,19 +120,21 @@ def edit_cam2world(path: Path, key: str = "extrinsic_cam2world") -> None:
     cam2world = np.array(data['extrinsic_cam2world'], dtype=np.float64).reshape(3, 4)
     try:
         # Treat as 3x4 row-major:   1,2,3,4,11,12,13,14,21,22,23,24
-        R_cv = cam2world[:, :3]  # 3x3旋转矩阵（UE系）
-        t_cv = cam2world[:, 3]   # 3x1平移向量（UE系，未缩放）
+        # R_cv = cam2world[:, :3]  # 3x3旋转矩阵（UE系）
+        # R_cv_new = R_cv.copy()
+        # R_cv_new[:, 1] *= -1.0
+        # R_cv_new[2, :] *= -1.0
+        # cam2world[:, :3] = R_cv_new
 
+
+        # t_cv = cam2world[:, 3]   # 3x1平移向量（UE系，未缩放）
         # t_cv_new = t_cv.copy()
-        # t_cv_new[1] = t_cv[2]
-        # t_cv_new[2] = -t_cv[1]
+        # t_cv_new[0] = t_cv[2]
+        # t_cv_new[1] = t_cv[0]
+        # t_cv_new[2] = t_cv[1]
+        # t_cv_new[2] *= -1.0
         # cam2world[:, 3] = t_cv_new
-        R_cv_new = R_cv.copy()
 
-        # R_cv_new[:,0] = -R_cv[:,0]
-        R_cv_new[:,1] = R_cv[:,2]
-        R_cv_new[:,2] = -R_cv[:,1]
-        cam2world[:, :3] = R_cv_new
         data['extrinsic_cam2world'] = cam2world.reshape(-1).tolist()
         print("finished edit_cam2world")
     except Exception:
@@ -200,8 +202,8 @@ def main() -> None:
 
     for json_file in root.rglob("*.json"):
         # edit_value(json_file)
-        edit_key(json_file)
-        # edit_cam2world(json_file)
+        # edit_key(json_file)
+        edit_cam2world(json_file)
         # print_value(json_file, "fov_h_degrees")
 
 if __name__ == "__main__":

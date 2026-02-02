@@ -19,6 +19,8 @@ python_test
 reshade-shaders/
 __pycache__/
 
+nul
+
 # 忽略 reshade-shaders 下的所有内容
 /reshade-shaders/*
 

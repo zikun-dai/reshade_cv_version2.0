@@ -3,7 +3,9 @@
     "allow": [
       "WebSearch",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "Bash(git ls-tree:*)"
+      "Bash(git ls-tree:*)",
+      "Bash(dir:*)",
+      "Bash(findstr:*)"
     ]
   }
 }

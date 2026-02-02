@@ -370,7 +370,7 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime* runtime,
                     const int64_t delta_us_depth = now_us_depth_2 - now_us_depth_1;
                     reshade::log_message(reshade::log_level::info,
                                          ("Frame delta: Δt=%lld us", std::to_string(delta_us_depth).c_str()));
-                    if (std::abs(delta_us_depth) > 30000) {
+                    if (std::abs(delta_us_depth) > 50000) {
                         delta_depth_ok = false;
                         reshade::log_message(reshade::log_level::info,
                                              ("Frame skipped: Δt=%lld us", std::to_string(delta_us_depth).c_str()));
