@@ -36,6 +36,17 @@ using Json = nlohmann::json_abi_v3_12_0::json;
 static reshade::api::resource g_depth_capture_resource = { 0 };
 static bool g_depth_capture_lookup_failed = false;
 static uint64_t g_depth_capture_frame_counter = 0;
+static uint64_t g_depth_capture_retry_until_frame = 0;  // Grace period for async shader compilation
+static bool g_depth_capture_fx_not_found = false;  // Separate flag for "fx not found" vs "binding not ready"
+
+// Call this when user presses F11 to force re-lookup
+static void reset_depth_capture_lookup() {
+    g_depth_capture_resource = { 0 };
+    g_depth_capture_lookup_failed = false;
+    // Give a grace period of 60 frames (~1 second at 60fps) for shader to compile and render
+    g_depth_capture_retry_until_frame = g_depth_capture_frame_counter + 60;
+    reshade::log_message(reshade::log_level::info, "DepthCapture: reset lookup state, will retry for next 60 frames");
+}
 
 static reshade::api::resource try_get_depth_capture_resource(reshade::api::effect_runtime* runtime) {
     // Periodic re-lookup to handle effect reloads
@@ -47,12 +58,20 @@ static reshade::api::resource try_get_depth_capture_resource(reshade::api::effec
 
     if (g_depth_capture_resource.handle != 0)
         return g_depth_capture_resource;
-    if (g_depth_capture_lookup_failed)
+
+    // If lookup truly failed (fx not found), don't retry
+    if (g_depth_capture_fx_not_found)
+        return { 0 };
+
+    // If failed but still within grace period, keep retrying
+    // If failed and past grace period, give up until next reset
+    if (g_depth_capture_lookup_failed && g_depth_capture_frame_counter > g_depth_capture_retry_until_frame)
         return { 0 };
 
     // Find the texture variable
     reshade::api::effect_texture_variable var = runtime->find_texture_variable("DepthCapture.fx", "DepthCaptureTex");
     if (var == 0) {
+        g_depth_capture_fx_not_found = true;
         g_depth_capture_lookup_failed = true;
         reshade::log_message(reshade::log_level::warning, "DepthCapture.fx not found, falling back to selected_depth_stencil");
         return { 0 };
@@ -67,18 +86,33 @@ static reshade::api::resource try_get_depth_capture_resource(reshade::api::effec
     reshade::api::resource_view srv = { 0 }, srv_srgb = { 0 };
     runtime->get_texture_binding(var, &srv, &srv_srgb);
     if (srv.handle == 0) {
-        g_depth_capture_lookup_failed = true;
-        reshade::log_message(reshade::log_level::warning, "DepthCapture.fx: failed to get texture binding");
+        // Don't log every frame during grace period, only log periodically
+        if (!g_depth_capture_lookup_failed) {
+            reshade::log_message(reshade::log_level::warning,
+                "DepthCapture.fx: texture binding not ready (shader may still be compiling), will keep retrying...");
+            g_depth_capture_lookup_failed = true;
+            // Set grace period if not already set
+            if (g_depth_capture_retry_until_frame <= g_depth_capture_frame_counter) {
+                g_depth_capture_retry_until_frame = g_depth_capture_frame_counter + 120;  // 2 seconds at 60fps
+            }
+        }
         return { 0 };
     }
 
     reshade::api::resource res = runtime->get_device()->get_resource_from_view(srv);
     if (res.handle == 0) {
-        g_depth_capture_lookup_failed = true;
-        reshade::log_message(reshade::log_level::warning, "DepthCapture.fx: failed to get resource from view");
+        if (!g_depth_capture_lookup_failed) {
+            reshade::log_message(reshade::log_level::warning, "DepthCapture.fx: failed to get resource from view");
+            g_depth_capture_lookup_failed = true;
+            if (g_depth_capture_retry_until_frame <= g_depth_capture_frame_counter) {
+                g_depth_capture_retry_until_frame = g_depth_capture_frame_counter + 120;
+            }
+        }
         return { 0 };
     }
 
+    // Success! Clear failure flags
+    g_depth_capture_lookup_failed = false;
     g_depth_capture_resource = res;
     reshade::log_message(reshade::log_level::info, "DepthCapture.fx: successfully acquired depth capture resource");
     return g_depth_capture_resource;
@@ -216,6 +250,8 @@ static void on_destroy(reshade::api::device* device) {
     g_depth_capture_resource = { 0 };
     g_depth_capture_lookup_failed = false;
     g_depth_capture_frame_counter = 0;
+    g_depth_capture_retry_until_frame = 0;
+    g_depth_capture_fx_not_found = false;
 
     device->destroy_private_data<image_writer_thread_pool>();
 }
@@ -251,6 +287,9 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime* runtime,
             }
 
             if (start_rec) {
+                // Reset depth capture lookup in case shader was still compiling
+                reset_depth_capture_lookup();
+
                 const std::string dirname = std::string("actions_") + get_datestr_yyyy_mm_dd() + "_" + std::to_string(now_us) + "/";
                 g_rec_dir = shdata.output_filepath_creates_outdir_if_needed(dirname);
 
@@ -431,7 +470,13 @@ static void on_reshade_finish_effects(reshade::api::effect_runtime* runtime,
         }
     }
 
-    if (segmentation_app_update_on_finish_effects(runtime, runtime->is_key_pressed(VK_F11))) {
+    const bool f11_pressed = runtime->is_key_pressed(VK_F11);
+    if (f11_pressed) {
+        // Reset depth capture lookup state when user explicitly requests capture
+        // This handles the case where shader was still compiling on first attempt
+        reset_depth_capture_lookup();
+    }
+    if (segmentation_app_update_on_finish_effects(runtime, f11_pressed)) {
         generic_depth_data& genericdepdata = runtime->get_private_data<generic_depth_data>();
         reshade::api::command_queue* cmdqueue = runtime->get_command_queue();
         const int64_t microseconds_elapsed = std::chrono::duration_cast<std::chrono::microseconds>(hiresclock::now() - shdata.init_time).count();

@@ -5,7 +5,9 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(git ls-tree:*)",
       "Bash(dir:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(\"C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" \"C:/Users/user/Desktop/project/gamehack/reshade_cv_version2.0/gcv_reshade.sln\" /p:Configuration=Release /p:Platform=x64 /t:Build /v:minimal)",
+      "Bash(powershell -Command:*)"
     ]
   }
 }
