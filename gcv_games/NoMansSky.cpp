@@ -22,7 +22,7 @@ bool GameNoMansSky::can_interpret_depth_buffer() const {
 // Raw depth: 1.0 = near plane, 0.0 = far plane
 // These near/far values are approximate and may need adjustment
 #define NMS_NEAR_PLANE 0.1f
-#define NMS_FAR_PLANE 50000.0f
+#define NMS_FAR_PLANE 1000.0f
 
 float GameNoMansSky::convert_to_physical_distance_depth_u64(uint64_t depthval) const {
 	// Interpret raw bits as float (32-bit float depth buffer)

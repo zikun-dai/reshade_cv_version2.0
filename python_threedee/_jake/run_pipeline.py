@@ -1,10 +1,13 @@
 import os
 import subprocess
+from pathlib import Path
 import sys
 
 # ====== User configuration ======
 SCRIPT_DIR = r"C:\Users\user\Desktop\project\gamehack\reshade_cv_version2.0\python_threedee"
-DATA_DIR = r"D:\SteamLibrary\steamapps\common\Horizon Forbidden West Complete Edition\cv_saved\f11-mode"
+DATA_DIR = Path(
+    r"D:\SteamLibrary\steamapps\common\No Man's Sky\Binaries\cv_saved\reversez-50000\reversez-50000-1"
+)
 
 # If you want to force a specific Python from a conda env:
 # PYTHON_EXE = r"C:\Users\user\miniconda3\envs\yourenv\python.exe"
@@ -33,7 +36,7 @@ def main():
 
     cmd2 = [
         PYTHON_EXE,
-        os.path.join(SCRIPT_DIR, "load_point_cloud_ue.py"),  # load_point_cloud.py  load_point_cloud_re2.py
+        os.path.join(SCRIPT_DIR, "load_point_cloud_crysis.py"),  # load_point_cloud.py  load_point_cloud_re2.py
         depth_pattern,
         "-max", "50.0",
         "-ss", "5",

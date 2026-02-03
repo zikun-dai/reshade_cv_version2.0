@@ -3,9 +3,10 @@ from pathlib import Path
 import math
 import sys
 import numpy as np
-
-DATA_DIR = Path(r"D:\SteamLibrary\steamapps\common\God of War Ragnarok\cv_saved\actions_2026-01-30_56871928")
-TARGET_FOV = 60
+DATA_DIR = Path(
+    r"D:\SteamLibrary\steamapps\common\No Man's Sky\Binaries\cv_saved\reversez-50000\reversez-50000-1"
+)
+TARGET_FOV = 75.0
 
 _CAM_ANGLES = (
     (-0.559816, 0.058274, -0.000000),
@@ -74,12 +75,13 @@ def edit_value(path: Path) -> None:
     if not isinstance(data, dict):
         return
 
-    if data.get("fov_h_degrees") == TARGET_FOV:
+    if data.get("fov_v_degrees") == TARGET_FOV:
         return
 
-    data["fov_h_degrees"] = TARGET_FOV
+    data["fov_v_degrees"] = TARGET_FOV
     # data["fov_h_degrees"] /= 1.25
     path.write_text(json.dumps(data, ensure_ascii=True), encoding="utf-8")
+    print("finished edit_value")
 
 
 def print_value(path: Path, key: str) -> None:
@@ -106,6 +108,7 @@ def edit_key(path: Path) -> None:
 
     data["fov_v_degrees"] = data.pop("fov_h_degrees")
     path.write_text(json.dumps(data, ensure_ascii=True), encoding="utf-8")
+    print("finished edit_key")
 
 
 def edit_cam2world(path: Path, key: str = "extrinsic_cam2world") -> None:
@@ -201,9 +204,9 @@ def main() -> None:
         raise SystemExit(f"DATA_DIR does not exist: {root}")
 
     for json_file in root.rglob("*.json"):
-        # edit_value(json_file)
+        edit_value(json_file)
         # edit_key(json_file)
-        edit_cam2world(json_file)
+        # edit_cam2world(json_file)
         # print_value(json_file, "fov_h_degrees")
 
 if __name__ == "__main__":

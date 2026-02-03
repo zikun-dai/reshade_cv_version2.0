@@ -16,4 +16,4 @@ public:
 	virtual bool get_camera_matrix(CamMatrixData& rcam, std::string& errstr) override;
 };
 
-REGISTER_GAME_INTERFACE(GameNoMansSky, 0, "NMS.exe");
+REGISTER_GAME_INTERFACE(GameNoMansSky, 0, "nms.exe");

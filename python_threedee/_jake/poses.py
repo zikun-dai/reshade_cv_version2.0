@@ -4,7 +4,7 @@ import glob, os
 import json
 
 # ====== User configuration ======
-DATA_DIR = r"D:\SteamLibrary\steamapps\common\God of War Ragnarok\cv_saved\actions_2026-01-30_56871928"
+DATA_DIR = r"D:\SteamLibrary\steamapps\common\No Man's Sky\Binaries\cv_saved\actions_2026-02-03_299599647"
 # ================================
 
 # hyperparameter
