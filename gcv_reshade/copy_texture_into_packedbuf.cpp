@@ -411,20 +411,34 @@ bool copy_texture_image_needing_resource_barrier_into_packedbuf(
 	device *const device = queue->get_device();
 	resource_desc desc = device->get_resource_desc(tex);
 
+	// Determine if we need an intermediate staging resource
+	bool need_intermediate = (desc.heap == memory_heap::gpu_only);
+
+	// Vulkan and OpenGL: swapchain/render target images cannot be directly mapped
+	// even if heap is not gpu_only, so always use intermediate resource
+	const auto api = device->get_api();
+	if (api == device_api::vulkan || api == device_api::opengl) {
+		need_intermediate = true;
+	}
+
 	resource intermediate;
-	if (desc.heap != memory_heap::gpu_only)
+	if (!need_intermediate)
 	{
 		// Avoid copying to temporary system memory resource if texture is accessible directly
 		intermediate = tex;
 	}
 	else
 	{
-		if ((desc.usage & resource_usage::copy_source) != resource_usage::copy_source) {
-			reshade::log_message(reshade::log_level::error, std::string(std::string("Failed to save texture: bad desc.usage ") + std::to_string((int64_t)(desc.usage))).c_str());
-			return false;
+		// For Vulkan/OpenGL, check copy_source flag; for others, require it
+		// Note: Vulkan swapchain images may not have explicit copy_source but can still be copied
+		if (api != device_api::vulkan && api != device_api::opengl) {
+			if ((desc.usage & resource_usage::copy_source) != resource_usage::copy_source) {
+				reshade::log_message(reshade::log_level::error, std::string(std::string("Failed to save texture: bad desc.usage ") + std::to_string((int64_t)(desc.usage))).c_str());
+				return false;
+			}
 		}
 
-		reshade::log_message(reshade::log_level::info, std::string( std::string("saving texture of shape ")+std::to_string(desc.texture.width)+std::string(" x ")+std::to_string(desc.texture.height)+std::string(" of format ")+reshade::api::fmtnames.at(desc.texture.format)+std::string(" with interpretation ")+std::to_string(static_cast<int>(tex_interp))).c_str());
+		reshade::log_message(reshade::log_level::info, std::string( std::string("saving texture of shape ")+std::to_string(desc.texture.width)+std::string(" x ")+std::to_string(desc.texture.height)+std::string(" of format ")+reshade::api::fmtnames.at(desc.texture.format)+std::string(" with interpretation ")+std::to_string(static_cast<int>(tex_interp))+std::string(" via API ")+std::to_string(static_cast<int>(api))).c_str());
 
 		//const reshade::api::format dstfmt = (desc.texture.format == reshade::api::format::r32_g8_typeless) ? reshade::api::format::r32_float : format_to_default_typed(desc.texture.format);
 		const reshade::api::format dstfmt = format_to_default_typed(desc.texture.format);
@@ -437,9 +451,10 @@ bool copy_texture_image_needing_resource_barrier_into_packedbuf(
 		}
 
 		command_list *const cmd_list = queue->get_immediate_command_list();
-		cmd_list->barrier(tex, resource_usage::shader_resource, resource_usage::copy_source);
+		// Use render_target as source state (more appropriate for swapchain/backbuffer resources)
+		cmd_list->barrier(tex, resource_usage::render_target, resource_usage::copy_source);
 		cmd_list->copy_texture_region(tex, 0, nullptr, intermediate, 0, nullptr);
-		cmd_list->barrier(tex, resource_usage::copy_source, resource_usage::shader_resource);
+		cmd_list->barrier(tex, resource_usage::copy_source, resource_usage::render_target);
 	}
 
 	queue->wait_idle();
