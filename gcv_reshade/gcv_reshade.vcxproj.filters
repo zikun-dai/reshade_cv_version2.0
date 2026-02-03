@@ -70,6 +70,7 @@
     <ClCompile Include="..\gcv_games\HorizonForbiddenWest.cpp" />
     <ClCompile Include="..\gcv_games\ImmortalsFenyxRising.cpp" />
     <ClCompile Include="..\gcv_games\Infused.cpp" />
+    <ClCompile Include="..\gcv_games\NoMansSky.cpp" />
     <ClCompile Include="..\gcv_games\Palworld.cpp" />
     <ClCompile Include="..\gcv_games\ReadyOrNot.cpp" />
     <ClCompile Include="..\gcv_games\SandFall.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="..\gcv_games\HorizonForbiddenWest.h" />
     <ClInclude Include="..\gcv_games\ImmortalsFenyxRising.h" />
     <ClInclude Include="..\gcv_games\Infused.h" />
+    <ClInclude Include="..\gcv_games\NoMansSky.h" />
     <ClInclude Include="..\gcv_games\Palworld.h" />
     <ClInclude Include="..\gcv_games\ReadyOrNot.h" />
     <ClInclude Include="..\gcv_games\SandFall.h" />
