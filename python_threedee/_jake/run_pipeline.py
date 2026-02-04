@@ -6,7 +6,7 @@ import sys
 # ====== User configuration ======
 SCRIPT_DIR = r"C:\Users\user\Desktop\project\gamehack\reshade_cv_version2.0\python_threedee"
 DATA_DIR = Path(
-    r"D:\SteamLibrary\steamapps\common\No Man's Sky\Binaries\cv_saved\reversez-50000\reversez-50000-1"
+    r"D:\SteamLibrary\steamapps\common\Ratchet & Clank - Rift Apart\cv_saved\actions_2026-02-04_140922948"
 )
 
 # If you want to force a specific Python from a conda env:
@@ -26,9 +26,9 @@ def main():
     cmd1 = [
         PYTHON_EXE,
         os.path.join(SCRIPT_DIR, "unpack_h5_and_video.py"),
-        DATA_DIR,
+        str(DATA_DIR),
     ]
-    # run(cmd1)
+    run(cmd1)
 
     # Step 2: build point cloud using load_point_cloud_SUFFIX.py
     depth_pattern = os.path.join(DATA_DIR, "frame_*.npy")
@@ -42,7 +42,7 @@ def main():
         "-ss", "5",
         "-o", output_path,
     ]
-    run(cmd2, cwd=DATA_DIR)
+    run(cmd2, cwd=str(DATA_DIR))
 
     print("All done.")
 
