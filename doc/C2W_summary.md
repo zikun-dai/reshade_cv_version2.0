@@ -98,6 +98,73 @@ R = [ cos_h*cos_r + sin_h*sin_p*sin_r,  -cos_h*sin_r + sin_h*sin_p*sin_r,  sin_h
 
 这里 `h=heading`, `p=pitch`, `r=roll`。可以看到 `R[1][2] = -sin(pitch)`（0-based 行列）。如果你使用 1-based 索引记为 `mat[2][3]`，容易和“mat[2][2]”混淆。
 
+### 3.3 `edit_json.py` 的 UE→OpenGL 旋转公式（你当前的校验基准）
+
+`python_threedee/_jake/edit_json.py` 中的 `_rotation_matrix_from_euler_angles_ue_to_opengl(yaw, pitch, roll)` 先计算一组中间量：
+
+设：
+`cy=cos(yaw)`, `sy=sin(yaw)`, `cp=cos(pitch)`, `sp=sin(pitch)`, `cr=cos(roll)`, `sr=sin(roll)`。
+
+```text
+r00 = cy*cr - sy*sp*sr
+r01 = -sy*cp
+r02 = cy*sr + sy*sp*cr
+r10 = sy*cr + cy*sp*sr
+r11 = cy*cp
+r12 = sy*sr - cy*sp*cr
+r20 = -cp*sr
+r21 = sp
+r22 = cp*cr
+```
+
+函数返回的是 **重排+取负后的行主序 3x3**（OpenGL 坐标）：
+
+```text
+R_gl = [ r00,  r02, -r01
+         r10,  r12, -r11
+         r20,  r22, -r21 ]
+```
+
+因此最终矩阵元素可直接写成：
+
+```text
+mat[0][0] =  cy*cr - sy*sp*sr
+mat[0][1] =  cy*sr + sy*sp*cr
+mat[0][2] =  sy*cp
+mat[1][0] =  sy*cr + cy*sp*sr
+mat[1][1] =  sy*sr - cy*sp*cr
+mat[1][2] = -cy*cp
+mat[2][0] = -cp*sr
+mat[2][1] =  cp*cr
+mat[2][2] = -sp
+```
+
+这就是你用来校验的结论来源：  
+**`mat[2][2] = -sp = -sin(pitch)`**（0-based 索引）。  
+如果你用 1-based 索引写法，那就是 `mat[3][3] = -sin(pitch)`。
+
+另外注意 `edit_json.py` 写入 JSON 时的行主序位置对应关系：
+- `extrinsic[0..2]` → `row0 col0..2`
+- `extrinsic[4..6]` → `row1 col0..2`
+- `extrinsic[8..10]` → `row2 col0..2`
+
+它只覆盖 `extrinsic_cam2world` 的 **旋转部分**（平移不改）。
+
+### 3.4 对照表：`edit_json` 与 IGCS 常见模板的“pitch 指标”
+
+下表用于快速判断“哪个元素最适合盯着看 pitch 的单调变化”。  
+注意：不同流水线处于不同坐标系，必须先保证你比较的是 **同一坐标系** 的旋转矩阵。
+
+| 流水线/模板 | 旋转来源 | pitch 相关的显式元素（0-based） | 说明 |
+|---|---|---|---|
+| `edit_json.py` `_rotation_matrix_from_euler_angles_ue_to_opengl` | 明确公式（3.3） | `mat[2][2] = -sin(pitch)` | 你当前的校验基准 |
+| ETS2 SDK (`EuroTruckSimulator2_SCS_SDK.cpp`) | 明确公式（3.2） | `mat[1][2] = -sin(pitch)` | 行主序公式直接给出 |
+| IGCS 常见 E1/E5（right/up/forward + UE→CV + 列 1/2 取负） | 右/上/前列向量公式（3.0） | `mat[1][2] = cos(pitch) * cos(roll)` | 若 `roll≈0`，可近似用 `mat[1][2]≈cos(pitch)` |
+
+如果你希望用 `mat[2][2]` 做单调性检测：  
+只有 **`edit_json` 这套 OpenGL 旋转公式**可以保证 `mat[2][2] = -sin(pitch)`。  
+IGCS E1/E5 模板下，`mat[2][2]` 是 `-forward.x`，它会同时受 `yaw` 与 `roll` 影响，因此不适合直接当 pitch 单调指标。
+
 ## 4. 平移的规律（为什么有时需要调换位置）
 
 平移向量 `t` 表示 **相机位置在世界坐标系的坐标**。它是否需要调换位置，取决于你对“世界坐标系”的改动类型：
@@ -123,7 +190,19 @@ t' = M * t
 
 注意：**列取负 ≠ 平移取负**。列取负表示在“相机轴”上做镜像，平移是否取负取决于你是否同时改变了世界轴的意义。
 
-## 5. mod_scripts 中的主要 c2w 生成方式
+## 5. python_threedee 对 `c2w` 的消费方式（影响你如何判矩阵正确）
+
+`python_threedee` 里对 `extrinsic_cam2world` 的使用方式，会直接影响“矩阵是否正确”的判断标准：
+
+- `python_threedee/poses.py` 与 `python_threedee/load_point_cloud_ue.py` 都把 `c2w[:3,:3]` 当成旋转、`c2w[:3,3]` 当成平移。  
+- `poses.py` 在可视化时 **按列取相机轴**：`camera_x_dirs = c2ws[:,:3,0]`，`camera_y_dirs = c2ws[:,:3,1]`，`camera_z_dirs = c2ws[:,:3,2]`。  
+这与本文“列=相机轴、行=世界分量”的约定一致。
+
+另外 `load_point_cloud_ue.py` 当前使用的是 `cam2world_to_cv_unchanged`，意味着：  
+**它假设 JSON 里的 `extrinsic_cam2world` 已经是目标坐标系，不再做 UE→CV 的轴映射**。  
+如果你的 `extrinsic_cam2world` 仍是 UE 坐标，你必须先做轴映射或在导出脚本里完成，否则 `poses.py`/点云的方向会错。
+
+## 6. mod_scripts 中的主要 c2w 生成方式
 
 以下是 `mod_scripts` 中能直接观察到的几类做法，均最终写成 3x4 行主序矩阵：
 
@@ -136,7 +215,7 @@ t' = M * t
 | `gtav_camera.cs` | 自建欧拉矩阵 + 多次轴翻转 | `t = (x, -y, -z) * 3` | 额外尺度与坐标系调整 |
 | `RDR2_camera.cs` | 自建欧拉矩阵 | `t = (x, y, z)` | 无额外翻转 |
 
-## 6. 结论：最终 c2w 的“长相”
+## 7. 结论：最终 c2w 的“长相”
 
 无论来自 IGCS 还是 mod_scripts，最终 `c2w` 都是 **3x4 行主序**，列表示相机局部轴，行表示世界轴分量。旋转公式最常见的是 `right/up/forward` 的列向量公式（第 3 节），其后可能应用：
 - UE→CV 的轴映射 `(x,y,z)->(y,-z,x)`。
