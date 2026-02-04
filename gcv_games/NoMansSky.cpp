@@ -21,27 +21,50 @@ bool GameNoMansSky::can_interpret_depth_buffer() const {
 // No Man's Sky uses Vulkan with reversed-Z depth buffer
 // Raw depth: 1.0 = near plane, 0.0 = far plane
 // These near/far values are approximate and may need adjustment
-#define NMS_NEAR_PLANE 0.1f
-#define NMS_FAR_PLANE 1000.0f
+// #define NMS_NEAR_PLANE 0.1f
+// #define NMS_FAR_PLANE 1000.0f
+
+// float GameNoMansSky::convert_to_physical_distance_depth_u64(uint64_t depthval) const {
+// 	// Interpret raw bits as float (32-bit float depth buffer)
+// 	uint32_t depth_as_u32 = static_cast<uint32_t>(depthval);
+// 	float raw_depth;
+// 	std::memcpy(&raw_depth, &depth_as_u32, sizeof(float));
+
+// 	// Reversed-Z: near plane = 1.0, far plane = 0.0
+// 	// For reversed-Z with infinite far plane: physical_depth = near / raw_depth
+// 	// For reversed-Z with finite far plane, we use the standard formula with (1 - depth)
+
+// 	// Clamp to avoid division by zero
+// 	if (raw_depth <= 0.0001f) {
+// 		return NMS_FAR_PLANE;
+// 	}
+
+// 	// Reversed-Z infinite far plane formula (simpler and often more accurate for Vulkan games)
+// 	// physical_distance = near_plane / raw_depth
+// 	return NMS_NEAR_PLANE / raw_depth;
+// }
+
+#define NEAR_PLANE_DISTANCE 0.1
+
+// need to scan far plane in memory because it seems to change per level? 
+#define FAR_PLANE_DISTANCE 1000.0
+static float g_far_plane_distance = FAR_PLANE_DISTANCE;
 
 float GameNoMansSky::convert_to_physical_distance_depth_u64(uint64_t depthval) const {
-	// Interpret raw bits as float (32-bit float depth buffer)
+	const float far_plane_distance = g_far_plane_distance;
+	
+	// convert to physical distance
 	uint32_t depth_as_u32 = static_cast<uint32_t>(depthval);
-	float raw_depth;
-	std::memcpy(&raw_depth, &depth_as_u32, sizeof(float));
+    float depth;
+    std::memcpy(&depth, &depth_as_u32, sizeof(float));
 
-	// Reversed-Z: near plane = 1.0, far plane = 0.0
-	// For reversed-Z with infinite far plane: physical_depth = near / raw_depth
-	// For reversed-Z with finite far plane, we use the standard formula with (1 - depth)
+ //   const float n = NEAR_PLANE_DISTANCE;
+ //   const float f = far_plane_distance;
+ //   const float numerator_constant = (-f * n) / (n - f);
+ //   const float denominator_constant = n / (n - f);
+ //   return numerator_constant / (depth - denominator_constant);
 
-	// Clamp to avoid division by zero
-	if (raw_depth <= 0.0001f) {
-		return NMS_FAR_PLANE;
-	}
-
-	// Reversed-Z infinite far plane formula (simpler and often more accurate for Vulkan games)
-	// physical_distance = near_plane / raw_depth
-	return NMS_NEAR_PLANE / raw_depth;
+	return static_cast<float>(NEAR_PLANE_DISTANCE / std::max(0.0000001, 1.0 - depth * (1.0 - NEAR_PLANE_DISTANCE / far_plane_distance)));
 }
 
 bool GameNoMansSky::get_camera_matrix(CamMatrixData& rcam, std::string& errstr) {
