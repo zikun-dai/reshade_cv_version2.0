@@ -15,6 +15,7 @@
 *.7z
 *.ply
 *.pcd
+python_threedee\analyze_depth.py
 python_test
 reshade-shaders/
 __pycache__/
@@ -32,3 +33,15 @@ nul
 
 # 最后只放行这一份文件
 !/reshade-shaders/Shaders/GcvDepthExport.fx
+
+# merge from upstream/tbm
+IGCSConnector/IgcsConnector/
+IGCSConnector/x64/
+python_threedee/6/
+IgcsConnector-100/
+IgcsConnector-200/
+IgcsConnector-210/
+IgcsConnector-211/
+IgcsConnector-220/
+gcv_games/DragonAge.cpp
+gcv_games/DragonAge.h

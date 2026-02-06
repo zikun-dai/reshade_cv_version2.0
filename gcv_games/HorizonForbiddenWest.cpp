@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2022 Jason Bunk
+// Copyright (C) 2022 Jason Bunk
 #include "HorizonForbiddenWest.h"
 #include "gcv_utils/depth_utils.h"
 #include "gcv_utils/scripted_cam_buf_templates.h"

@@ -23,29 +23,6 @@ void depth_gray_bytesLE_to_f32(simple_packed_buf &dstBuf, const resource_desc &d
 							size_t hint_srcbytes, size_t hint_srcbyteskeep, int hint_pitchadjusthack,
 							GameInterface* gamehandle, const depth_tex_settings &settings) {
 
-	//// ??????????????
-	//uint8_t* debug_ptr = static_cast<uint8_t*>(data.data);
-	//size_t non_zero_pixels = 0;
-	//size_t total_pixels = desc.texture.width * desc.texture.height;
-
-	//for (size_t y = 0; y < desc.texture.height; y++) {
-	//	for (size_t x = 0; x < desc.texture.width; x++) {
-	//		size_t offset = y * data.row_pitch + x * 8;
-	//		bool pixel_has_data = false;
-	//		for (size_t z = 0; z < 4; z++) { // ????4???????
-	//			if (debug_ptr[offset + z] != 0) {
-	//				pixel_has_data = true;
-	//				break;
-	//			}
-	//		}
-	//		if (pixel_has_data) non_zero_pixels++;
-	//	}
-	//}
-	//reshade::log_message(reshade::log_level::error,
-	//	std::string("Non-zero pixels: " + std::to_string(non_zero_pixels) +
-	//		" / " + std::to_string(total_pixels)).c_str());
-
-
 	if (dstBuf.pixfmt != BUF_PIX_FMT_GRAYF32) {
 		reshade::log_message(reshade::log_level::error, std::string(std::string("depth_gray_bytesLE_to_f32: dstBuf.pixfmt ") + std::to_string(static_cast<int64_t>(dstBuf.pixfmt))).c_str());
 		return;
@@ -87,6 +64,8 @@ void depth_gray_bytesLE_to_f32(simple_packed_buf &dstBuf, const resource_desc &d
 	constexpr uint64_t clipu32 = static_cast<uint64_t>(std::numeric_limits<uint32_t>::max());
 	uint64_t maxv = 0ull;
 	uint64_t minv = std::numeric_limits<uint64_t>::max();
+	uint64_t maxv111 = 0ull;
+	uint64_t minv111 = std::numeric_limits<uint64_t>::max();
 	float *dstfp;
 	uint32_t *dstup;
 	float *src_f;
@@ -109,6 +88,8 @@ void depth_gray_bytesLE_to_f32(simple_packed_buf &dstBuf, const resource_desc &d
 					if (minv > vi) minv = vi;
 					if (gamehandle_can_interpret_depth) {
 						dstfp[x] = gamehandle->convert_to_physical_distance_depth_u64(vi);
+						if (maxv111 < dstfp[x])maxv111 = dstfp[x];
+						if (minv111 > dstfp[x])minv111 = dstfp[x];
 					} else {
 						dstup[x] = static_cast<uint32_t>(std::min(clipu32,vi));
 					}
@@ -141,6 +122,7 @@ void depth_gray_bytesLE_to_f32(simple_packed_buf &dstBuf, const resource_desc &d
 	}
 	if (settings.debug_mode || settings.more_verbose) {
 		reshade::log_message(reshade::log_level::info, std::string(std::string("depth_gray_bytesLE_to_f32: min ") + std::to_string(minv) + std::string(", max ") + std::to_string(maxv)).c_str());
+		reshade::log_message(reshade::log_level::error, std::string(std::string("depth_gray_bytesLE_to_f32: min111 ") + std::to_string(minv111) + std::string(", max111 ") + std::to_string(maxv111)).c_str());
 	}
 }
 

@@ -189,6 +189,7 @@ def load_cloud_via_meta(depthfile:str,
     print(f"[DEBUG] 内参: fx={fx:.2f}, fy={fy:.2f}, cx={cx:.2f}, cy={cy:.2f}")
 
     # 4. 点云反投影
+    # depth *= 2
     pts_cam, uu, vv = backproject_points_from_z_depth(depth, fx, fy, cx, cy, stride=1)
     # 深度裁剪（与正确脚本一致）
     depth_flat = depth[vv, uu]

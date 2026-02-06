@@ -10,7 +10,14 @@ file_path = r"D:\SteamLibrary\steamapps\common\Crysis Remastered\Bin64\cv_saved\
 try:
     # 加载 .npy 文件
     data = np.load(file_path)
-    
+
+
+
+    # data_uint32 = data.astype(np.uint32)
+
+    # # 将 uint32 的位模式重新解释为 float32
+    # # 这等同于 C++ 中的 memcpy 操作
+    # data = data_uint32.view(np.float32)
     # 打印数组的形状（维度）
     print("数组形状:", data.shape)
     

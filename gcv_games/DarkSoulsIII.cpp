@@ -1,6 +1,7 @@
 // Copyright (C) 2022 Jason Bunk
 #include "DarkSoulsIII.h"
 #include "gcv_utils/depth_utils.h"
+#include "segmentation/segmentation_app_data.hpp"
 #include "gcv_utils/scripted_cam_buf_templates.h"
 
 
@@ -24,19 +25,19 @@ bool GameDarkSoulsIII::can_interpret_depth_buffer() const {
 	return true;
 }
 float GameDarkSoulsIII::convert_to_physical_distance_depth_u64(uint64_t depthval) const {
-	// const double normalizeddepth = static_cast<double>(depthval) / 4294967295.0;
-	// // This game has a logarithmic depth buffer with unknown constant(s).
-	// // These numbers were found by a curve fit, so are approximate,
-	// // but should be pretty accurate for any depth from centimeters to kilometers
-	// return 1.28 / (0.000077579959 + exp_fast_approx(354.9329993 * normalizeddepth - 83.84035513));
+	 //double normalizeddepth = static_cast<double>(depthval) / 4294967295.0;//0.24795735~0.24803655 0.248007
+	 //// This game has a logarithmic depth buffer with unknown constant(s).
+	 //// These numbers were found by a curve fit, so are approximate,
+	 //// but should be pretty accurate for any depth from centimeters to kilometers
+  //   return 1.28 / (0.000077579959 + exp_fast_approx(354.9329993 * normalizeddepth - 83.84035513));
 	uint32_t depth_as_u32 = static_cast<uint32_t>(depthval);
-    float depth;
+    float depth;//0.95480967~0.9999966 0.9937052
     std::memcpy(&depth, &depth_as_u32, sizeof(float));
-
     const float n = 0.1f;
     const float f = 10000.0f;
     const float numerator_constant = (-f * n) / (n - f);
     const float denominator_constant = n / (n - f);
+    depth = 1.0 - depth;
     return numerator_constant / (depth - denominator_constant);
 }
 
@@ -93,20 +94,56 @@ void GameDarkSoulsIII::process_camera_buffer_from_igcs(
     };
 
     camera_data_buffer[2] = R_cv_final[0][0]; 
-    camera_data_buffer[3] = -R_cv_final[0][1]; 
-    camera_data_buffer[4] = -R_cv_final[0][2]; 
-    camera_data_buffer[5] = t_cv_final[0];
+    camera_data_buffer[3] = R_cv_final[0][1]; 
+    camera_data_buffer[4] = R_cv_final[0][2]; 
+    camera_data_buffer[5] = camera_target_pos[0];
 
     camera_data_buffer[6] = R_cv_final[1][0]; 
-    camera_data_buffer[7] = -R_cv_final[1][1]; 
-    camera_data_buffer[8] = -R_cv_final[1][2]; 
-    camera_data_buffer[9] = t_cv_final[1];
+    camera_data_buffer[7] = R_cv_final[1][1]; 
+    camera_data_buffer[8] = R_cv_final[1][2]; 
+    camera_data_buffer[9] = camera_target_pos[1];
 
     camera_data_buffer[10] = R_cv_final[2][0]; 
-    camera_data_buffer[11] = -R_cv_final[2][1]; 
-    camera_data_buffer[12] = -R_cv_final[2][2]; 
-    camera_data_buffer[13] = t_cv_final[2];
+    camera_data_buffer[11] = R_cv_final[2][1]; 
+    camera_data_buffer[12] = R_cv_final[2][2]; 
+    camera_data_buffer[13] = camera_target_pos[2];
 
     camera_data_buffer[14] = fov;
     
+}
+
+void GameDarkSoulsIII::process_camera_buffer_from_igcs(
+    double* camera_data_buffer,
+    const float* camera_ue_pos,
+    const float* camera_marix,
+    float fov)
+{
+    Eigen::Matrix3d F;
+    F << 1, 0, 0,
+        0, 1, 0,
+        0, 0, -1;
+    Eigen::Matrix3d c2w;
+    c2w << camera_marix[0], camera_marix[4], camera_marix[8],
+        camera_marix[1], camera_marix[5], camera_marix[9],
+        camera_marix[2], camera_marix[6], camera_marix[10];
+    Eigen::Matrix3d R = F * c2w * F;
+
+    float scale = 1.25;
+
+    camera_data_buffer[2] = R(0, 0);
+    camera_data_buffer[3] = R(0, 1);
+    camera_data_buffer[4] = R(0, 2);
+    camera_data_buffer[5] = camera_ue_pos[0] * scale;
+
+    camera_data_buffer[6] = R(1, 0);
+    camera_data_buffer[7] = R(1, 1);
+    camera_data_buffer[8] = R(1, 2);
+    camera_data_buffer[9] = camera_ue_pos[1] * scale;
+
+    camera_data_buffer[10] = R(2, 0);
+    camera_data_buffer[11] = R(2, 1);
+    camera_data_buffer[12] = R(2, 2);
+    camera_data_buffer[13] = -camera_ue_pos[2] * scale;
+
+    camera_data_buffer[14] = fov;
 }

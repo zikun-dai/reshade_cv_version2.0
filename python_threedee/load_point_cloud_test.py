@@ -5,7 +5,7 @@ import json
 import math
 import numpy as np
 from PIL import Image
-# from save_point_cloud_to_file import save_cloud_to_file
+from save_point_cloud_to_file import save_cloud_to_file
 from misc_utils import files_glob
 from functools import partial
 from tqdm.contrib.concurrent import process_map
@@ -189,7 +189,7 @@ def load_cloud_via_meta(depthfile:str,
     pts_cam, uu, vv = backproject_points_from_z_depth(depth, fx, fy, cx, cy, stride=1)
     # 深度裁剪（与正确脚本一致）
     depth_flat = depth[vv, uu]
-    depth_mask_keep = (depth_flat >= 0.2) & (depth_flat <= max_distance)
+    depth_mask_keep = (depth_flat >= 0.2) & (depth_flat <= 20)
     pts_cam = pts_cam[depth_mask_keep]
     uu_keep = uu[depth_mask_keep]
     vv_keep = vv[depth_mask_keep]
@@ -357,7 +357,7 @@ if __name__ == '__main__':
     print(f"✅ 加载{len(valid_clouds)}帧有效点云，合并中...")
     merged_cloud = merge_clouds_world_points(valid_clouds)
     if args.save_to_file:
-        # save_cloud_to_file(merged_cloud, args.save_to_file)
+        save_cloud_to_file(merged_cloud, args.save_to_file)
         print(f"💾 点云已保存至: {args.save_to_file}")
     
     # add_camera_global_axis(merged_cloud, valid_clouds)
