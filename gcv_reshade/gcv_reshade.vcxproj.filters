@@ -50,7 +50,6 @@
     <ClCompile Include="image_writer_thread_pool.cpp" />
     <ClCompile Include="recorder.cpp" />
     <ClCompile Include="tex_buffer_utils.cpp" />
-    <ClCompile Include="..\gcv_games\ResidentEvils.cpp" />
     <ClCompile Include="..\gcv_games\Crysis2.cpp" />
     <ClCompile Include="..\gcv_games\DevilMayCry5.cpp" />
     <ClCompile Include="..\gcv_games\Crysis3.cpp" />
@@ -60,13 +59,11 @@
     <ClCompile Include="..\gcv_games\ResidentEvil8.cpp" />
     <ClCompile Include="..\gcv_games\Cyberpunk2077.cpp" />
     <ClCompile Include="..\gcv_games\AtomicHeart.cpp" />
-    <ClCompile Include="..\gcv_games\BatmanAK.cpp" />
     <ClCompile Include="..\gcv_games\Borderlands4.cpp" />
     <ClCompile Include="..\gcv_games\DeathStrandingDirectorsCut.cpp" />
     <ClCompile Include="..\gcv_games\FinalFantasy7.cpp" />
     <ClCompile Include="..\gcv_games\Ghostrunner.cpp" />
     <ClCompile Include="..\gcv_games\Ghostrunner2.cpp" />
-    <ClCompile Include="..\gcv_games\Hi-Fi-RUSH.cpp" />
     <ClCompile Include="..\gcv_games\HorizonForbiddenWest.cpp" />
     <ClCompile Include="..\gcv_games\ImmortalsFenyxRising.cpp" />
     <ClCompile Include="..\gcv_games\Infused.cpp" />
@@ -79,6 +76,10 @@
     <ClCompile Include="..\gcv_games\SilentHillF.cpp" />
     <ClCompile Include="..\gcv_games\GodofWar5_CE.cpp" />
     <ClCompile Include="..\gcv_games\RatchetClankRiftApart.cpp" />
+    <ClCompile Include="..\gcv_games\BatmanAK.cpp" />
+    <ClCompile Include="..\gcv_games\Hi-Fi-RUSH.cpp" />
+    <ClCompile Include="..\gcv_games\ResidentEvils2.cpp" />
+    <ClCompile Include="..\gcv_games\ResidentEvils3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdparty\cnpy.h" />
@@ -153,7 +154,6 @@
     <ClInclude Include="copy_texture_into_packedbuf.h" />
     <ClInclude Include="recorder.h" />
     <ClInclude Include="tex_buffer_utils.h" />
-    <ClInclude Include="..\gcv_games\ResidentEvils.h" />
     <ClInclude Include="..\gcv_games\Crysis2.h" />
     <ClInclude Include="..\gcv_games\DevilMayCry5.h" />
     <ClInclude Include="..\gcv_games\Crysis3.h" />
@@ -163,13 +163,11 @@
     <ClInclude Include="..\gcv_games\ResidentEvil8.h" />
     <ClInclude Include="..\gcv_games\Cyberpunk2077.h" />
     <ClInclude Include="..\gcv_games\AtomicHeart.h" />
-    <ClInclude Include="..\gcv_games\BatmanAK.h" />
     <ClInclude Include="..\gcv_games\Borderlands4.h" />
     <ClInclude Include="..\gcv_games\DeathStrandingDirectorsCut.h" />
     <ClInclude Include="..\gcv_games\FinalFantasy7.h" />
     <ClInclude Include="..\gcv_games\Ghostrunner.h" />
     <ClInclude Include="..\gcv_games\Ghostrunner2.h" />
-    <ClInclude Include="..\gcv_games\Hi-Fi-RUSH.h" />
     <ClInclude Include="..\gcv_games\HorizonForbiddenWest.h" />
     <ClInclude Include="..\gcv_games\ImmortalsFenyxRising.h" />
     <ClInclude Include="..\gcv_games\Infused.h" />
@@ -182,6 +180,10 @@
     <ClInclude Include="..\gcv_games\SilentHillF.h" />
     <ClInclude Include="..\gcv_games\GodofWar5_CE.h" />
     <ClInclude Include="..\gcv_games\RatchetClankRiftApart.h" />
+    <ClInclude Include="..\gcv_games\BatmanAK.h" />
+    <ClInclude Include="..\gcv_games\Hi-Fi-RUSH.h" />
+    <ClInclude Include="..\gcv_games\ResidentEvils2.h" />
+    <ClInclude Include="..\gcv_games\ResidentEvils3.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\3rdparty\fpzip\fpe.inl" />

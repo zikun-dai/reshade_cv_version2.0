@@ -1,5 +1,6 @@
 // Copyright (C) 2022 Jason Bunk
 #include "Hi-Fi-RUSH.h"
+#include <cmath>
 #include "gcv_utils/depth_utils.h"
 #include "gcv_utils/scripted_cam_buf_templates.h"
 
@@ -42,7 +43,7 @@ float GameHi_Fi_RUSH::convert_to_physical_distance_depth_u64(uint64_t depthval) 
 
 uint64_t GameHi_Fi_RUSH::get_scriptedcambuf_triggerbytes() const
 {
-    // ½« double ÀàĞÍµÄ×¢Èë×¨ÓÃÄ§Êı×ª»»Îª 8 ×Ö½ÚµÄÕûÊı
+    // å°† double ç±»å‹çš„æ³¨å…¥ä¸“ç”¨é­”æ•°è½¬æ¢ä¸º 8 å­—èŠ‚çš„æ•´æ•°
     const double magic_double = 1.20040525131452021e-12;
     uint64_t magic_int;
     static_assert(sizeof(magic_double) == sizeof(magic_int));
@@ -52,17 +53,17 @@ uint64_t GameHi_Fi_RUSH::get_scriptedcambuf_triggerbytes() const
 
 void GameHi_Fi_RUSH::process_camera_buffer_from_igcs(
     double* camera_data_buffer,
-    const float* camera_ue_pos, // ¶ÔÓ¦ Python ÖĞµÄ location {x, y, z}
-    float roll, float pitch, float yaw, // »¡¶È
+    const float* camera_ue_pos, // å¯¹åº” Python ä¸­çš„ location {x, y, z}
+    float roll, float pitch, float yaw, // å¼§åº¦
     float fov)
 {
-    // --- ÑÏ¸ñ°´ÕÕ Python ½Å±¾Âß¼­ÖØĞ´ ---
+    // --- ä¸¥æ ¼æŒ‰ç…§ Python è„šæœ¬é€»è¾‘é‡å†™ ---
 
-    // ²½Öè 1: ¼ÆËã UE ×ø±êÏµÏÂµÄĞı×ª¾ØÕó R_ue (C2W)
-    // Python ÖĞÊ¹ÓÃÁË -yaw£¬ÕâÀïÒ²¶Ô yaw È¡·´
+    // æ­¥éª¤ 1: è®¡ç®— UE åæ ‡ç³»ä¸‹çš„æ—‹è½¬çŸ©é˜µ R_ue (C2W)
+    // Python ä¸­ä½¿ç”¨äº† -yawï¼Œè¿™é‡Œä¹Ÿå¯¹ yaw å–å
     const float neg_yaw = -yaw;
 
-    // ¸ù¾İ Python ÖĞµÄ rot_x_lh, rot_y_lh, rot_z_lh ¶¨Òå
+    // æ ¹æ® Python ä¸­çš„ rot_x_lh, rot_y_lh, rot_z_lh å®šä¹‰
     const float cr = cos(roll), sr = sin(roll);
     const float cp = cos(pitch), sp = sin(pitch);
     const float cz = cos(neg_yaw), sz = sin(neg_yaw);
@@ -96,7 +97,7 @@ void GameHi_Fi_RUSH::process_camera_buffer_from_igcs(
     for (int i = 0; i < 3; ++i) for (int j = 0; j < 3; ++j) for (int k = 0; k < 3; ++k)
         R_ue[i][j] += R_ue_temp[i][k] * Rx[k][j];
 
-    // ²½Öè 2: ½« R_ue ×ª»»µ½ OpenCV ×ø±êÏµ
+    // æ­¥éª¤ 2: å°† R_ue è½¬æ¢åˆ° OpenCV åæ ‡ç³»
     // R_cv = M_UE_to_CV @ R_ue @ M_UE_to_CV.T
     const float M_UE_to_CV[3][3] = {
         { 0, 1,  0 },
@@ -118,7 +119,7 @@ void GameHi_Fi_RUSH::process_camera_buffer_from_igcs(
     for (int i = 0; i < 3; ++i) for (int j = 0; j < 3; ++j) for (int k = 0; k < 3; ++k)
         R_cv[i][j] += M_UE_to_CV[i][k] * R_cv_temp[k][j];
 
-    // ²½Öè 3: ×ª»»²¢Ëõ·ÅÆ½ÒÆÏòÁ¿ t_cv
+    // æ­¥éª¤ 3: è½¬æ¢å¹¶ç¼©æ”¾å¹³ç§»å‘é‡ t_cv
     // t_cv = [location.z, location.y, location.x] / 100.0
     // camera_ue_pos[0] = x, [1] = y, [2] = z
     const float scale = 0.02f; // 1/10
@@ -128,18 +129,18 @@ void GameHi_Fi_RUSH::process_camera_buffer_from_igcs(
         camera_ue_pos[0] * scale  // t_cv[2] = x
     };
 
-    // ²½Öè 4: ½«×îÖÕµÄ c2w (R_cv, t_cv) ¾ØÕóÌî³äµ½»º³åÇø
-    // µÚÒ»ĞĞ
+    // æ­¥éª¤ 4: å°†æœ€ç»ˆçš„ c2w (R_cv, t_cv) çŸ©é˜µå¡«å……åˆ°ç¼“å†²åŒº
+    // ç¬¬ä¸€è¡Œ
     camera_data_buffer[2] = R_cv[0][0];
     camera_data_buffer[3] = -R_cv[0][1];
     camera_data_buffer[4] = -R_cv[0][2];
     camera_data_buffer[5] = t_cv[0];
-    // µÚ¶şĞĞ
+    // ç¬¬äºŒè¡Œ
     camera_data_buffer[6] = R_cv[1][0];
     camera_data_buffer[7] = -R_cv[1][1];
     camera_data_buffer[8] = -R_cv[1][2];
     camera_data_buffer[9] = t_cv[1];
-    // µÚÈıĞĞ
+    // ç¬¬ä¸‰è¡Œ
     camera_data_buffer[10] = R_cv[2][0];
     camera_data_buffer[11] = -R_cv[2][1];
     camera_data_buffer[12] = -R_cv[2][2];
@@ -147,157 +148,3 @@ void GameHi_Fi_RUSH::process_camera_buffer_from_igcs(
     // FOV
     camera_data_buffer[14] = fov;
 }
-
-
-
-// Copyright (C) 2022 Jason Bunk
-#include "Hi-Fi-RUSH.h"
-#include "gcv_utils/depth_utils.h"
-#include "gcv_utils/scripted_cam_buf_templates.h"
-
-
-std::string GameHi_Fi_RUSH::gamename_verbose() const { return "GameHi-Fi-RUSH"; } // hopefully continues to work with future patches via the mod lua
-
-std::string GameHi_Fi_RUSH::camera_dll_name() const { return ""; } // no dll name, it's available in the exe memory space
-uint64_t GameHi_Fi_RUSH::camera_dll_mem_start() const { return 0; }
-GameCamDLLMatrixType GameHi_Fi_RUSH::camera_dll_matrix_format() const { return GameCamDLLMatrix_allmemscanrequiredtofindscriptedcambuf; }
-
-scriptedcam_checkbuf_funptr GameHi_Fi_RUSH::get_scriptedcambuf_checkfun() const {
-    return template_check_scriptedcambuf_hash<double, 13, 1>;
-}
-uint64_t GameHi_Fi_RUSH::get_scriptedcambuf_sizebytes() const {
-    return template_scriptedcambuf_sizebytes<double, 13, 1>();
-}
-bool GameHi_Fi_RUSH::copy_scriptedcambuf_to_matrix(uint8_t* buf, uint64_t buflen, CamMatrixData& rcam, std::string& errstr) const {
-    return template_copy_scriptedcambuf_extrinsic_cam2world_and_fov<double, 13, 1>(buf, buflen, rcam, false, errstr);
-}
-
-bool GameHi_Fi_RUSH::can_interpret_depth_buffer() const {
-    return true;
-}
-float GameHi_Fi_RUSH::convert_to_physical_distance_depth_u64(uint64_t depthval) const {
-    // const double normalizeddepth = static_cast<double>(depthval) / 4294967295.0;
-    // // This game has a logarithmic depth buffer with unknown constant(s).
-    // // These numbers were found by a curve fit, so are approximate,
-    // // but should be pretty accurate for any depth from centimeters to kilometers
-    // return 1.28 / (0.000077579959 + exp_fast_approx(354.9329993 * normalizeddepth - 83.84035513));
-    uint32_t depth_as_u32 = static_cast<uint32_t>(depthval);
-    float depth;
-    std::memcpy(&depth, &depth_as_u32, sizeof(float));
-
-    const float n = 0.1f;
-    const float f = 10000.0f;
-    const float numerator_constant = (-f * n) / (n - f);
-    const float denominator_constant = n / (n - f);
-    return numerator_constant / (depth - denominator_constant);
-}
-
-uint64_t GameHi_Fi_RUSH::get_scriptedcambuf_triggerbytes() const
-{
-    // ½« double ÀàĞÍµÄ×¢Èë×¨ÓÃÄ§Êı×ª»»Îª 8 ×Ö½ÚµÄÕûÊı
-    const double magic_double = 1.20040525131452021e-12;
-    uint64_t magic_int;
-    static_assert(sizeof(magic_double) == sizeof(magic_int));
-    memcpy(&magic_int, &magic_double, sizeof(magic_int));
-    return magic_int;
-}
-
-void GameHi_Fi_RUSH::process_camera_buffer_from_igcs(
-    double* camera_data_buffer,
-    const float* camera_ue_pos, // ¶ÔÓ¦ Python ÖĞµÄ location {x, y, z}
-    float roll, float pitch, float yaw, // »¡¶È
-    float fov)
-{
-    // --- ÑÏ¸ñ°´ÕÕ Python ½Å±¾Âß¼­ÖØĞ´ ---
-
-    // ²½Öè 1: ¼ÆËã UE ×ø±êÏµÏÂµÄĞı×ª¾ØÕó R_ue (C2W)
-    // Python ÖĞÊ¹ÓÃÁË -yaw£¬ÕâÀïÒ²¶Ô yaw È¡·´
-    const float neg_yaw = -yaw;
-
-    // ¸ù¾İ Python ÖĞµÄ rot_x_lh, rot_y_lh, rot_z_lh ¶¨Òå
-    const float cr = cos(roll), sr = sin(roll);
-    const float cp = cos(pitch), sp = sin(pitch);
-    const float cz = cos(neg_yaw), sz = sin(neg_yaw);
-
-    // R_x(roll)
-    const float Rx[3][3] = {
-        { 1,  0,   0  },
-        { 0,  cr,  sr },
-        { 0, -sr,  cr }
-    };
-    // R_y(pitch)
-    const float Ry[3][3] = {
-        { cp,  0, -sp },
-        { 0,   1,  0  },
-        { sp,  0,  cp }
-    };
-    // R_z(-yaw)
-    const float Rz[3][3] = {
-        { cz,  sz, 0 },
-        { -sz, cz, 0 },
-        { 0,   0,  1 }
-    };
-
-    // R_ue = Rz @ Ry @ Rx
-    float R_ue_temp[3][3] = { 0 };
-    float R_ue[3][3] = { 0 };
-    // R_ue_temp = Rz @ Ry
-    for (int i = 0; i < 3; ++i) for (int j = 0; j < 3; ++j) for (int k = 0; k < 3; ++k)
-        R_ue_temp[i][j] += Rz[i][k] * Ry[k][j];
-    // R_ue = R_ue_temp @ Rx
-    for (int i = 0; i < 3; ++i) for (int j = 0; j < 3; ++j) for (int k = 0; k < 3; ++k)
-        R_ue[i][j] += R_ue_temp[i][k] * Rx[k][j];
-
-    // ²½Öè 2: ½« R_ue ×ª»»µ½ OpenCV ×ø±êÏµ
-    // R_cv = M_UE_to_CV @ R_ue @ M_UE_to_CV.T
-    const float M_UE_to_CV[3][3] = {
-        { 0, 1,  0 },
-        { 0, 0, -1 },
-        { 1, 0,  0 }
-    };
-    const float M_UE_to_CV_T[3][3] = {
-        { 0, 0, 1 },
-        { 1, 0, 0 },
-        { 0,-1, 0 }
-    };
-
-    float R_cv_temp[3][3] = { 0 };
-    float R_cv[3][3] = { 0 };
-    // R_cv_temp = R_ue @ M_UE_to_CV.T
-    for (int i = 0; i < 3; ++i) for (int j = 0; j < 3; ++j) for (int k = 0; k < 3; ++k)
-        R_cv_temp[i][j] += R_ue[i][k] * M_UE_to_CV_T[k][j];
-    // R_cv = M_UE_to_CV @ R_cv_temp
-    for (int i = 0; i < 3; ++i) for (int j = 0; j < 3; ++j) for (int k = 0; k < 3; ++k)
-        R_cv[i][j] += M_UE_to_CV[i][k] * R_cv_temp[k][j];
-
-    // ²½Öè 3: ×ª»»²¢Ëõ·ÅÆ½ÒÆÏòÁ¿ t_cv
-    // t_cv = [location.z, location.y, location.x] / 100.0
-    // camera_ue_pos[0] = x, [1] = y, [2] = z
-    const float scale = 0.02f; // 1/10
-    const float t_cv[3] = {
-        camera_ue_pos[1] * scale, // t_cv[0] = y
-        -camera_ue_pos[2] * scale, // t_cv[1] = -z
-        camera_ue_pos[0] * scale  // t_cv[2] = x
-    };
-
-    // ²½Öè 4: ½«×îÖÕµÄ c2w (R_cv, t_cv) ¾ØÕóÌî³äµ½»º³åÇø
-    // µÚÒ»ĞĞ
-    camera_data_buffer[2] = R_cv[0][0];
-    camera_data_buffer[3] = -R_cv[0][1];
-    camera_data_buffer[4] = -R_cv[0][2];
-    camera_data_buffer[5] = t_cv[0];
-    // µÚ¶şĞĞ
-    camera_data_buffer[6] = R_cv[1][0];
-    camera_data_buffer[7] = -R_cv[1][1];
-    camera_data_buffer[8] = -R_cv[1][2];
-    camera_data_buffer[9] = t_cv[1];
-    // µÚÈıĞĞ
-    camera_data_buffer[10] = R_cv[2][0];
-    camera_data_buffer[11] = -R_cv[2][1];
-    camera_data_buffer[12] = -R_cv[2][2];
-    camera_data_buffer[13] = t_cv[2];
-    // FOV
-    camera_data_buffer[14] = fov;
-}
-
-

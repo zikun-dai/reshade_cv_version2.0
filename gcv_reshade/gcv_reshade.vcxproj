@@ -142,7 +142,8 @@
     <ClCompile Include="..\gcv_games\RatchetClankRiftApart.cpp" />
     <ClCompile Include="..\gcv_games\ReadyOrNot.cpp" />
     <ClCompile Include="..\gcv_games\ResidentEvil8.cpp" />
-    <ClCompile Include="..\gcv_games\ResidentEvils.cpp" />
+    <ClCompile Include="..\gcv_games\ResidentEvils2.cpp" />
+    <ClCompile Include="..\gcv_games\ResidentEvils3.cpp" />
     <ClCompile Include="..\gcv_games\SandFall.cpp" />
     <ClCompile Include="..\gcv_games\Shipbreaker.cpp" />
     <ClCompile Include="..\gcv_games\SilentHill2.cpp" />
@@ -241,7 +242,8 @@
     <ClInclude Include="..\gcv_games\RDR2.h" />
     <ClInclude Include="..\gcv_games\ReadyOrNot.h" />
     <ClInclude Include="..\gcv_games\ResidentEvil8.h" />
-    <ClInclude Include="..\gcv_games\ResidentEvils.h" />
+    <ClInclude Include="..\gcv_games\ResidentEvils2.h" />
+    <ClInclude Include="..\gcv_games\ResidentEvils3.h" />
     <ClInclude Include="..\gcv_games\RoR2.h" />
     <ClInclude Include="..\gcv_games\SandFall.h" />
     <ClInclude Include="..\gcv_games\Sekiro.h" />
