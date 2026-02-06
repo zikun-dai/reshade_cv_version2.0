@@ -12,6 +12,10 @@ The addon hooks into game rendering pipelines via ReShade 5.8.0+ to capture:
 - Camera extrinsic matrices (cam2world) and FOV
 - Semantic segmentation data (DirectX 10/11 only)
 
+## 重要规则
+
+**不要主动编译。** 除非用户明确要求编译，否则不应执行 `msbuild` 或 `start` 等编译命令。默认情况下只需检查代码语法问题即可。
+
 ## Build Commands
 
 ### Build with Visual Studio

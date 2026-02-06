@@ -11,7 +11,13 @@
       "Bash(\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" gcv_reshade.sln /p:Configuration=Debug /p:Platform=x64 /t:Build /m)",
       "Bash(\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" \"gcv_reshade.sln\" \"/p:Configuration=Debug\" \"/p:Platform=x64\" \"/t:Build\" \"/m\")",
       "Bash(msbuild:*)",
-      "Bash(cmd /c \"cd /d C:\\\\Users\\\\user\\\\Desktop\\\\project\\\\gamehack\\\\reshade_cv_version2.0 && \"\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\"\" gcv_reshade.sln -p:Configuration=Debug -p:Platform=x64 -t:Build\")"
+      "Bash(cmd /c \"cd /d C:\\\\Users\\\\user\\\\Desktop\\\\project\\\\gamehack\\\\reshade_cv_version2.0 && \"\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\"\" gcv_reshade.sln -p:Configuration=Debug -p:Platform=x64 -t:Build\")",
+      "WebFetch(domain:kemono.su)",
+      "WebFetch(domain:kemono.cr)",
+      "WebFetch(domain:opm.fransbouma.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:gamerant.com)",
+      "WebFetch(domain:www.thegamer.com)"
     ]
   }
 }
